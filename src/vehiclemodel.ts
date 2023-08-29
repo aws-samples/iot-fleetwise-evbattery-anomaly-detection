@@ -113,19 +113,22 @@ export interface VehicleModelProps {
   readonly description?: string;
   readonly networkInterfaces: VehicleInterface[];
   readonly signals?: VehicleSignal[];
+  readonly signalsb64: string;
   readonly networkFileDefinitions?: NetworkFileDefinition[];
 }
 
 export class VehicleModel extends Construct {
   readonly name: string = '';
   readonly signalCatalog: SignalCatalog = ({} as SignalCatalog);
+  readonly signalsb64: string = '';
 
   constructor(scope: Construct, id: string, props: VehicleModelProps) {
     super(scope, id);
 
     (this.name as string) = props.name || '';
     (this.signalCatalog as SignalCatalog) = props.signalCatalog;
-
+    (this.signalsb64 as string) = props.signalsb64 || '';
+    
     const handler = new Handler(this, 'Handler', {
       handler: 'vehiclemodelhandler.on_event',
     });
@@ -139,6 +142,7 @@ export class VehicleModel extends Construct {
         description: props.description,
         network_interfaces: JSON.stringify(props.networkInterfaces.map(i => i.toObject())),
         signals: (props.signals) ? JSON.stringify(props.signals.map(s => s.toObject())) : '{}',
+        signalsb64: cdk.Fn.base64(this.signalsb64),
         network_file_definitions: (props.networkFileDefinitions) ? JSON.stringify(props.networkFileDefinitions.map(s => s.toObject())) : '{}',
       },
     });

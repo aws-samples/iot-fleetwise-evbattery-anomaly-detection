@@ -23,7 +23,8 @@ def on_create(event):
       signalCatalogArn = props['signal_catalog_arn'],
       targetArn = props['target_arn'],
       collectionScheme = json.loads(props['collection_scheme']),
-      signalsToCollect = json.loads(props['signals_to_collect'])
+      signalsToCollect = json.loads(props['signals_to_collect']),
+      dataDestinationConfigs = json.loads(props['dataDestinationConfigs'])
     )
     print(f"create_campaign response {response}")
     

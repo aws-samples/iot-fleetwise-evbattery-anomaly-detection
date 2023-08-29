@@ -1,11 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
-import {
-  aws_timestream as ts,
-} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Handler } from './handler';
 import { Provider } from './provider';
-
 
 export class SignalCatalogNode {
   protected node: object;
@@ -63,9 +59,8 @@ export class SignalCatalogSensor extends SignalCatalogNode {
 export interface SignalCatalogProps {
   readonly name?: string;
   readonly description?: string;
-  readonly database: ts.CfnDatabase;
-  readonly table: ts.CfnTable;
   readonly nodes: SignalCatalogNode[];
+  readonly signalCatalogJson: string;
 }
 
 /**
@@ -83,6 +78,7 @@ export class SignalCatalog extends Construct {
   readonly name: string;
   readonly description: (string|undefined);
   readonly arn: string;
+  readonly signalCatalogJson: string;
 
   constructor(scope: Construct, id: string, props: SignalCatalogProps) {
     super(scope, id);
@@ -90,6 +86,7 @@ export class SignalCatalog extends Construct {
     this.name = props.name || 'default';
     this.description = props.description;
     this.arn = `arn:aws:iotfleetwise:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:signal-catalog/${this.name}`;
+    this.signalCatalogJson = props.signalCatalogJson;
 
     const handler = new Handler(this, 'Handler', {
       handler: 'servicehandler.on_event',
@@ -102,11 +99,7 @@ export class SignalCatalog extends Construct {
     const provider = Provider.getOrCreate(this, handler, isCompleteHandler);
 
     const serviceResource = new cdk.CustomResource(this, 'ServiceResource', {
-      serviceToken: provider.provider.serviceToken,
-      properties: {
-        database_name: props.database.databaseName,
-        table_name: props.table.tableName,
-      },
+      serviceToken: provider.provider.serviceToken
     });
 
     const serviceCatalogHandler = new Handler(this, 'ServiceCatalogHandler', {
@@ -119,6 +112,7 @@ export class SignalCatalog extends Construct {
         name: this.name,
         description: this.description,
         nodes: JSON.stringify(props.nodes.map(node => node.toObject())),
+        signalCatalogJson: cdk.Fn.base64(this.signalCatalogJson)
       },
     });
 

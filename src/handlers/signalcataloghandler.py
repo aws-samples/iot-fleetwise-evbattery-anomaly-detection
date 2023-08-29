@@ -1,6 +1,6 @@
 import boto3
 import json
-
+import base64
 def on_event(event, context):
     print(event)
     request_type = event['RequestType']
@@ -14,14 +14,21 @@ def on_event(event, context):
 
 def on_create(event):
     props = event["ResourceProperties"]
-    print(f"create new resource with props {props}")
+    
     client=boto3.client('iotfleetwise')
-    response = client.create_signal_catalog(
-      name = props['name'],
-      description = props['description'],
-      nodes = json.loads(props['nodes'])
-    )
-    print(response)
+    if(len(props['signalCatalogJson']) > 0):
+        vals = base64.b64decode(props['signalCatalogJson']).decode("utf-8")
+        response = client.create_signal_catalog(
+            name = props['name'],
+            description = props['description'],
+            nodes = json.loads(vals)
+        )
+    else:
+        response = client.create_signal_catalog(
+            name = props['name'],
+            description = props['description'],
+            nodes = json.loads(props['nodes'])
+        )
     return { 'PhysicalResourceId': props['name'] }
 
 def on_update(event):

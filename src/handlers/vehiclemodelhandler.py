@@ -1,5 +1,6 @@
 import boto3
 import json
+import base64
 
 def on_event(event, context):
     print(f'on_event {event} {context}')
@@ -16,7 +17,6 @@ def on_create(event):
     props = event["ResourceProperties"]
     print(f"create new resource with props {props}")
     client=boto3.client('iotfleetwise')
-    
     nodes = []
     if (props['signals'] != '{}'):
       signals = json.loads(props['signals'])
@@ -44,13 +44,15 @@ def on_create(event):
     print(f"update_model_manifest response {response}")    
     
     
-    if (props['signals'] != '{}'):
+    if (props['signalsb64'] != '{}'):
+
+      vals = base64.b64decode(props['signalsb64']).decode("utf-8")  
       response = client.create_decoder_manifest(
         name = props['name'],
         description = props['description'],
         modelManifestArn = props['model_manifest_arn'],
         networkInterfaces = json.loads(props['network_interfaces']),
-        signalDecoders = signals
+        signalDecoders = json.loads(vals)
       )
       print(f"create_decoder_manifest response {response}")
 
