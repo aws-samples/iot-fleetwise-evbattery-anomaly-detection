@@ -101,9 +101,9 @@ export class IntegTesting {
       resources: ['arn:aws:s3:::*'],
     }));
 
-    // Ubuntu 18.04 for Arm64
+    // Ubuntu 20.04 for Arm64
     const machineImage = ec2.MachineImage.fromSsmParameter(
-      '/aws/service/canonical/ubuntu/server/18.04/stable/current/arm64/hvm/ebs-gp2/ami-id',
+      '/aws/service/canonical/ubuntu/server/20.04/stable/current/arm64/hvm/ebs-gp2/ami-id',
       { os: ec2.OperatingSystemType.LINUX },
     );
 
@@ -124,7 +124,6 @@ export class IntegTesting {
       resourceSignalTimeout: cdk.Duration.minutes(30),
     });
 
-
     const sourceUrl = 'https://github.com/aws/aws-iot-fleetwise-edge/releases/latest/download/aws-iot-fleetwise-edge-arm64.tar.gz';
     const userData = `\
         #!/bin/bash
@@ -133,15 +132,15 @@ export class IntegTesting {
         # Wait for any existing package install to finish
         i=0
         while true; do
-          if sudo fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; then
-            i=0
-          else
-            i='expr $i + 1'
-            if expr $i \>= 10 > /dev/null; then
-              break
+            if sudo fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; then
+                i=0
+            else
+                i=\`expr $i + 1\`
+                if expr $i \\>= 10 > /dev/null; then
+                    break
+                fi
             fi
-          fi
-          sleep 1
+            sleep 1
         done
 
         # Upgrade system and reboot if required
@@ -190,7 +189,6 @@ export class IntegTesting {
         sudo -u ubuntu tar -zxf ../aws-iot-fleetwise-edge.tar.gz
         sudo -u ubuntu mkdir -p build/src/executionmanagement
         sudo -u ubuntu mv aws-iot-fleetwise-edge build/src/executionmanagement
-        cd aws-iot-fleetwise-edge
         
         # Install SocketCAN modules:
         ./tools/install-socketcan.sh --bus-count 1
@@ -200,6 +198,8 @@ export class IntegTesting {
         
         # Install FWE credentials and config file
         mkdir /etc/aws-iot-fleetwise
+        mkdir /var/aws-iot-fleetwise
+
         echo -n "${vin100.certificatePem}" > /etc/aws-iot-fleetwise/certificate.pem
         echo -n "${vin100.privateKey}" > /etc/aws-iot-fleetwise/private-key.key
         ./tools/configure-fwe.sh \
@@ -218,7 +218,6 @@ export class IntegTesting {
 
     instance.addUserData(userData);
 
-    
     new cdk.CfnOutput(stack, 'Vehicle Sim ssh command', { value: `ssh -i ${keyName}.pem ubuntu@${instance.instancePublicIp}` });
 
 new ifw.Campaign(stack, 'Campaign', {
