@@ -30,7 +30,7 @@
   "include": [
     "src/**/*.ts",
     "bin/*.json"
-  ],
+, "src/ec2-install-chronicle.ts.old"  ],
   "exclude": [
     "cdk.out"
   ]
