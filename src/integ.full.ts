@@ -154,9 +154,11 @@ export class IntegTesting {
     });
 
     const sourceUrl = 'https://github.com/aws/aws-iot-fleetwise-edge/releases/latest/download/aws-iot-fleetwise-edge-arm64.tar.gz';
+    const sourceSIMUrl = 'https://github.com/kkourmousis/RIV23EVEC2TAR/raw/main/aws-iot-fleetwise-evbatterymonitoring.tar.gz';
     const userData = `\
         #!/bin/bash
         set -xeuo pipefail
+        exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
         # Wait for any existing package install to finish
         i=0
@@ -210,6 +212,23 @@ export class IntegTesting {
         ./aws/install
         rm awscliv2.zip
 
+        # Install packages for Battery Monitoring sample
+        sudo apt install python3-pip -y
+        sudo python3 -m pip install --upgrade pip
+        sudo apt install  python3-numpy python3-pandas  -y        
+        sudo -u ubuntu python3 -m pip install cython 
+        sudo -u ubuntu python3 -m pip install wrapt==1.11 
+        sudo -u ubuntu python3 -m pip install cantools can-isotp
+        sudo apt install -y git ec2-instance-connect htop jq unzip
+        sudo pip3 install --upgrade pandas numpy
+        sudo apt-get install can-utils -y
+        sudo apt-get install linux-modules-extra-$(uname -r) -y
+        sudo modprobe can
+        sudo modprobe can_raw
+        sudo modprobe vcan
+        sudo ip link add dev vcan0 type vcan
+        sudo ip link set up vcan0
+        
         # Download source
         cd /home/ubuntu
   
@@ -220,18 +239,18 @@ export class IntegTesting {
         sudo -u ubuntu mv aws-iot-fleetwise-edge build/src/executionmanagement
         
         # Install SocketCAN modules:
-        ./tools/install-socketcan.sh --bus-count 1
+        sudo ./tools/install-socketcan.sh --bus-count 1
         
         # Install CAN Simulator
-        ./tools/install-cansim.sh --bus-count 1
+        sudo ./tools/install-cansim.sh --bus-count 1
         
         # Install FWE credentials and config file
-        mkdir /etc/aws-iot-fleetwise
-        mkdir /var/aws-iot-fleetwise
+        sudo mkdir /etc/aws-iot-fleetwise
+        sudo mkdir /var/aws-iot-fleetwise
 
-        echo -n "${vin100.certificatePem}" > /etc/aws-iot-fleetwise/certificate.pem
-        echo -n "${vin100.privateKey}" > /etc/aws-iot-fleetwise/private-key.key
-        ./tools/configure-fwe.sh \
+        sudo echo -n "${vin100.certificatePem}" > /etc/aws-iot-fleetwise/certificate.pem
+        sudo echo -n "${vin100.privateKey}" > /etc/aws-iot-fleetwise/private-key.key
+        sudo ./tools/configure-fwe.sh \
           --input-config-file "configuration/static-config.json" \
           --output-config-file "/etc/aws-iot-fleetwise/config-0.json" \
           --vehicle-name vin100 \
@@ -240,15 +259,39 @@ export class IntegTesting {
           --can-bus0 "vcan0"
 
         # Install FWE
-        ./tools/install-fwe.sh
+        sudo ./tools/install-fwe.sh
         
         # Signal init complete:
-        /opt/aws/bin/cfn-signal --stack ${stack.stackName} --resource ${instance.instance.logicalId} --region ${stack.region}`;
+        /opt/aws/bin/cfn-signal --stack ${stack.stackName} --resource ${instance.instance.logicalId} --region ${stack.region}
+        
+        #Fetching vehicle data and scripts
+        cd /home/ubuntu
+        sudo -u ubuntu wget ${sourceSIMUrl} -O /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.tar.gz
+        sudo -u ubuntu tar -zxf /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.tar.gz 2>/dev/null
+        ROOTDIR=/home/ubuntu/aws-iot-fleetwise-evbatterymonitoring/simulatedvehicle/canreplay
+        
+        #Since we don't have decoded signal data, we are going to replay the log of the captured data, with the exact data captured
+        sudo cp -f $ROOTDIR/service/simulationreplay.vin100.service /etc/systemd/system/simulationreplay.vin100.service
+        #sudo -u ubuntu rm /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.tar.gz
+        #sudo -u ubuntu $ROOTDIR/service/start_replay_simulation.sh
+        sudo systemctl daemon-reload
+        sudo systemctl enable simulationreplay.vin100.service
+        sudo systemctl start simulationreplay.vin100.service
+        
+        #The following section will replace the above, once we have proper signal data as source
+        #sudo cp -f $ROOTDIR/service/evcansimulation.vin100.service /etc/systemd/system/evcansimulation.service
+        #sudo systemctl enable evcansimulation.service
+        #sudo systemctl start evcansimulation.service
+        #sudo $ROOTDIR/service/start_simulation.sh vin100
+        #sudo systemctl daemon-reload
+        #sudo systemctl enable evcansimulation.service
+        #sudo systemctl start evcansimulation.service
+        `;
 
     instance.addUserData(userData);
 
     new cdk.CfnOutput(stack, 'Vehicle Sim ssh command', { value: `ssh -i ${keyName}.pem ubuntu@${instance.instancePublicIp}` });
-
+    
 new ifw.Campaign(stack, 'Campaign', {
   name: "cesDemo-ProdUnhealthyVehicleDetectorCampaign",
   description: "An event-based campaign that collects data when an unhealthy vehicle is detected from production fleet",
@@ -258,7 +301,8 @@ new ifw.Campaign(stack, 'Campaign', {
   spoolingMode: "TO_DISK",
   target: vin100,
   collectionScheme: new ifw.ConditionBasedCollectionScheme(
-    "$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
+    //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
+    "$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` > 0", //so that we get all data for tests
     1,
     10000,
     triggerMode.ALWAYS
@@ -275,7 +319,7 @@ new ifw.Campaign(stack, 'Campaign', {
     TimestreamRole.getOrCreate(stack).role.roleArn,
     table.attrArn
   )],
-  autoApprove: false,
+  autoApprove: true,
 });
 
 new ifw.Fleet(stack, 'Fleet', {
