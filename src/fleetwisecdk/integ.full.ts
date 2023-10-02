@@ -153,7 +153,7 @@ export class IntegTesting {
       resourceSignalTimeout: cdk.Duration.minutes(30),
     });
 
-    const sourceUrl = 'https://github.com/aws/aws-iot-fleetwise-edge/releases/latest/download/aws-iot-fleetwise-edge-arm64.tar.gz';
+    const sourceUrl = 'https://github.com/aws/aws-iot-fleetwise-edge/releases/download/v1.0.7/aws-iot-fleetwise-edge-arm64.tar.gz';
     const sourceSIMUrl = 'https://github.com/kkourmousis/RIV23EVEC2TAR/raw/main/aws-iot-fleetwise-evbatterymonitoring.tar.gz';
     const userData = `\
         #!/bin/bash
