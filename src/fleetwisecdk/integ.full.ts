@@ -8,8 +8,8 @@ import * as ifw from '.';
 import * as fs from 'fs';
 import { triggerMode } from './campaign';
 import { TimestreamRole } from './tsrrole';
-import { VehicleSimulatorEcsClusterStack } from './ecs-cluster';
-import { VehicleSimulatorEcsTaskStack } from './ecs-task';
+import { VehicleSimulatorEcsClusterStack } from '../simulatorcdk/ecs-cluster';
+import { VehicleSimulatorEcsTaskStack } from '../simulatorcdk/ecs-task';
 
 // Replaced the next few items for your testing
 //const devAccountId = 'undefined'; // replace with personal account ID for local testing

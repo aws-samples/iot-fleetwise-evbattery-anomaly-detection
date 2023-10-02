@@ -18,7 +18,7 @@ export class Handler extends lambda.SingletonFunction {
   constructor(scope: Construct, id: string, props: EventHandlerProps) {
     super(scope, id, {
       uuid: `${props.handler}`,
-      code: lambda.AssetCode.fromAsset(path.join(__dirname, '/../src/handlers')),
+      code: lambda.AssetCode.fromAsset(path.join(__dirname, '/handlers')),
       handler: props.handler,
       timeout: cdk.Duration.seconds(300),
       runtime: lambda.Runtime.PYTHON_3_9,

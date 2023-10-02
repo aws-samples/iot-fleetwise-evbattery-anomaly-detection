@@ -18,7 +18,7 @@ export class Boto3LayerVersion extends Construct {
     this.lambdaLayer = new lambda.LayerVersion(this, 'Boto3', {
       description: 'Boto3 Library with Iot Fleetwise Support',
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
-      code: lambda.AssetCode.fromAsset(path.join(__dirname, '/../layer.zip')),
+      code: lambda.AssetCode.fromAsset(path.join(__dirname, '/bin/layer.zip')),
     });
   }
 }
