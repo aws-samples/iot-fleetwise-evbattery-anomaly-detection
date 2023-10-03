@@ -1,0 +1,295 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Ec2Architecture:
+    Type: String
+    Default: amd64
+    Description: CPU architecture of EC2 instances
+    AllowedValues:
+      - 'amd64'
+      - 'arm64'
+  BaseImage:
+    Type: String
+    Default: al2-kernel-5
+    Description: Base AMI
+    AllowedValues:
+      - 'al2-kernel-5'
+      - 'ubuntu-20-lts'
+  ImageSsmParameterKey:
+    Default: /ami/vehicle-simulator/${Ec2Architecture}/latest
+    Description: Name of the SSM Parameter for the AMI used by the ecs-cluster-manager
+    Type: String
+  ClusterStackName:
+    Type: String
+    Description: Name of the ecs-cluster-manager CloudFormation stack
+    Default: vehicle-simulator-${Ec2Architecture}-ecs-cluster-stack
+  SetupCommands:
+    Type: String
+    Description: Setup Script for the EC2 instances.
+  Ec2ImageBuilderVersion:
+    Type: String
+    Description: Revision as part of Resourece name
+Resources:
+  Ec2InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilder
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+        Version: '2012-10-17'
+  Ec2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref Ec2InstanceRole
+  SnsTopicPolicy:
+    Type: 'AWS::SNS::TopicPolicy'
+    Properties:
+      Topics:
+        - !Ref SnsTopic
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: 'sns:Publish'
+            Resource: !Ref SnsTopic
+            Principal:
+              AWS: '*'
+            Condition:
+              ArnLike:
+                AWS:SourceArn: !Sub 'arn:aws:*:*:${AWS::AccountId}:*'
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
+      Subscription:
+        - Protocol: lambda
+          Endpoint: !GetAtt UpdateEcsLambda.Arn
+  UpdateEcsFunctionInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref UpdateEcsLambda
+      Principal: sns.amazonaws.com
+  Ec2ImageBuilderInfrastructureConfiguration:
+    Type: AWS::ImageBuilder::InfrastructureConfiguration
+    Properties:
+      Name: !Sub ${AWS::StackName}-InfrastructureConfiguration
+      InstanceProfileName:
+        Ref: Ec2InstanceProfile
+      SnsTopicArn: !Ref SnsTopic
+  Ec2ImageBuilderComponent:
+    Type: 'AWS::ImageBuilder::Component'
+    Properties:
+      Name: !Sub ${AWS::StackName}-InstallDepsComponent-${Ec2ImageBuilderVersion}
+      Platform: 'Linux'
+      Version: !Sub '1.0.${Ec2ImageBuilderVersion}'
+      Data: !Sub
+      - |
+        name: Install Deps
+        schemaVersion: 1.0
+        phases:
+          - name: build
+            steps:
+              - name: Install
+                action: ExecuteBash
+                inputs:
+                  commands: 
+                    - ${SetupCommands}
+      - AwsCliSuffix: !FindInMap [ArchMap, !Ref Ec2Architecture, AwsCliSuffix]
+  Ec2ImageBuilderRecipe:
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub ${AWS::StackName}-ImageRecipe-${Ec2ImageBuilderVersion}
+      Version: !Sub 0.0.${Ec2ImageBuilderVersion}
+      ParentImage:
+        Fn::Sub:
+          - arn:aws:imagebuilder:${AWS::Region}:aws:image/${ImageBuilderPrefix}-${ImageBuilderArchSuffix}/x.x.x
+          - ImageBuilderArchSuffix: !FindInMap [ArchMap, !Ref Ec2Architecture, ImageBuilderArchSuffix]
+            ImageBuilderPrefix: !FindInMap [BaseImageMap, !Ref BaseImage, ImageBuilderPrefix]
+      Components:
+        - ComponentArn:
+            Fn::Sub: arn:aws:imagebuilder:${AWS::Region}:aws:component/update-linux/x.x.x
+        - ComponentArn:
+            Ref: Ec2ImageBuilderComponent
+  Ec2ImageBuilderImage:
+    Type: AWS::ImageBuilder::Image
+    Properties:
+      ImageRecipeArn:
+        Ref: Ec2ImageBuilderRecipe
+      InfrastructureConfigurationArn:
+        Ref: Ec2ImageBuilderInfrastructureConfiguration
+  Ec2ImageBuilderPipeline:
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub ${AWS::StackName}-ImagePipeline
+      ImageRecipeArn: !Ref Ec2ImageBuilderRecipe
+      InfrastructureConfigurationArn: !Ref Ec2ImageBuilderInfrastructureConfiguration
+      Schedule:
+        PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+        ScheduleExpression: 'cron(0 0 * * ? *)'
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+        - arn:aws:iam::aws:policy/AutoScalingFullAccess
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-Lambda-ExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - cloudwatch:PutMetricData
+                  - ecs:ListAttributes
+                  - ecs:ListClusters
+                  - ecs:ListContainerInstances
+                  - ecs:ListServices
+                  - ecs:ListTasks
+                  - ecs:DescribeServices
+                  - ecs:DescribeClusters
+                  - ecs:DescribeContainerInstances
+                  - ecs:DescribeTasks
+                  - ecs:UpdateContainerInstancesState
+                  - ec2:ModifyImageAttribute
+                  - ssm:AddTagsToResource
+                  - cloudformation:Update*
+                  - cloudformation:Describe*
+                  - events:DescribeRule
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - ssm:PutParameter
+                  - ssm:GetParameters
+                Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${ImageSsmParameterKey}'
+              - Effect: Allow
+                Action:
+                  - iam:GetInstanceProfile
+                  - iam:PassRole
+                Resource:
+                  - !Sub 'arn:aws:iam::${AWS::AccountId}:role/vehicle-simulator*'
+                  - !Sub 'arn:aws:iam::${AWS::AccountId}:instance-profile/vehicle-simulator*'
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource: !Sub 'arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/sns'
+  UpdateEcsLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.lambda_handler
+      MemorySize: 128
+      Runtime: python3.9
+      Timeout: 300
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: !Sub |
+          import json
+          import sys
+          import logging
+          import random
+          from pip._internal import main
+          main(['install', '-I', '-q', 'boto3', '--target', '/tmp/', '--no-cache-dir', '--disable-pip-version-check'])
+          sys.path.insert(0,'/tmp/')
+          
+          import boto3
+
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          ssm_client = boto3.client('ssm')
+          cfn_client = boto3.client('cloudformation')
+          ec2_client = boto3.client('ec2')
+
+          def lambda_handler(event, context):
+              logger.info('Printing event: {}'.format(event))
+              for record in (event['Records']):
+                  event_message = record['Sns']['Message']
+
+                  #convert the event message to json
+                  message_json = json.loads(event_message)
+
+                  if 'state' not in message_json:
+                      continue
+
+                  #obtain the image state
+                  image_state = (message_json['state']['status'])
+          
+                  #update the SSM parameter if the image state is available
+                  if (image_state == 'AVAILABLE'):
+                      logger.info('Image is available')
+
+                      #obtain ami id
+                      ami = message_json['outputResources']['amis'][0]
+                      recipe_name = message_json['name']
+                      logger.info('AMI ID: {}'.format(ami['image']))
+          
+                      # modify ami to require imdsv2
+                      ec2_client.modify_image_attribute(
+                        ImageId=ami['image'],
+                        ImdsSupport={
+                          'Value': 'v2.0'
+                          }
+                        )
+
+                      #update SSM parameter
+                      response = ssm_client.put_parameter(
+                          Name='${ImageSsmParameterKey}',
+                          Description='Latest AMI ID',
+                          Value=ami['image'],
+                          Type='String',
+                          Overwrite=True,
+                          Tier='Standard'
+                          )
+                      logger.info('SSM Updated: {}'.format(response))
+
+                      #check if this stack is currently being created, if so don't update the cluster stack
+                      response = cfn_client.describe_stacks(
+                          StackName='${AWS::StackName}')
+                      logger.info('Cfn Stack: {}'.format(response))
+                      if response['Stacks'][0]['StackStatus'] == 'CREATE_IN_PROGRESS':
+                          continue
+
+                      #update the cluster stack
+                      response = cfn_client.describe_stacks(
+                          StackName='${ClusterStackName}')
+                      logger.info('Cfn Stack: {}'.format(response))
+                      parameters = response['Stacks'][0]['Parameters']
+                      for idx, param in enumerate(parameters):
+                          if param['ParameterKey'] == 'newAmi':
+                              parameters[idx]['ParameterValue'] = ami['image']
+                              logger.info('update parameter newAmi with value {}'.format(ami['image']))
+                      response = cfn_client.update_stack(
+                          StackName='${ClusterStackName}',
+                          UsePreviousTemplate=True,
+                          Parameters=parameters,
+                          Capabilities=['CAPABILITY_IAM','CAPABILITY_AUTO_EXPAND'])
+                      logger.info('Cfn Updated: {}'.format(response))
+Mappings:
+  ArchMap:
+    amd64:
+      AwsCliSuffix: 'x86_64'
+      ImageBuilderArchSuffix: 'x86'
+    arm64:
+      AwsCliSuffix: 'aarch64'
+      ImageBuilderArchSuffix: 'arm64'
+  BaseImageMap:
+    ubuntu-20-lts:
+      ImageBuilderPrefix: 'ubuntu-server-20-lts'
+    al2-kernel-5:
+      ImageBuilderPrefix: 'amazon-linux-2-kernel-5'
