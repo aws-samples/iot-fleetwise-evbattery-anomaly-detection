@@ -59,6 +59,8 @@ export class EVDataComponent extends Construct {
         // add timestream r/o access to this role
         lambda_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonTimestreamReadOnlyAccess"));
         lambda_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"));
+        lambda_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AWSLambda_ReadOnlyAccess"));
+        
 
 
         // Set Env properties for Timestream database
@@ -79,7 +81,7 @@ export class EVDataComponent extends Construct {
             functionName: data_reader_lambda_name,
             code: lambda.Code.fromAsset(path.join(__dirname, 'data_reader')),
             handler: 'data_reader.data_reader_handler', // filename.handlername
-            runtime: lambda.Runtime.PYTHON_3_11,
+            runtime: lambda.Runtime.PYTHON_3_8,
             role: lambda_role,
             timeout: Duration.minutes(1),
             memorySize: 256,
@@ -90,8 +92,8 @@ export class EVDataComponent extends Construct {
             },
             layers: [
                 new lambda.LayerVersion(this, 'udq_utils_layer', {
-                    code: lambda.Code.fromAsset(path.resolve(__dirname, "udq.zip")),
-                    compatibleRuntimes: [lambda.Runtime.PYTHON_3_11],
+                    code: lambda.Code.fromAsset(path.join(__dirname, "udq_layer.zip")),
+                    compatibleRuntimes: [lambda.Runtime.PYTHON_3_8],
                 }),
             ],
         });
@@ -101,7 +103,7 @@ export class EVDataComponent extends Construct {
         //
         const schema_init_lambda = new lambda.Function(this, 'EVDataSchemaInitLambda', {
             functionName: schema_init_lambda_name,
-            code: lambda.Code.fromAsset(path.join(__dirname, 'lambda_code/schema_init')),
+            code: lambda.Code.fromAsset(path.join(__dirname, 'schema_initializer/schema_init')),
             handler: 'schema_init.schema_init_handler',
             runtime: lambda.Runtime.PYTHON_3_9,
             role: lambda_role,

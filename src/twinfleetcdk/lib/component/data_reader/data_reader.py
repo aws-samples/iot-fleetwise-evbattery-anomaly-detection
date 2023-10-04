@@ -8,11 +8,16 @@ from datetime import datetime
 
 import boto3
 
-from udq_helper_utils.udq_utils.udq import SingleEntityReader, MultiEntityReader, IoTTwinMakerDataRow, IoTTwinMakerUdqResponse
-from udq_helper_utils.udq_utils.udq_models import IoTTwinMakerUDQEntityRequest, IoTTwinMakerUDQComponentTypeRequest, OrderBy, IoTTwinMakerReference, \
+#print(f"Python version = {sys.version}")
+#print(f"Python path = {sys.path}")
+#print(f"Python executable = {sys.executable}")  
+#print(f"Python environment = {os.environ}")
+
+from udq_utils.udq import SingleEntityReader, MultiEntityReader, IoTTwinMakerDataRow, IoTTwinMakerUdqResponse
+from udq_utils.udq_models import IoTTwinMakerUDQEntityRequest, IoTTwinMakerUDQComponentTypeRequest, OrderBy, IoTTwinMakerReference, \
     EntityComponentPropertyRef, ExternalIdPropertyRef
 
-from udq_helper_utils.udq_utils.sql_detector import SQLDetector
+#from udq_utils.sql_detector import SQLDetector
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
@@ -32,7 +37,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         self.query_client = query_client
         self.database_name = database_name
         self.table_name = table_name
-        self.sqlDetector = SQLDetector()
+        #self.sqlDetector = SQLDetector()
 
     # overrides SingleEntityReader.entity_query abstractmethod
     def entity_query(self, request: IoTTwinMakerUDQEntityRequest) -> IoTTwinMakerUdqResponse:
@@ -123,7 +128,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
                        f""" ORDER BY time {'ASC' if request.order_by == OrderBy.ASCENDING else 'DESC'}""" 
                        
                        
-        self.sqlDetector.detectInjection(sample_query, query_string)
+        #self.sqlDetector.detectInjection(sample_query, query_string)
 
         page = self._run_timestream_query(query_string, request.next_token, request.max_rows)
 
