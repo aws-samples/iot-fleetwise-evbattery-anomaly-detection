@@ -13,12 +13,17 @@ import { EVDataComponent } from './component/evtwindata';
 import { SceneModel } from './scene';
 import { CfnEntity } from 'aws-cdk-lib/aws-iottwinmaker';
 
+export interface TwinfleetStackProps {
+  env: cdk.Environment;
+  databaseName: string;
+  tableName: string;
+}
 //
 // Stack for TwinMaker related items
 //
 export class TwinfleetStack extends cdk.Stack {
   //
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: TwinfleetStackProps) {
     super(scope, id, props);
 
     // Save account and region for later use
@@ -27,14 +32,15 @@ export class TwinfleetStack extends cdk.Stack {
     const WS_ID: string = "twin";
     const SCENE_ID: string = "evfleetview";
 
-    // CORS rule for bucket
+    //* CORS rule for bucket
+    /*
     const corsRule: s3.CorsRule = {
       allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.POST, s3.HttpMethods.PUT, s3.HttpMethods.DELETE, s3.HttpMethods.HEAD],
       allowedOrigins: ['*'],
   
       allowedHeaders: ['*'],
     };
-  
+    */
     // Create an S3 bucket for the TwinMaker Workspace
     let twinfleet_bucket = new s3.Bucket(this, S3_BUCKET_NAME, {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -125,7 +131,7 @@ export class TwinfleetStack extends cdk.Stack {
     workspace.node.addDependency(twinfleet_bucket);
 
     // Create the com.user.evtwindata component
-    const evdatacomponent = new EVDataComponent(this, 'EVDataComp', WS_ID); 
+    const evdatacomponent = new EVDataComponent(this, 'EVDataComp', WS_ID, props.databaseName, props.tableName); 
     evdatacomponent.node.addDependency(workspace);
 
     // create the scene model
@@ -143,13 +149,13 @@ export class TwinfleetStack extends cdk.Stack {
     // upload the scene json to the S3 Bucket
     const deployment = new s3deploy.BucketDeployment(this,  
             "DeployTwinMakerModels", {
-                sources: [s3deploy.Source.asset("resources"),
+                sources: [s3deploy.Source.asset("./src/twinfleetcdk/resources"),
                           s3deploy.Source.data("scene/evfleet.json", scene_json)],
                 destinationBucket: twinfleet_bucket,
             });
 
     // create the scene in the TwinMaker Workspace
-    const s3url = twinfleet_bucket.s3UrlForObject('scene/evfleet.json'); // DOES NOT RESOLVE CORRECTLY
+    //const s3url = twinfleet_bucket.s3UrlForObject('scene/evfleet.json'); // DOES NOT RESOLVE CORRECTLY
     const content_uri =  `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
 
     //console.log(`content_s3 location = ${s3url}`);
@@ -163,17 +169,14 @@ export class TwinfleetStack extends cdk.Stack {
     });   
 
     fleet_scene.node.addDependency(deployment);
-
     
     // create fleet (parent) entity
     const fleet_name = "FleetEV";
     let fleet_entity = this.create_entity(fleet_name, "FLEET", workspace.workspaceId);
     if (fleet_entity != null) {
       fleet_entity.node.addDependency(workspace);
-    }
-    
-
-  
+    }   
+ 
     // create entities for the vehicles
     for (let i = 1; i < VEHICLES_IN_FLEET + 1; i++) { 
         let vehicle_name = `Vehicle${i}`;

@@ -108,7 +108,7 @@ export class SceneModel {
             const cname = "com.user.evtwindata"
             const propname = "HasActiveDTC"
             let epath = `FleetEV/${entity_ID}`  
-            const rulename = "DTCShaderRule"
+            //const rulename = "DTCShaderRule"
 
             const carmodelshader = {
                 type: "ModelShader",

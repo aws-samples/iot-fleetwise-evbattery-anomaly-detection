@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import {
   aws_timestream as ts,
   aws_iam as iam,
@@ -8,61 +9,27 @@ import * as ifw from '.';
 import * as fs from 'fs';
 import { triggerMode } from './campaign';
 import { TimestreamRole } from './tsrrole';
-import { VehicleSimulatorEcsClusterStack } from '../simulatorcdk/ecs-cluster';
-import { VehicleSimulatorEcsTaskStack } from '../simulatorcdk/ecs-task';
 
-// Replaced the next few items for your testing
-//const devAccountId = 'undefined'; // replace with personal account ID for local testing
-const devRegion = 'us-east-1'; // replace with the actual region. We currently only support us-west-2, us-east-1 and eu-central-1
-const disambiguator = 'IOT305'; // replace with username for local testing
-const cpu = 'arm64'; // replace with the actual cpu architecture of Edge application. We currently only support arm64 or amd64
-const clusterName = `vehicle-simulator-${cpu}`;
-const capacityProviderName = `ubuntu-${cpu}-capacity-provider`;
-const minimumEc2Instances = 2; // Adjust the minimum number of EC2 instance according to your application
-const taskDefinition = `fwe-${cpu}-with-cw`;
-
-
-export interface VehicleSimulatorStackProps {
+export interface FleetWiseStackProps {
   scope: cdk.App;
   env: cdk.Environment;
-  ecsClusterStackId: string;
-  ecsClusterStackName: string;
-  ecsTaskStackId: string;
-  ecsTaskStackName: string;
-  ec2Cpu: string;
-  ec2BaseImage: string;
-  ecsClusterName: string;
-  ecsCapacityProviderName: string;
-  ecsClusterMinimumInstances: number;
-  enableEc2AutoUpdate: boolean;
-  ecsTaskDefinition: string;
-  createS3Bucket: boolean;
+  databaseName: string;
+  tableName: string;
+  sessionName: string;
+  shortName: string
 }
-
-const app = new cdk.App();
-
-export class IntegTesting {
-  readonly stack: cdk.Stack[];
-  constructor() {
+ //
+export class FleetWiseStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props: FleetWiseStackProps) {
+    super(scope, id, props);
     
-    const env = {
-      region: process.env.CDK_INTEG_REGION || process.env.CDK_DEFAULT_REGION || devRegion,
-      account: process.env.CDK_INTEG_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
-    };
-
-    const databaseName = 'FleetWiseDatabase';
-    const tableName = 'FleetWiseTable';
-    const sessionName = 'IOT305 - Detecting EV battery anomalies across a fleet using AWS IoT';
-    const shortName = 'IOT305-fleetwise-core-stack';
-
-    const stack = new cdk.Stack(app, shortName, { env });
-    const database = new ts.CfnDatabase(stack, 'Database', {
-      databaseName,
+    const database = new ts.CfnDatabase(this, 'Database', {
+      databaseName: props.databaseName,
     });
 
-    const table = new ts.CfnTable(stack, 'Table', {
-      databaseName,
-      tableName,
+    const table = new ts.CfnTable(this, 'Table', {
+      databaseName: props.databaseName,
+      tableName:props.tableName,
     });
 
     table.node.addDependency(database);
@@ -70,9 +37,9 @@ export class IntegTesting {
     //get signal catalog to memory from file
     const nodes = fs.readFileSync(__dirname + '/bin/signal-catalog-nodes.json','utf8').replace(/\n|\r/g, "").replace(/\n|\r/g, "").replace(/\s/g, "");
         
-    const signalCatalog = new ifw.SignalCatalog(stack, 'SignalCatalog', {
-      description: sessionName + ' Signal Catalog',
-      name: shortName,
+    const signalCatalog = new ifw.SignalCatalog(this, 'SignalCatalog', {
+      description: props.shortName + ' Signal Catalog',
+      name: props.shortName,
       nodes: [],
       signalCatalogJson: nodes
     });
@@ -81,7 +48,7 @@ export class IntegTesting {
     //read decoder manifest from json file (same as above)
     const decoder_nodes = fs.readFileSync(__dirname + '/bin/decoder-manifest-signals.json','utf8').replace(/\n|\r/g, "").replace(/\n|\r/g, "").replace(/\s/g, "");
 
-    const model_a = new ifw.VehicleModel(stack, 'ModelA', {
+    const model_a = new ifw.VehicleModel(this, 'ModelA', {
       signalCatalog,
       name: 'KII-AWS',
       description: 'KII-AWS vehicle',
@@ -99,16 +66,16 @@ export class IntegTesting {
       signalsb64: decoder_nodes
     });
 
-    const vin100 = new ifw.Vehicle(stack, 'vin100', {
+    const vin100 = new ifw.Vehicle(this, 'vin100', {
       vehicleName: 'vin100',
       vehicleModel: model_a,
       createIotThing: true,
     });
 
 
-    const vpc = ec2.Vpc.fromLookup(stack, 'VPC', { isDefault: true });
+    const vpc = ec2.Vpc.fromLookup(this, 'VPC', { isDefault: true });
 
-    const securityGroup = new ec2.SecurityGroup(stack, 'SecurityGroup', {
+    const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
       vpc,
       allowAllOutbound: true,
     });
@@ -116,7 +83,7 @@ export class IntegTesting {
     securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.allIcmp(), 'ping');
 
     // EC2 role
-    const ec2_role = new iam.Role(stack, 'ec2Role', {
+    const ec2_role = new iam.Role(this, 'ec2Role', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
@@ -139,8 +106,8 @@ export class IntegTesting {
     );
 
     // Create the Vehicle simulator
-    const keyName = stack.node.tryGetContext('key_name');
-    const instance = new ec2.Instance(stack, 'VehicleSim', {
+    const keyName = this.node.tryGetContext('key_name');
+    const instance = new ec2.Instance(this, 'VehicleSim', {
       vpc: vpc,
       instanceType: new ec2.InstanceType('m6g.xlarge'),
       machineImage,
@@ -192,7 +159,7 @@ export class IntegTesting {
 
         # On error, signal back to cfn:
         error_handler() {
-          /opt/aws/bin/cfn-signal --stack ${stack.stackName} --resource ${instance.instance.logicalId} --region ${stack.region};
+          /opt/aws/bin/cfn-signal --stack ${this.stackName} --resource ${instance.instance.logicalId} --region ${this.region};
         }
         trap error_handler ERR
 
@@ -262,7 +229,7 @@ export class IntegTesting {
         sudo ./tools/install-fwe.sh
         
         # Signal init complete:
-        /opt/aws/bin/cfn-signal --stack ${stack.stackName} --resource ${instance.instance.logicalId} --region ${stack.region}
+        /opt/aws/bin/cfn-signal --stack ${this.stackName} --resource ${instance.instance.logicalId} --region ${this.region}
         
         #Fetching vehicle data and scripts
         cd /home/ubuntu
@@ -290,112 +257,44 @@ export class IntegTesting {
 
     instance.addUserData(userData);
 
-    new cdk.CfnOutput(stack, 'Vehicle Sim ssh command', { value: `ssh -i ${keyName}.pem ubuntu@${instance.instancePublicIp}` });
+    new cdk.CfnOutput(this, 'Vehicle Sim ssh command', { value: `ssh -i ${keyName}.pem ubuntu@${instance.instancePublicIp}` });
     
-new ifw.Campaign(stack, 'Campaign', {
-  name: "cesDemo-ProdUnhealthyVehicleDetectorCampaign",
-  description: "An event-based campaign that collects data when an unhealthy vehicle is detected from production fleet",
-  //targetArn: "arn:aws:iotfleetwise:eu-central-1:755536927200:fleet/cesDemoProductionFleet",
-  compression: "SNAPPY",
-  diagnosticsMode: "SEND_ACTIVE_DTCS",
-  spoolingMode: "TO_DISK",
-  target: vin100,
-  collectionScheme: new ifw.ConditionBasedCollectionScheme(
-    //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
-    "$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` > 0", //so that we get all data for tests
-    1,
-    10000,
-    triggerMode.ALWAYS
-  ),
-  signals: [
-    new ifw.CampaignSignal('Vehicle.Powertrain.Battery.hasActiveDTC'),
-    new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfHealth'),
-    new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxTemperature'),
-    new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinTemperature'),
-    new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxCellVoltage'),
-    new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinCellVoltage')
-  ],
-  dataDestinationConfigs: [ new ifw.TimeStreamDestinationConfig(
-    TimestreamRole.getOrCreate(stack).role.roleArn,
-    table.attrArn
-  )],
-  autoApprove: true,
-});
-
-new ifw.Fleet(stack, 'Fleet', {
-  fleetId: 'fleet',
-  signalCatalog,
-  vehicles: [vin100],
-});
-
-  // Below will create a stand-alone Vehicle Simulator with EC2 OS auto update disabled and S3 bucket creation enabled.
-  createVehicleSimulatorStacks({
-    scope: app,
-    env: env,
-    ecsClusterStackId: `${disambiguator}-vehicle-simulator-ecs-cluster-stack`,
-    ecsClusterStackName: `vehicle-simulator-${cpu}-ecs-cluster-stack`,
-    ecsTaskStackId: `${disambiguator}-vehicle-simulator-ecs-task-stack`,
-    ecsTaskStackName: `vehicle-simulator-${cpu}-ecs-task-stack`,
-    ec2Cpu: cpu,
-    ec2BaseImage: 'ubuntu-20-lts', // by default, we will be using Amazon Linux 2 with Kernel 5.10
-    ecsClusterName: clusterName,
-    ecsCapacityProviderName: capacityProviderName,
-    ecsClusterMinimumInstances: minimumEc2Instances,
-    enableEc2AutoUpdate: false,
-    ecsTaskDefinition: taskDefinition,
-    createS3Bucket: true,
+  new ifw.Campaign(this, 'Campaign', {
+    name: "cesDemo-ProdUnhealthyVehicleDetectorCampaign",
+    description: "An event-based campaign that collects data when an unhealthy vehicle is detected from production fleet",
+    //targetArn: "arn:aws:iotfleetwise:eu-central-1:755536927200:fleet/cesDemoProductionFleet",
+    compression: "SNAPPY",
+    diagnosticsMode: "SEND_ACTIVE_DTCS",
+    spoolingMode: "TO_DISK",
+    target: vin100,
+    collectionScheme: new ifw.ConditionBasedCollectionScheme(
+      //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
+      "$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` > 0", //so that we get all data for tests
+      1,
+      10000,
+      triggerMode.ALWAYS
+    ),
+    signals: [
+      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.hasActiveDTC'),
+      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfHealth'),
+      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxTemperature'),
+      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinTemperature'),
+      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxCellVoltage'),
+      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinCellVoltage')
+    ],
+    dataDestinationConfigs: [ new ifw.TimeStreamDestinationConfig(
+      TimestreamRole.getOrCreate(this).role.roleArn,
+      table.attrArn
+    )],
+    autoApprove: true,
   });
 
-this.stack = [stack];
-}
-}
-
-new IntegTesting();
-
-
-// This function will create ECS Cluster Stack and ECS Task Stack for Vehicle Simulator.
-export function createVehicleSimulatorStacks({
-  env,
-  ecsClusterStackId,
-  ecsClusterStackName,
-  ecsTaskStackId,
-  ecsTaskStackName,
-  ec2Cpu,
-  ec2BaseImage,
-  ecsClusterName,
-  ecsCapacityProviderName,
-  ecsClusterMinimumInstances,
-  enableEc2AutoUpdate,
-  ecsTaskDefinition,
-  createS3Bucket,
-}: VehicleSimulatorStackProps): [
-  VehicleSimulatorEcsClusterStack,
-  VehicleSimulatorEcsTaskStack
-] {
-  const ecsClusterStack = new VehicleSimulatorEcsClusterStack(
-    app,
-    ecsClusterStackId,
-    {
-      cpu: ec2Cpu,
-      stackName: ecsClusterStackName,
-      //  If you want to use SSH Key for debugging EC2. Add a new entry: ec2Key: 'your-key',
-      //  note the key needs to be created ahead of time.
-      ecsClusterName: ecsClusterName,
-      ecsCapacityProviderName: ecsCapacityProviderName,
-      ecsClusterMinimumInstances: ecsClusterMinimumInstances,
-      enableEc2AutoUpdate: enableEc2AutoUpdate,
-      baseImage: ec2BaseImage,
-    }
-  );
-  const ecsTaskStack = new VehicleSimulatorEcsTaskStack(app, ecsTaskStackId, {
-    cpu: ec2Cpu,
-    stackName: ecsTaskStackName,
-    taskName: ecsTaskDefinition,
-    ecrArn: `arn:aws:ecr:${env.region}:763496144766:repository/vehicle-simulator-${ec2Cpu}`,
-    ecrTag: 'launcher.mainline-fwe.d1b3c780', // v1.0.7 dirty including changes to slow down catch-up see https://gitlab.aws.dev/aws-iot-automotive/IoTAutobahnVehicleAgent/-/merge_requests/719
-    createS3Bucket: createS3Bucket,
+  new ifw.Fleet(this, 'Fleet', {
+    fleetId: 'fleet',
+    signalCatalog,
+    vehicles: [vin100],
   });
-  return [ecsClusterStack, ecsTaskStack];
+
 }
 
-
+}

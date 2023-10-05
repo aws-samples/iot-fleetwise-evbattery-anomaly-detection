@@ -4,35 +4,22 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { aws_ec2 as ec2 } from 'aws-cdk-lib';
-import { aws_s3 as s3 } from 'aws-cdk-lib';
-import { aws_s3_deployment as s3deploy } from 'aws-cdk-lib';
 import { aws_s3_assets as Asset } from 'aws-cdk-lib';
-import { aws_iottwinmaker as twinmaker } from 'aws-cdk-lib';
 import { aws_iam as iam } from 'aws-cdk-lib';
-import { RemovalPolicy } from 'aws-cdk-lib';
-import { CfnOutput } from 'aws-cdk-lib';
-import { Fn } from 'aws-cdk-lib';
-import { SceneModel } from './scene';
-import { CfnEntity } from 'aws-cdk-lib/aws-iottwinmaker';
-import {TwinfleetStack} from '../lib/twinfleet-stack';
-import { fileURLToPath } from 'url';   
-import { dirname } from 'path';
-
 
 export class GrafanaStack extends cdk.Stack {
 
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
-
-        // select AMI
+        /* select AMI
         const amzn_linux = new ec2.AmazonLinuxImage( {
             generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
             virtualization: ec2.AmazonLinuxVirt.HVM,
             storage: ec2.AmazonLinuxStorage.GENERAL_PURPOSE,
             cpuType: ec2.AmazonLinuxCpuType.X86_64,
         });
-        
+        */
         // create VPC
         const smg_vpc = this.create_vpc("GrafanaVPC");
 
@@ -52,7 +39,7 @@ export class GrafanaStack extends cdk.Stack {
             assumedBy: new iam.ServicePrincipal("ec2.amazonaws.com")
         });
 
-        const instance_role_arn = instance_role.roleArn;
+        //const instance_role_arn = instance_role.roleArn;
 
         // create instance policy.  
         // TODO - scope down permissions
@@ -66,9 +53,10 @@ export class GrafanaStack extends cdk.Stack {
         instance_role.addToPrincipalPolicy(instance_policy);
 
         // import the bucket arn
-        let twinfleet_bucket_arn = Fn.importValue("twinfleet-bucket-arn");
+        //let twinfleet_bucket_arn = Fn.importValue("twinfleet-bucket-arn");
 
         // create the dashboard role that will be assumed by the grafana instance role
+        /*
         let dashboard_role = new iam.Role(
             this,
             "DashboardRole", {
@@ -113,7 +101,7 @@ export class GrafanaStack extends cdk.Stack {
                 },
             }
         );
-
+*/
 
 
         // set up ec2 instance for self managed grafana
@@ -139,7 +127,7 @@ export class GrafanaStack extends cdk.Stack {
         });
 
         // register the instance setup script in S3 as an Asset
-        const resources_dir_name = './resources/';
+        const resources_dir_name = './src/twinfleetcdk/resources/';
         let asset_path: string = `${resources_dir_name}/setupinstance.sh`;
         let asset = new Asset.Asset(this, "Asset", {
               path: asset_path,

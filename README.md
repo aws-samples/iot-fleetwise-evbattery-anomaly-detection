@@ -19,11 +19,16 @@ npm install
 
 ## Getting started with FleetWise core stack
 
-
 All four stacks can be deployed using the following command, or we can deploy a single stack at a time
 
 ```sh
-cdk deploy -c key_name=myKey IOT305-fleetwise-core-stack IOT305-vehicle-simulator-ecs-task-stack IOT305-vehicle-simulator-ecs-task-stack IOT305-twinfleet-stack --require-approval never
+cdk deploy -c key_name=myKey IOT305-fleetwise-core-stack IOT305-vehicle-simulator-ecs-cluster-stack IOT305-vehicle-simulator-ecs-task-stack IOT305-twinfleet-stack --require-approval never
+```
+
+or
+
+```sh
+cdk deploy --all --require-approval never -c key_name=fwdemo1
 ```
 
 Deploy just the FleetWise core stack. This will setup FleetWise in your AWS Account, with a signal catalog, vehicle model, decoder manifest and a campaign.
@@ -31,17 +36,9 @@ Deploy just the FleetWise core stack. This will setup FleetWise in your AWS Acco
 cdk deploy -c key_name=fwdemo1 IOT305-fleetwise-core-stack --require-approval never
 ```
 
-Where `myKey` is an existing keypair name present in your account.
+Where `myKey` is an existing keypair name present in your account to use to SSH into simulation instance.
 
-The deploy takes about 15 mins mostly due to compilation of the IoT FleetWise agent in the
-EC2 instance that simulate the vehicle. Once deploy is finshed, data will start to show up in your Timestream table.
-
-## Getting started with Vehicle Simulator CDK stack
-This package contains the Cloud Development Kit (CDK) classes that define all the native AWS resources associated with FleetWise Vehicle Simulator. These classes are written in TypeScript, a statically-bound language based off of JavaScript. The build system is Node, by way of an internal Amazon wrapper called "NpmPrettyMuch".
-
-When this package is built, it produces a set of CloudFormation templates in the ./build/cdk.out directory, one for each of the CloudFormation stacks the package defines in its CDK App. You can deploy these CloudFormation templates to your AWS Account using the CDK Toolkit, which is included in this package, as explained below.
-
-//TODO
+Once the deployment is finshed, data will start to show up in your Timestream table and you can view the Grafana dashboards.
 
 ## Security
 

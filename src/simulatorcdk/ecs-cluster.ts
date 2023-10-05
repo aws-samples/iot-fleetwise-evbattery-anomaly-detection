@@ -32,6 +32,21 @@ import { CreateEc2ImageUpdater } from './ec2-image-updater';
 import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
 //import { installChronicleAgentOnAL2 } from './ec2-install-chronicle.ts.old';
 
+export interface VehicleSimulatorStackProps {
+  ecsClusterStackId: string;
+  ecsClusterStackName: string;
+  ecsTaskStackId: string;
+  ecsTaskStackName: string;
+  ec2Cpu: string;
+  ec2BaseImage: string;
+  ecsClusterName: string;
+  ecsCapacityProviderName: string;
+  ecsClusterMinimumInstances: number;
+  enableEc2AutoUpdate: boolean;
+  ecsTaskDefinition: string;
+  createS3Bucket: boolean;
+}
+
 export interface VehicleSimulatorEcsClusterStackProps {
   readonly stackName: string;
   readonly cpu: string;

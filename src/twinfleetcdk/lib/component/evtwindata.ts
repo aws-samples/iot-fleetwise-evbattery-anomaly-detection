@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-
-import * as cdk from 'aws-cdk-lib';
 import { aws_lambda as lambda } from 'aws-cdk-lib';
 import { aws_iottwinmaker as twinmaker } from 'aws-cdk-lib'
 import { aws_iam as iam } from 'aws-cdk-lib'
@@ -12,23 +10,21 @@ import { Construct } from 'constructs';
 import * as path from 'path';
 
 export class EVDataComponent extends Construct {
-
-    
-    constructor(scope: Construct, id: string, workspace_id: string) {
-
+    constructor(scope: Construct, id: string, workspace_id: string, dbname: string, dbtable: string) {
         super(scope, id);
 
         const TYPE = "com.user.evtwindata";
 
-        const region = cdk.Aws.REGION;
-        const account = cdk.Aws.ACCOUNT_ID;
+        //const region = cdk.Aws.REGION;
+        //const account = cdk.Aws.ACCOUNT_ID;
 
         // create role needed to access TimeStream DB
-        const LAMBDA_ROLE_NAME = "evtwin_data_reader_lambda_role";
+        //const LAMBDA_ROLE_NAME = "evtwin_data_reader_lambda_role";
         const data_reader_lambda_name = "evtwin_data_reader";
         const schema_init_lambda_name = "evtwin_schema_initializer";
 
          // Create an inline policy doc for the twinmaker_role
+         /*
         const twinmaker_role_inline_policy = new iam.Policy(this, 'LambdaRole', {
             statements: [new iam.PolicyStatement({
             actions: [
@@ -49,7 +45,7 @@ export class EVDataComponent extends Construct {
             effect: iam.Effect.ALLOW,
   
             })]
-        });
+        });*/
     
         const lambda_role = new iam.Role(this, 'EVDataLambdaRole', {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -64,16 +60,16 @@ export class EVDataComponent extends Construct {
 
 
         // Set Env properties for Timestream database
-        const DB_NAME = "fw_ev_sim_db";
-        const TABLE_NAME = "fw_ev_sim_table";
+        const DB_NAME = dbname;
+        const TABLE_NAME = dbtable;
 
-        const env_vars: lambda.CfnFunction.EnvironmentProperty = {
+        /*const env_vars: lambda.CfnFunction.EnvironmentProperty = {
             variables: {
                 TIMESTREAM_DATABASE_NAME: DB_NAME,
                 TIMESTREAM_TABLE_NAME: TABLE_NAME
             },
         };
-
+        */
         //
         // Create the data reader lambda
         //

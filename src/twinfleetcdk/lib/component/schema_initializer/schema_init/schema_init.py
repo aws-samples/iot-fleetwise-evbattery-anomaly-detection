@@ -112,7 +112,11 @@ def __parse_row(column_info, row):
 
 def __parse_datum(info, datum):
     column_type = info['Type']
-    return __parse_column_name(info), datum['ScalarValue']
+    if 'NullValue' in datum:
+        return __parse_column_name(info), datum['NullValue']
+    else:
+        return __parse_column_name(info), datum['ScalarValue']
+   # return __parse_column_name(info), datum['ScalarValue']
 
 def __parse_time_series(info, datum):
     time_series_output = []
