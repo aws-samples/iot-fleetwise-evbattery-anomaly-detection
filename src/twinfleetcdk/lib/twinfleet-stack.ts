@@ -32,15 +32,6 @@ export class TwinfleetStack extends cdk.Stack {
     const WS_ID: string = "twin";
     const SCENE_ID: string = "evfleetview";
 
-    //* CORS rule for bucket
-    /*
-    const corsRule: s3.CorsRule = {
-      allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.POST, s3.HttpMethods.PUT, s3.HttpMethods.DELETE, s3.HttpMethods.HEAD],
-      allowedOrigins: ['*'],
-  
-      allowedHeaders: ['*'],
-    };
-    */
     // Create an S3 bucket for the TwinMaker Workspace
     let twinfleet_bucket = new s3.Bucket(this, S3_BUCKET_NAME, {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -124,7 +115,6 @@ export class TwinfleetStack extends cdk.Stack {
   
       description: 'TwinMaker workspace representing the EV Fleet',
     });
-    // console.log(`bucketname = ${twinfleet_bucket.bucketName}`);
     
     // add the stack resource dependencies
     workspace.node.addDependency(twinmaker_role);
@@ -134,16 +124,20 @@ export class TwinfleetStack extends cdk.Stack {
     const evdatacomponent = new EVDataComponent(this, 'EVDataComp', WS_ID, props.databaseName, props.tableName); 
     evdatacomponent.node.addDependency(workspace);
 
+    // derive the bucket uri
+    const bucket_uri = twinfleet_bucket.bucketArn.replace(`arn:aws:s3:::`, `s3://`);
+
+
     // create the scene model
-    const bucket_uri = `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1`;
 
     // 9/2023 - twinmaker has some issues if there are too many children associated to a parent.
     //          This is a deployment time issue.
     //          This is expected to be resolved in a couple of months.  Have not seen this issue with
     //          python, only with typescript.
     const VEHICLES_IN_FLEET: number = 3;
+    const VEHICLE_BASE_NUMBER = 100;
 
-    let scene = new SceneModel(VEHICLES_IN_FLEET, bucket_uri);
+    let scene = new SceneModel(VEHICLES_IN_FLEET, VEHICLE_BASE_NUMBER, bucket_uri);
     const scene_json = JSON.stringify(scene.scene_model);
 
     // upload the scene json to the S3 Bucket
@@ -154,18 +148,16 @@ export class TwinfleetStack extends cdk.Stack {
                 destinationBucket: twinfleet_bucket,
             });
 
-    // create the scene in the TwinMaker Workspace
-    //const s3url = twinfleet_bucket.s3UrlForObject('scene/evfleet.json'); // DOES NOT RESOLVE CORRECTLY
+    // create the scene in the TwinMaker Workspace.  TODO remove hardcode
     const content_uri =  `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
 
-    //console.log(`content_s3 location = ${s3url}`);
 
     twinfleet_bucket.grantReadWrite(twinmaker_role);
 
     const fleet_scene = new twinmaker.CfnScene(this, 'FleetScene', {
             sceneId: SCENE_ID,
             workspaceId: WS_ID,
-            contentLocation: content_uri,
+            contentLocation: content_uri,  // TODO look into location
     });   
 
     fleet_scene.node.addDependency(deployment);
@@ -174,15 +166,15 @@ export class TwinfleetStack extends cdk.Stack {
     const fleet_name = "FleetEV";
     let fleet_entity = this.create_entity(fleet_name, "FLEET", workspace.workspaceId);
     if (fleet_entity != null) {
-      fleet_entity.node.addDependency(workspace);
+        fleet_entity.node.addDependency(workspace);
     }   
  
     // create entities for the vehicles
-    for (let i = 1; i < VEHICLES_IN_FLEET + 1; i++) { 
-        let vehicle_name = `Vehicle${i}`;
+
+    for (let i = VEHICLE_BASE_NUMBER; i < VEHICLES_IN_FLEET + VEHICLE_BASE_NUMBER ; i++) { 
+        let vehicle_name = `vin${i}`;
         let car_entity = this.create_entity(vehicle_name, "CAR", workspace.workspaceId);
         if ((car_entity != null) && fleet_entity != null)  {
-        //if ((car_entity != null))  {
             car_entity.node.addDependency(fleet_entity);
             car_entity.node.addDependency(fleet_scene);
             car_entity.node.addDependency(evdatacomponent);
@@ -220,9 +212,7 @@ export class TwinfleetStack extends cdk.Stack {
               },
               description: "Car",
               entityId: entityName,
-              /*
-               * Removing parent because of TwinMaker backend issues with multiple children under 1 parent
-               */
+               
               parentEntityId: "FleetEV",
           });
       } else {

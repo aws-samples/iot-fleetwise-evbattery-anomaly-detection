@@ -30,28 +30,27 @@ export class SceneModel {
     };
     //
     //
-    constructor(max_vehicles: number, bucket_uri: string) {
+    constructor(max_vehicles: number, vehicle_base_number: number, bucket_uri: string) {
 
         // create parent node 
-        this.add_to_scene("FleetEV", "FLEET", "FleetEV", 0, max_vehicles, bucket_uri);
+        this.add_to_scene("FleetEV", "FLEET", "FleetEV", 0, max_vehicles, bucket_uri, vehicle_base_number);
 
-        // add child nodes
-        for (let index = 1; index < max_vehicles + 1; index++) {
-            let vehicle_name = `Vehicle${index}`;
-            this.add_to_scene(vehicle_name, "CAR", vehicle_name, index, max_vehicles, bucket_uri);
-            // console.log(`Added ${vehicle_name} to scene`);
+        for (let index = vehicle_base_number; index < max_vehicles + vehicle_base_number; index++) {
+            let vehicle_name = `vin${index}`;
+
+            this.add_to_scene(vehicle_name, "CAR", vehicle_name, index, max_vehicles, bucket_uri, vehicle_base_number);
         }
     }
 
     //
     // derive the position of the entity based on its index
     //
-    get_entity_position(index: number): number[] {
+    get_entity_position(index: number, base_num: number): number[] {
         const ITEMS_PER_ROW = 10;
         const ZSPACING = -10; // spacing between vehicle rows
         const XSPACING = 15; // spacing between vehicles
 
-        let veh_num = index - 1; // adjust because first vehicle has index 1
+        let veh_num = index - base_num; // adjust to zero base
         let zposn = (veh_num % ITEMS_PER_ROW) * ZSPACING;
         let xposn = Math.floor(veh_num / ITEMS_PER_ROW) * XSPACING;
         let yposn = 0;
@@ -65,7 +64,7 @@ export class SceneModel {
     // add_to_scene - adds the node entry for the entity specified to the scene
     //
     add_to_scene(entityName: string, entityType : string, entity_ID: string, entityIndex: number, 
-        maxVehicles: number, bucketUri: string) {
+        maxVehicles: number, bucketUri: string, indexBase: number) {
 
         interface entity {
             name: string,
@@ -80,7 +79,7 @@ export class SceneModel {
             properties: {}
         }
         if (entityType == "CAR") {
-            let posn = this.get_entity_position(entityIndex);
+            let posn = this.get_entity_position(entityIndex, indexBase);
             let car_entity: entity = {
                 name: entityName,
                 transform: {
@@ -108,7 +107,6 @@ export class SceneModel {
             const cname = "com.user.evtwindata"
             const propname = "HasActiveDTC"
             let epath = `FleetEV/${entity_ID}`  
-            //const rulename = "DTCShaderRule"
 
             const carmodelshader = {
                 type: "ModelShader",

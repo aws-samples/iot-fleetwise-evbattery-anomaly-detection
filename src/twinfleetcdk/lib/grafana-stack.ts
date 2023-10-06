@@ -6,6 +6,7 @@ import { Construct } from 'constructs';
 import { aws_ec2 as ec2 } from 'aws-cdk-lib';
 import { aws_s3_assets as Asset } from 'aws-cdk-lib';
 import { aws_iam as iam } from 'aws-cdk-lib';
+import { Fn } from 'aws-cdk-lib';
 
 export class GrafanaStack extends cdk.Stack {
 
@@ -53,14 +54,14 @@ export class GrafanaStack extends cdk.Stack {
         instance_role.addToPrincipalPolicy(instance_policy);
 
         // import the bucket arn
-        //let twinfleet_bucket_arn = Fn.importValue("twinfleet-bucket-arn");
+        let twinfleet_bucket_arn = Fn.importValue("twinfleet-bucket-arn");
 
         // create the dashboard role that will be assumed by the grafana instance role
-        /*
+        
         let dashboard_role = new iam.Role(
             this,
             "DashboardRole", {
-                assumedBy: new iam.ArnPrincipal(instance_role_arn),
+                assumedBy: new iam.ArnPrincipal(instance_role.roleArn),
                 roleName: "evtwin-grafana-dashboard-role",
                 inlinePolicies: {
                     "s3_access": new iam.PolicyDocument({
@@ -101,7 +102,12 @@ export class GrafanaStack extends cdk.Stack {
                 },
             }
         );
-*/
+        // export the role arn for use while setting up the grafana data connector
+        new cdk.CfnOutput(this, "grafana-dashboard-role-arn", {
+            value: dashboard_role.roleArn,
+            exportName: "grafana-dashboard-role-arn"
+        });
+
 
 
         // set up ec2 instance for self managed grafana
