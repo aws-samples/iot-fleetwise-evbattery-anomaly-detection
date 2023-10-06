@@ -7,20 +7,29 @@ import { aws_ec2 as ec2 } from 'aws-cdk-lib';
 import { aws_s3_assets as Asset } from 'aws-cdk-lib';
 import { aws_iam as iam } from 'aws-cdk-lib';
 import { Fn } from 'aws-cdk-lib';
+const { TwinfleetStack } = require('./twinfleet-stack');
+
+export interface GrafanaStackProps {
+    env: cdk.Environment;
+    databaseName: string;
+    tableName: string;
+    twinFleetShortName: string;
+  }
 
 export class GrafanaStack extends cdk.Stack {
 
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props: GrafanaStackProps) {
         super(scope, id, props);
 
-        /* select AMI
-        const amzn_linux = new ec2.AmazonLinuxImage( {
-            generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
-            virtualization: ec2.AmazonLinuxVirt.HVM,
-            storage: ec2.AmazonLinuxStorage.GENERAL_PURPOSE,
-            cpuType: ec2.AmazonLinuxCpuType.X86_64,
-        });
-        */
+        const twinfleetstack = new TwinfleetStack(this, props.twinFleetShortName, {
+            env: props.env,
+            databaseName: props.databaseName,
+            tableName: props.tableName
+            }
+        );
+        //ensure twinfleetstack is done and deployed before starting grafana stack
+        this.addDependency(twinfleetstack);
+
         // create VPC
         const smg_vpc = this.create_vpc("GrafanaVPC");
 
@@ -107,8 +116,6 @@ export class GrafanaStack extends cdk.Stack {
             value: dashboard_role.roleArn,
             exportName: "grafana-dashboard-role-arn"
         });
-
-
 
         // set up ec2 instance for self managed grafana
         let instance = new ec2.Instance(this, "grafanainstance", {

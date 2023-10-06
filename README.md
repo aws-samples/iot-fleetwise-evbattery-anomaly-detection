@@ -28,12 +28,15 @@ cdk deploy -c key_name=myKey IOT305-fleetwise-core-stack IOT305-vehicle-simulato
 or
 
 ```sh
-cdk deploy --all --require-approval never -c key_name=fwdemo1
+cdk deploy --all --require-approval never -c key_name={MY KEY}
 ```
 
+Replace {MY KEY} with a KeyPair that is already created in your AWS account that you can use to SSH to the simulation instance.
+
 Deploy just the FleetWise core stack. This will setup FleetWise in your AWS Account, with a signal catalog, vehicle model, decoder manifest and a campaign.
+
 ```sh
-cdk deploy -c key_name=fwdemo1 IOT305-fleetwise-core-stack --require-approval never
+cdk deploy -c key_name={MY KEY} IOT305-fleetwise-core-stack --require-approval never
 ```
 
 Where `myKey` is an existing keypair name present in your account to use to SSH into simulation instance.

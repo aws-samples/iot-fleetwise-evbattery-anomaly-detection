@@ -1,5 +1,4 @@
 import * as cdk from 'aws-cdk-lib';
-import { TwinfleetStack } from './twinfleetcdk/lib/twinfleet-stack';
 import { GrafanaStack } from './twinfleetcdk/lib/grafana-stack';
 import { FleetWiseStack } from './fleetwisecdk/fleetwise-app';
 import { VehicleSimulatorEcsClusterStack } from './simulatorcdk/ecs-cluster';
@@ -56,16 +55,12 @@ new VehicleSimulatorEcsTaskStack(app, ecsTaskShortName, {
     } 
 );
 
-new TwinfleetStack(app, twinFleetShortName, {
-        env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-        databaseName: databaseName,
-        tableName: tableName
-    }
-);
-
 new GrafanaStack(app, grafanaShortName,
     {
         env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+        databaseName: databaseName,
+        tableName: tableName,
+        twinFleetShortName: twinFleetShortName
     }
 );
 
