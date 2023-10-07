@@ -55,6 +55,8 @@ new VehicleSimulatorEcsTaskStack(app, ecsTaskShortName, {
     } 
 );
 
+// TODO - the Twinfleet stack must be instantiated only after at least 1 set of data values has been populated in
+// Timestream.
 new GrafanaStack(app, grafanaShortName,
     {
         env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },

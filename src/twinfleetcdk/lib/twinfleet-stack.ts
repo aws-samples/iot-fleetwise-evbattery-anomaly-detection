@@ -126,7 +126,8 @@ export class TwinfleetStack extends cdk.Stack {
     evdatacomponent.node.addDependency(workspace);
     
     // derive the bucket uri
-    const bucket_uri = twinfleet_bucket.bucketArn.replace(`arn:aws:s3:::`, `s3://`);
+    //const bucket_uri = twinfleet_bucket.bucketArn.replace(`arn:aws:s3:::`, `s3://`);
+    const bucket_uri =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt`;
 
     // create the scene model
 
@@ -134,7 +135,7 @@ export class TwinfleetStack extends cdk.Stack {
     //          This is a deployment time issue.
     //          This is expected to be resolved in a couple of months.  Have not seen this issue with
     //          python, only with typescript.
-    const VEHICLES_IN_FLEET: number = 3;
+    const VEHICLES_IN_FLEET: number = 2;
     const VEHICLE_BASE_NUMBER = 100;
 
     let scene = new SceneModel(VEHICLES_IN_FLEET, VEHICLE_BASE_NUMBER, bucket_uri);
@@ -149,7 +150,9 @@ export class TwinfleetStack extends cdk.Stack {
             });
     
     // create the scene in the TwinMaker Workspace.  TODO remove hardcode Bucket.fromBucketName(this, id, S3_BUCKET_NAME) +
-    const content_uri = twinfleet_bucket.s3UrlForObject(sceneKey) //  `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
+    //const content_uri = twinfleet_bucket.s3UrlForObject(sceneKey) //  
+    //const content_uri = `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
+    const content_uri =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt/scene/evfleet.json`
 
     twinfleet_bucket.grantReadWrite(twinmaker_role);
 

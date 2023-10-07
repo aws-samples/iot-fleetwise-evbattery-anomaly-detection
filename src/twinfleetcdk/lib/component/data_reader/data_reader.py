@@ -8,11 +8,6 @@ from datetime import datetime
 
 import boto3
 
-#print(f"Python version = {sys.version}")
-#print(f"Python path = {sys.path}")
-#print(f"Python executable = {sys.executable}")  
-#print(f"Python environment = {os.environ}")
-
 from udq_utils.udq import SingleEntityReader, MultiEntityReader, IoTTwinMakerDataRow, IoTTwinMakerUdqResponse
 from udq_utils.udq_models import IoTTwinMakerUDQEntityRequest, IoTTwinMakerUDQComponentTypeRequest, OrderBy, IoTTwinMakerReference, \
     EntityComponentPropertyRef, ExternalIdPropertyRef
@@ -77,7 +72,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         #else:
          #   sample_query = f"SELECT vehicleName, campaignName, measure_name, time, measure_value::bigint FROM {self.database_name}.{self.table_name} WHERE vehicleName = vehicleName ORDER BY time ASC LIMIT 18"
 
-        query_string = f"SELECT vehicleName, campaignName, measure_name, time, measure_value::double" \
+        query_string = f"SELECT vehicleName, campaignName, measure_name, time, measure_value::boolean, measure_value::double" \
                        f" FROM {self.database_name}.{self.table_name}" \
                        f""" WHERE time > from_iso8601_timestamp('{request.start_time}')""" \
                        f""" AND time <= from_iso8601_timestamp('{request.end_time}')""" \
@@ -120,7 +115,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         else:
             sample_query = f"""SELECT vehicleName, measure_name, time, measure_value::double FROM {self.database_name}.{self.table_name} WHERE time > from_iso8601_timestamp('{request.start_time}') AND vehicleName = {vehicle_name} AND {measure_name_clause} ORDER BY time ASC"""
 
-        query_string = f"SELECT vehicleName, measure_name, time, measure_value::double" \
+        query_string = f"SELECT vehicleName, measure_name, time, measure_value::boolean, measure_value::double" \
                        f""" FROM {self.database_name}.{self.table_name}""" \
                        f""" WHERE time > from_iso8601_timestamp('{request.start_time}')""" \
                        f""" AND vehicleName = '{vehicle_name}'""" \
@@ -227,6 +222,8 @@ class TimestreamDataRow(IoTTwinMakerDataRow):
             return float(self._row_as_dict['measure_value::double'])
         elif 'measure_value::bigint' in self._row_as_dict and self._row_as_dict['measure_value::bigint'] is not None:
             return float(self._row_as_dict['measure_value::bigint'])
+        elif 'measure_value::boolean' in self._row_as_dict and self._row_as_dict['measure_value::boolean'] is not None:
+            return self._row_as_dict['measure_value::boolean']
         else:
             print("\nUnhandled type")
             raise ValueError(f"Unhandled type in timestream row: {self._row_as_dict}")
