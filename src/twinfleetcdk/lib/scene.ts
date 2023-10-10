@@ -11,7 +11,21 @@ export class SceneModel {
         "version": "1",
         "unit": "meters",
         "properties": {
-            "environmentPreset": "neutral"
+            "environmentPreset": "neutral",
+            "dataBindingConfig": {
+              "fieldMapping": {
+                "entityId": [
+                  "sel_entity"
+                ],
+                "componentName": [
+                  "sel_comp"
+                ]
+              },
+              "template": {
+                "sel_entity": "vin100",
+                "sel_comp": "EVDataComp"
+              }
+            }
         },
         "nodes": [],
         "rootNodeIndexes": [0],
@@ -19,13 +33,25 @@ export class SceneModel {
         "rules": {
             "DTCShaderRule": {
                 "statements": [{
-                    "expression": "hasActiveDTC == 0.0",
-                    "target": "iottwinmaker.common.color:#0144f9"
+                    "expression": "HASActiveDTC == 0.0",
+                    "target": "iottwinmaker.common.color:#90939a"
                 }, {
-                    "expression": "hasActiveDTC == 1.0",
+                    "expression": "HASActiveDTC == 1.0",
                     "target": "iottwinmaker.common.color:#d13212"
                 }]
-            }
+            },
+            "TagIconRule": {
+              "statements": [
+                {
+                  "expression": "HASActiveDTC > 0",
+                  "target": "iottwinmaker.common.icon:Error"
+                },
+                {
+                  "expression": "HASActiveDTC == 0",
+                  "target": "iottwinmaker.common.icon:Info"
+                }
+              ]
+            },
         }
     };
     //
@@ -47,13 +73,13 @@ export class SceneModel {
     //
     get_entity_position(index: number, base_num: number): number[] {
         const ITEMS_PER_ROW = 10;
-        const ZSPACING = -10; // spacing between vehicle rows
-        const XSPACING = 15; // spacing between vehicles
+        const ROW_SPACING = -10; // spacing between vehicle rows
+        const CAR_SPACING = 15; // spacing between vehicles
 
         let veh_num = index - base_num; // adjust to zero base
-        let zposn = (veh_num % ITEMS_PER_ROW) * ZSPACING;
-        let xposn = Math.floor(veh_num / ITEMS_PER_ROW) * XSPACING;
+        let zposn = (veh_num % ITEMS_PER_ROW) * ROW_SPACING;
         let yposn = 0;
+        let xposn = Math.floor(veh_num / ITEMS_PER_ROW) * CAR_SPACING;
 
         let position = [ xposn, yposn, zposn ];
         return position;
@@ -104,9 +130,9 @@ export class SceneModel {
             car_entity.components.push(carmodelref);
     
             // add model shader
-            const cname = "com.user.evtwindata"
-            const propname = "HasActiveDTC"
-            let epath = `FleetEV/${entity_ID}`  
+            const cname = "EVDataComp";
+            const propname = "HASActiveDTC";
+            let epath = `FleetEV/${entity_ID}`; 
 
             const carmodelshader = {
                 type: "ModelShader",
@@ -122,6 +148,23 @@ export class SceneModel {
             }
 
             car_entity.components.push(carmodelshader);
+
+            // add tag icon rule
+            const tagiconrule = {
+                type: "Tag",
+                icon: "iottwinmaker.common.icon:Info",
+                valueDataBinding: {
+                  dataBindingContext: {
+                    entityId: "vin100",
+                    componentName: "EVDataComp",
+                    propertyName: "Vehicle.Powertrain.BMSMainRelay"
+                  },
+                  isStaticData: false
+                },
+                ruleBasedMapId: "TagIconRule"
+            }
+            car_entity.components.push(tagiconrule);
+
 
             // add the entity to the scene
             this.scene_model["nodes"].push(car_entity);
