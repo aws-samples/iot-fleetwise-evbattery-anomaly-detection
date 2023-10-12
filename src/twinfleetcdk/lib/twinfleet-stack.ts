@@ -130,7 +130,7 @@ export class TwinfleetStack extends cdk.Stack {
     
     // derive the bucket uri
     //const bucket_uri = twinfleet_bucket.bucketArn.replace(`arn:aws:s3:::`, `s3://`);
-    const bucket_uri =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt`;
+    const bucket_uri =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1xfl2dzoezjpo`;
 
     // create the scene model
 
@@ -138,7 +138,7 @@ export class TwinfleetStack extends cdk.Stack {
     //          This is a deployment time issue.
     //          This is expected to be resolved in a couple of months.  Have not seen this issue with
     //          python, only with typescript.
-    const VEHICLES_IN_FLEET: number = 12;
+    const VEHICLES_IN_FLEET: number = 2;
     const VEHICLE_BASE_NUMBER = 100;
 
     // Create the Fleet View scene
@@ -164,7 +164,7 @@ export class TwinfleetStack extends cdk.Stack {
     // create the scene in the TwinMaker Workspace.  TODO remove hardcode Bucket.fromBucketName(this, id, S3_BUCKET_NAME) +
     //const content_uri = twinfleet_bucket.s3UrlForObject(sceneKey) //  
     //const content_uri = `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
-    const content_uri_fleet =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt/scene/evfleet.json`
+    const content_uri_fleet =  `${bucket_uri}/scene/evfleet.json`
 
     twinfleet_bucket.grantReadWrite(twinmaker_role);
 
@@ -176,15 +176,7 @@ export class TwinfleetStack extends cdk.Stack {
 
     fleet_scene.node.addDependency(deployment);
     
-/**
-    const deployment_iview = new s3deploy.BucketDeployment(this,  
-            "DeployInspectionView", {
-                sources: [s3deploy.Source.data(sceneKeyInspection, scene_iview_json)],
-                destinationBucket: twinfleet_bucket,
-            });
-**/
-
-    const content_uri_iview =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt/scene/inspectionview.json`
+    const content_uri_iview =  `${bucket_uri}/scene/inspectionview.json`
 
     const inspection_scene = new twinmaker.CfnScene(this, 'InspectionScene', {
             sceneId: SCENE_ID_INSPECTION,

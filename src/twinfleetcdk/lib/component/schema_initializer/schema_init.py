@@ -11,7 +11,11 @@ REQUEST_KEY_VEHICLE_NAME = 'vehicleName'
 #REQUEST_KEY_VALUE = 'value'
 REQUEST_KEY_VALUE_STRING = 'stringValue'
 
-ILLEGAL_CHARACTERS = ['#', '(', ')', ' ']
+#
+# Fleetwise measure names have '.' in them, which is currently not supported by Twinmaker rules.
+# So replace them, along with other illegal characters.
+#
+ILLEGAL_CHARACTERS = ['#', '(', ')', ' ', '.']
 
 # Configure logger
 LOGGER = logging.getLogger()
@@ -48,7 +52,6 @@ def schema_init_handler(event, context):
     
     try:
  
-        #query_string = f"SELECT  distinct eventId, vehicleName, campaignName, measure_name, measure_value::bigint" \
         query_string = f"SELECT  distinct vehicleName, measure_name, measure_value::double" \
                        f" FROM {DATABASE_NAME}.{TABLE_NAME} " \
                        f" WHERE vehicleName = '{vehicleName}'" 
@@ -93,7 +96,8 @@ def schema_init_handler(event, context):
            
     except Exception as e:
         LOGGER.error("Query exception: %s", e)
-        raise e
+        #raise e
+        return None
 
     return {
         'properties': properties

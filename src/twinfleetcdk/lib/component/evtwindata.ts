@@ -99,7 +99,7 @@ export class EVDataComponent extends Construct {
         //
         const schema_init_lambda = new lambda.Function(this, 'EVDataSchemaInitLambda', {
             functionName: schema_init_lambda_name,
-            code: lambda.Code.fromAsset(path.join(__dirname, 'schema_initializer/schema_init')),
+            code: lambda.Code.fromAsset(path.join(__dirname, 'schema_initializer')),
             handler: 'schema_init.schema_init_handler',
             runtime: lambda.Runtime.PYTHON_3_9,
             role: lambda_role,
