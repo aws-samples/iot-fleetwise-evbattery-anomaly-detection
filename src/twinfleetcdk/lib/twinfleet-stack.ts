@@ -30,8 +30,11 @@ export class TwinfleetStack extends cdk.Stack {
 
     const S3_BUCKET_NAME = `twinfleet-bucket-${this.account}-${this.region}`;
     const WS_ID: string = "twin";
-    const SCENE_ID: string = "evfleetview";
-    const sceneKey: string = "scene/evfleet.json";
+    const SCENE_ID_FLEET: string = "evfleetview";
+    const SCENE_ID_INSPECTION: string = "inspectionview";
+    const sceneKeyFleet: string = "scene/evfleet.json";
+    const sceneKeyInspection: string = "scene/inspectionview.json";
+
     // create fleet (parent) entity
     const fleet_name = "FleetEV";
 
@@ -135,36 +138,63 @@ export class TwinfleetStack extends cdk.Stack {
     //          This is a deployment time issue.
     //          This is expected to be resolved in a couple of months.  Have not seen this issue with
     //          python, only with typescript.
-    const VEHICLES_IN_FLEET: number = 2;
+    const VEHICLES_IN_FLEET: number = 12;
     const VEHICLE_BASE_NUMBER = 100;
 
-    let scene = new SceneModel(VEHICLES_IN_FLEET, VEHICLE_BASE_NUMBER, bucket_uri);
+    // Create the Fleet View scene
+    let scene = new SceneModel("FLEETVIEW", VEHICLES_IN_FLEET, VEHICLE_BASE_NUMBER, bucket_uri);
     const scene_json = JSON.stringify(scene.scene_model);
+    
+    // Create the Inspection View scene with 1 vehicle
+    let scene_iview = new SceneModel("INSPECTIONVIEW", 1, VEHICLE_BASE_NUMBER, bucket_uri);
+    const scene_iview_json = JSON.stringify(scene_iview.scene_model);
 
-    // upload the scene json to the S3 Bucket
+    // upload the json for both scenes to the S3 Bucket
     const deployment = new s3deploy.BucketDeployment(this,  
-            "DeployTwinMakerModels", {
-                sources: [s3deploy.Source.asset("./src/twinfleetcdk/resources"),
-                          s3deploy.Source.data(sceneKey, scene_json)],
-                destinationBucket: twinfleet_bucket,
-            });
+	    "DeployFleetView", {
+	        sources: [
+                    s3deploy.Source.asset("./src/twinfleetcdk/resources"),
+		    s3deploy.Source.data(sceneKeyFleet, scene_json),
+                    s3deploy.Source.data(sceneKeyInspection, scene_iview_json)
+                ],
+	        destinationBucket: twinfleet_bucket,
+	    });
+
     
     // create the scene in the TwinMaker Workspace.  TODO remove hardcode Bucket.fromBucketName(this, id, S3_BUCKET_NAME) +
     //const content_uri = twinfleet_bucket.s3UrlForObject(sceneKey) //  
     //const content_uri = `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
-    const content_uri =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt/scene/evfleet.json`
+    const content_uri_fleet =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt/scene/evfleet.json`
 
     twinfleet_bucket.grantReadWrite(twinmaker_role);
 
     const fleet_scene = new twinmaker.CfnScene(this, 'FleetScene', {
-            sceneId: SCENE_ID,
+            sceneId: SCENE_ID_FLEET,
             workspaceId: WS_ID,
-            contentLocation: content_uri//twinfleet_bucket.s3UrlForObject(sceneKey),  // TODO look into location
+            contentLocation: content_uri_fleet//twinfleet_bucket.s3UrlForObject(sceneKeyFleet),  // TODO look into location
     });   
 
     fleet_scene.node.addDependency(deployment);
     
+/**
+    const deployment_iview = new s3deploy.BucketDeployment(this,  
+            "DeployInspectionView", {
+                sources: [s3deploy.Source.data(sceneKeyInspection, scene_iview_json)],
+                destinationBucket: twinfleet_bucket,
+            });
+**/
 
+    const content_uri_iview =  `s3://iot305grafanastackiot305-twinfleetbucket192773328-1bbyxlaami5wt/scene/inspectionview.json`
+
+    const inspection_scene = new twinmaker.CfnScene(this, 'InspectionScene', {
+            sceneId: SCENE_ID_INSPECTION,
+            workspaceId: WS_ID,
+            contentLocation: content_uri_iview//twinfleet_bucket.s3UrlForObject(sceneKeyInspection),  // TODO look into location
+    });   
+
+    inspection_scene.node.addDependency(deployment);
+    
+    // create entities
     let fleet_entity = this.create_entity(fleet_name, "FLEET", workspace.workspaceId);
     if (fleet_entity != null) {
         fleet_entity.node.addDependency(workspace);
