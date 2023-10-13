@@ -66,7 +66,17 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         sample_sel_properties = [f"p{x}" for x in range(0, len(selected_properties))] # e.g. "p0", "p1", ...
 
         sample_measure_name_clause = " OR ".join([f"measure_name = '{x}'" for x in sample_sel_properties])
+
+        #
+        # Workaround for '.' in property/measure name.  Restore all occurrences of _ in the measure name
+        # with '.' so the query to Timestream works.
+        #
+        for index, item in enumerate(selected_properties):
+            newitem  = item.replace('_', '.')
+            selected_properties[index] = newitem
+
         measure_name_clause = " OR ".join([f"measure_name = '{x}'" for x in selected_properties])
+
         #if property_filter:
           #  sample_query = f"SELECT vehicleName, campaignName, measure_name, time, measure_value::bigint FROM {self.database_name}.{self.table_name} WHERE vehicleName = vehicleName AND measure_value::varchar {property_filter['operator']} 'abc' ORDER BY time ASC LIMIT 18"
         #else:
@@ -134,7 +144,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         Utility function: handles executing the given query_string on AWS Timestream. Returns an AWS Timestream Query Page
         see https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/timestream-query.html#TimestreamQuery.Client.query
         """
-        LOGGER.info("Query string is %s , next token is %s", query_string, next_token)
+        #LOGGER.info("Query string is %s , next token is %s", query_string, next_token)
         try:
             # Timestream SDK returns error if None is passed for NextToken and MaxRows
             if next_token and max_rows:
@@ -150,6 +160,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
             else:
                 page = self.query_client.query(QueryString=query_string)
 
+            print(f"Result page = {page}")
             return page
 
         except Exception as err:
@@ -157,20 +168,31 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
             raise err
 
     @staticmethod
-    def _convert_timestream_query_page_to_udq_response(query_page, entity_id, component_name):
+    def _convert_timestream_query_page_to_udq_response(query_result_page, entity_id, component_name):
         """
-        Utility function: handles converting an AWS Timestream Query Page into a IoTTwinMakerUdqResponse object
+        Utility function: handles converting an AWS Timestream Query Result Page into a IoTTwinMakerUdqResponse object
         For each IoTTwinMakerDataRow, we include:
-        - the raw row data from Timestream
+        - the raw row data from Timestream after incorporating the workaround mentioned below
         - the column schema from Timestream we can later use to interpret the row
         - and the entity_id, component_name as context for constructing the entityPropertyReference
         """
         #LOGGER.info("Query result is %s", query_page)
-        result_rows = []
-        schema = query_page['ColumnInfo']
-        for row in query_page['Rows']:
-            result_rows.append(TimestreamDataRow(row, schema, entity_id, component_name))
-        return IoTTwinMakerUdqResponse(result_rows, query_page.get('NextToken'))
+        #
+        # Workaround for '.' in property/measure name.  Restore all occurrences of '.' in the measure name
+        # with '_' so the API issuer request and response are matched.  This is done only for measure names 
+        #
+        converted_rows = []
+        schema = query_result_page['ColumnInfo']
+        for row in query_result_page['Rows']:
+            raw_row = TimestreamDataRow(row, schema, entity_id, component_name)
+            
+            # replace '_' with '.'
+            converted_name = raw_row._row_as_dict['measure_name'].replace('.', '_')
+            raw_row._row_as_dict['measure_name'] = converted_name
+            converted_rows.append(raw_row)
+
+        # return udq response
+        return IoTTwinMakerUdqResponse(converted_rows, query_result_page.get('NextToken'))
 
 
 class TimestreamDataRow(IoTTwinMakerDataRow):
