@@ -63,7 +63,6 @@ dist
 /.vscode/
 /.idea/
 tsconfig.tsbuildinfo
-/.eslintrc.json
 !/assets/
 cdk.out/
 .cdk.staging/
