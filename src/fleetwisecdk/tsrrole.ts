@@ -15,7 +15,7 @@ export class TimestreamRole extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
     this.role = new iam.Role(this, 'Role', {
-      assumedBy: new iam.ServicePrincipal('iotfleetwise.amazonaws.com')
+      assumedBy: new iam.ServicePrincipal('iotfleetwise.amazonaws.com'),
     });
 
     this.role.addToPolicy(new iam.PolicyStatement({
@@ -24,8 +24,8 @@ export class TimestreamRole extends Construct {
         'timestream:DescribeEndpoints',
         'timestream:DescribeDatabase',
         'timestream:DescribeTable',
-        "timestream:WriteRecords",
-        "timestream:Select"
+        'timestream:WriteRecords',
+        'timestream:Select',
       ],
       resources: ['*'],
     }));

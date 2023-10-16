@@ -1,6 +1,21 @@
-import { CfnParameter } from 'aws-cdk-lib';
-import { Stack } from 'aws-cdk-lib'
-import { Construct } from 'constructs'
+import { readFileSync } from 'fs';
+import * as path from 'path';
+import { CfnParameter, Stack, Duration } from 'aws-cdk-lib';
+import { CfnAutoScalingGroup, CfnLifecycleHook } from 'aws-cdk-lib/aws-autoscaling';
+import {
+  GenericLinuxImage,
+  IMachineImage,
+  LaunchTemplate,
+  MachineImage, InstanceType, InstanceSize, InstanceClass,
+  Peer,
+  Port,
+  SecurityGroup,
+  UserData,
+  Vpc,
+} from 'aws-cdk-lib/aws-ec2';
+import { CfnCapacityProvider, CfnCluster } from 'aws-cdk-lib/aws-ecs';
+import { Rule } from 'aws-cdk-lib/aws-events';
+import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import {
   Effect,
   ManagedPolicy,
@@ -9,28 +24,11 @@ import {
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
-import {
-  GenericLinuxImage,
-  IMachineImage,
-  LaunchTemplate,
-  MachineImage,InstanceType, InstanceSize,InstanceClass,
-  Peer,
-  Port,
-  SecurityGroup,
-  UserData,
-  Vpc
-} from 'aws-cdk-lib/aws-ec2';
-import { CfnAutoScalingGroup, CfnLifecycleHook } from 'aws-cdk-lib/aws-autoscaling';
-import { Rule } from 'aws-cdk-lib/aws-events';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
-import { readFileSync } from 'fs';
-import { CfnCapacityProvider, CfnCluster } from 'aws-cdk-lib/aws-ecs';
-import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
-import { Duration } from 'aws-cdk-lib';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
-import { CreateEc2ImageUpdater } from './ec2-image-updater';
 import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
-//import { installChronicleAgentOnAL2 } from './ec2-install-chronicle.ts.old';
+import { Construct } from 'constructs';
+import { CreateEc2ImageUpdater } from './ec2-image-updater';
 
 export interface VehicleSimulatorStackProps {
   ecsClusterStackId: string;
@@ -58,7 +56,7 @@ export interface VehicleSimulatorEcsClusterStackProps {
   readonly baseImage: string;
 }
 
-export class VehicleSimulatorEcsClusterStack extends Stack  {
+export class VehicleSimulatorEcsClusterStack extends Stack {
   constructor(scope: Construct, id: string, props: VehicleSimulatorEcsClusterStackProps) {
     super(scope, id, {
       stackName: props.stackName,
@@ -75,17 +73,17 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName(
-          'service-role/AmazonEC2ContainerServiceforEC2Role'
+          'service-role/AmazonEC2ContainerServiceforEC2Role',
         ),
         ManagedPolicy.fromAwsManagedPolicyName(
-          'AmazonEC2ContainerRegistryReadOnly'
+          'AmazonEC2ContainerRegistryReadOnly',
         ),
         ManagedPolicy.fromAwsManagedPolicyName(
-          'service-role/AmazonECSTaskExecutionRolePolicy'
+          'service-role/AmazonECSTaskExecutionRolePolicy',
         ),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
         ManagedPolicy.fromAwsManagedPolicyName(
-          'service-role/AWSLambdaBasicExecutionRole'
+          'service-role/AWSLambdaBasicExecutionRole',
         ),
       ],
     });
@@ -95,7 +93,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
         actions: ['sts:AssumeRole'],
         effect: Effect.ALLOW,
         principals: [new ServicePrincipal('ecs-tasks.amazonaws.com')],
-      })
+      }),
     );
 
     ec2Role.assumeRolePolicy?.addStatements(
@@ -103,7 +101,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
         actions: ['sts:AssumeRole'],
         effect: Effect.ALLOW,
         principals: [new ServicePrincipal('lambda.amazonaws.com')],
-      })
+      }),
     );
     /**
      * VPC
@@ -122,12 +120,12 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
     ec2Sg.addIngressRule(
       Peer.anyIpv4(),
       Port.tcp(22),
-      'allow SSH access from anywhere'
+      'allow SSH access from anywhere',
     );
     /**
      * EC2 Launch Template
      */
-    const path = require('path');
+    //const path = require('path');
     let setupScript: string;
     let ami: IMachineImage;
     let ec2ImageBuilder: CfnInclude | undefined;
@@ -137,38 +135,38 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
       const amiParameter = new StringParameter(this, 'ami', {
         parameterName: imageSsmParameterKey,
         stringValue: 'Invalid AMI',
-        description: 'Store AMI built from EC2 Image Pipeline'
-      });     
+        description: 'Store AMI built from EC2 Image Pipeline',
+      });
       // This function will create EC2 Image Builder Pipeline and store AMI onto parameter store
-      
+
       ec2ImageBuilder = CreateEc2ImageUpdater(
         this,
         amiParameter.parameterName,
         props.stackName,
         props.cpu,
-        props.baseImage
-      ); 
+        props.baseImage,
+      );
       // Get the Value from AMI Parameter.
-      ami = new GenericLinuxImage({ "us-east-1": amiParameter.stringValue });
+      ami = new GenericLinuxImage({ 'us-east-1': amiParameter.stringValue });
 
       setupScript = readFileSync(
         path.resolve(
           __dirname,
-          `ec2-setup-scripts/${props.baseImage}/ec2-launch-with-custom-ami.sh`
+          `ec2-setup-scripts/${props.baseImage}/ec2-launch-with-custom-ami.sh`,
         ),
-        'utf8'
+        'utf8',
       );
     } else {
       if (props.baseImage === 'ubuntu-20-lts') {
         // Use latest stable focal (20.04) Ubuntu AMI
         ami = MachineImage.fromSsmParameter(
-          `/aws/service/canonical/ubuntu/server/focal/stable/current/${props.cpu}/hvm/ebs-gp2/ami-id`
+          `/aws/service/canonical/ubuntu/server/focal/stable/current/${props.cpu}/hvm/ebs-gp2/ami-id`,
         );
       } else {
-        const arch = props.cpu == `arm64` ? 'arm64' : 'x86_64';
+        const arch = props.cpu == 'arm64' ? 'arm64' : 'x86_64';
         // Use latest Amazon Linux2 with Kernel 5.10
         ami = MachineImage.fromSsmParameter(
-          `/aws/service/ami-amazon-linux-latest/amzn2-ami-kernel-5.10-hvm-${arch}-gp2`
+          `/aws/service/ami-amazon-linux-latest/amzn2-ami-kernel-5.10-hvm-${arch}-gp2`,
         );
       }
       // Since we start with base image, we concatenate ami setup and launch script into one
@@ -176,16 +174,16 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
         readFileSync(
           path.resolve(
             __dirname,
-            `ec2-setup-scripts/${props.baseImage}/ec2-ami-setup.sh`
+            `ec2-setup-scripts/${props.baseImage}/ec2-ami-setup.sh`,
           ),
-          'utf8'
+          'utf8',
         ) +
         readFileSync(
           path.resolve(
             __dirname,
-            `ec2-setup-scripts/${props.baseImage}/ec2-launch-with-custom-ami.sh`
+            `ec2-setup-scripts/${props.baseImage}/ec2-launch-with-custom-ami.sh`,
           ),
-          'utf8'
+          'utf8',
         );
     }
     // Here we introduce a new CFN parameter. Its value can be set by UpdateEcsLambda to update Stack with new AMI
@@ -200,12 +198,12 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
       .replace('${CPU}', props.cpu)
       .replace('${CLUSTER_STACK_NAME}', this.stackId)
       .replace('${ASG_LOGICAL_ID}', ec2AsgLogicalID)
-      .replace('${AWS_REGION}', "us-east-1")
+      .replace('${AWS_REGION}', 'us-east-1')
       .replace(
         '{AMI}',
         newAmi.valueAsString.length > 0
           ? newAmi.valueAsString
-          : ami.getImage(this).imageId
+          : ami.getImage(this).imageId,
       );
 
     setupCommands.addCommands(setupScript);
@@ -214,13 +212,13 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
       this,
       `fwe-simulator-${props.baseImage}-${props.cpu}`,
       {
-        userData: setupCommands, 
+        userData: setupCommands,
         instanceType: InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE),
         machineImage: ami,
         role: ec2Role,
         securityGroup: ec2Sg,
         keyName: props.ec2Key,
-      }
+      },
     );
     if (ec2ImageBuilder) {
       // If enabling EC2 Auto Update feature, the Launch Template depends on EC2 Image Builder complete
@@ -282,7 +280,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
 
     // Per AWS Security requirement, any AWS-owned EC2 instance needs to setup central reporting to PVRE
     //if (props.baseImage === 'al2-kernel-5') {
-      // This method only works for Amazon Linux 2
+    // This method only works for Amazon Linux 2
     //  installChronicleAgentOnAL2(
     //    this,
     //    process.env,
@@ -307,7 +305,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
           managedTerminationProtection: 'ENABLED',
         },
         name: props.ecsCapacityProviderName,
-      }
+      },
     );
     capacityProvider.node.addDependency(asg);
 
@@ -356,7 +354,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
         role: LambdaExecutionRole,
         timeout: Duration.seconds(300),
         code: Code.fromAsset(path.resolve(__dirname, 'LifecycleLaunchLambda')),
-      }
+      },
     );
 
     const LaunchLifeCycleHook = new CfnLifecycleHook(
@@ -365,7 +363,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
       {
         autoScalingGroupName: asg.ref,
         lifecycleTransition: 'autoscaling:EC2_INSTANCE_LAUNCHING',
-      }
+      },
     );
     LaunchLifeCycleHook.node.addDependency(asg);
 
@@ -383,7 +381,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
           source: ['aws.autoscaling'],
         },
         targets: [new LambdaFunction(LifecycleLaunchLambda)],
-      }
+      },
     );
     EventInvokeNewInstanceHealth.node.addDependency(asg);
 
@@ -406,7 +404,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
           source: ['aws.autoscaling'],
         },
         targets: [new LambdaFunction(LifecycleLaunchLambda)],
-      }
+      },
     );
     EventContinueNewInstanceHealth.node.addDependency(asg);
     EventContinueNewInstanceHealth.node.addDependency(LaunchLifeCycleHook);
@@ -424,9 +422,9 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
         role: LambdaExecutionRole,
         timeout: Duration.seconds(300),
         code: Code.fromAsset(
-          path.resolve(__dirname, 'LifecycleTerminateLambda')
+          path.resolve(__dirname, 'LifecycleTerminateLambda'),
         ),
-      }
+      },
     );
 
     const TerminationLifeCycleHook = new CfnLifecycleHook(
@@ -435,7 +433,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
       {
         autoScalingGroupName: asg.ref,
         lifecycleTransition: 'autoscaling:EC2_INSTANCE_TERMINATING',
-      }
+      },
     );
     TerminationLifeCycleHook.node.addDependency(asg);
 
@@ -453,7 +451,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
           source: ['aws.autoscaling'],
         },
         targets: [new LambdaFunction(LifecycleTerminateLambda)],
-      }
+      },
     );
     EventInvokeClusterDrain.node.addDependency(asg);
 
@@ -476,7 +474,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack  {
           source: ['aws.autoscaling'],
         },
         targets: [new LambdaFunction(LifecycleTerminateLambda)],
-      }
+      },
     );
     EventContinueClusterDrain.node.addDependency(asg);
     EventContinueClusterDrain.node.addDependency(TerminationLifeCycleHook);

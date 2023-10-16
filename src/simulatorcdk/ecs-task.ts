@@ -1,5 +1,5 @@
 
-import { App, PhysicalName,Stack } from 'aws-cdk-lib';
+import { App, PhysicalName, Stack } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import {
   TaskDefinition,
@@ -31,7 +31,7 @@ export class VehicleSimulatorEcsTaskStack extends Stack {
   constructor(
     scope: App,
     id: string,
-    props: VehicleSimulatorEcsTaskStackProps
+    props: VehicleSimulatorEcsTaskStackProps,
   ) {
     super(scope, id, {
       stackName: props.stackName,
@@ -49,7 +49,7 @@ export class VehicleSimulatorEcsTaskStack extends Stack {
         ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
         //  Task Execution Role is required to enable cloudwatch logging
         ManagedPolicy.fromAwsManagedPolicyName(
-          'service-role/AmazonECSTaskExecutionRolePolicy'
+          'service-role/AmazonECSTaskExecutionRolePolicy',
         ),
       ],
       inlinePolicies: {
@@ -76,7 +76,7 @@ export class VehicleSimulatorEcsTaskStack extends Stack {
     taskDefinition.addContainer(`fwe-${props.cpu}`, {
       image: ContainerImage.fromEcrRepository(
         Repository.fromRepositoryArn(this, 'simulation-registry', props.ecrArn),
-        props.ecrTag
+        props.ecrTag,
       ),
       cpu: 128,
       memoryLimitMiB: 256,

@@ -1,12 +1,12 @@
+import * as fs from 'fs';
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
 import {
   aws_timestream as ts,
   aws_iam as iam,
-  aws_ec2 as ec2
+  aws_ec2 as ec2,
 } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import * as ifw from '.';
-import * as fs from 'fs';
 import { triggerMode } from './campaign';
 import { TimestreamRole } from './tsrrole';
 
@@ -16,37 +16,37 @@ export interface FleetWiseStackProps {
   databaseName: string;
   tableName: string;
   sessionName: string;
-  shortName: string
+  shortName: string;
 }
- //
+//
 export class FleetWiseStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: FleetWiseStackProps) {
     super(scope, id, props);
-    
+
     const database = new ts.CfnDatabase(this, 'Database', {
       databaseName: props.databaseName,
     });
 
     const table = new ts.CfnTable(this, 'Table', {
       databaseName: props.databaseName,
-      tableName:props.tableName,
+      tableName: props.tableName,
     });
 
     table.node.addDependency(database);
 
     //get signal catalog to memory from file
-    const nodes = fs.readFileSync(__dirname + '/bin/signal-catalog-nodes.json','utf8').replace(/\n|\r/g, "").replace(/\n|\r/g, "").replace(/\s/g, "");
-        
+    const nodes = fs.readFileSync(__dirname + '/bin/signal-catalog-nodes.json', 'utf8').replace(/\n|\r/g, '').replace(/\n|\r/g, '').replace(/\s/g, '');
+
     const signalCatalog = new ifw.SignalCatalog(this, 'SignalCatalog', {
       description: props.shortName + ' Signal Catalog',
       name: props.shortName,
       nodes: [],
-      signalCatalogJson: nodes
+      signalCatalogJson: nodes,
     });
-    
+
     //put all signals from signal catalog to to the vehicle model
     //read decoder manifest from json file (same as above)
-    const decoder_nodes = fs.readFileSync(__dirname + '/bin/decoder-manifest-signals.json','utf8').replace(/\n|\r/g, "").replace(/\n|\r/g, "").replace(/\s/g, "");
+    const decoder_nodes = fs.readFileSync(__dirname + '/bin/decoder-manifest-signals.json', 'utf8').replace(/\n|\r/g, '').replace(/\n|\r/g, '').replace(/\s/g, '');
 
     const model_a = new ifw.VehicleModel(this, 'ModelA', {
       signalCatalog,
@@ -61,9 +61,9 @@ export class FleetWiseStack extends cdk.Stack {
           false, // isSigned
           8, // length
           0.0, // offset
-          9)
+          9),
       ],
-      signalsb64: decoder_nodes
+      signalsb64: decoder_nodes,
     });
 
     const vin100 = new ifw.Vehicle(this, 'vin100', {
@@ -258,43 +258,43 @@ export class FleetWiseStack extends cdk.Stack {
     instance.addUserData(userData);
 
     new cdk.CfnOutput(this, 'Vehicle Sim ssh command', { value: `ssh -i ${keyName}.pem ubuntu@${instance.instancePublicIp}` });
-    
-  new ifw.Campaign(this, 'Campaign', {
-    name: "cesDemo-ProdUnhealthyVehicleDetectorCampaign",
-    description: "An event-based campaign that collects data when an unhealthy vehicle is detected from production fleet",
-    //targetArn: "arn:aws:iotfleetwise:eu-central-1:755536927200:fleet/cesDemoProductionFleet",
-    compression: "SNAPPY",
-    diagnosticsMode: "SEND_ACTIVE_DTCS",
-    spoolingMode: "TO_DISK",
-    target: vin100,
-    collectionScheme: new ifw.ConditionBasedCollectionScheme(
+
+    new ifw.Campaign(this, 'Campaign', {
+      name: 'cesDemo-ProdUnhealthyVehicleDetectorCampaign',
+      description: 'An event-based campaign that collects data when an unhealthy vehicle is detected from production fleet',
+      //targetArn: "arn:aws:iotfleetwise:eu-central-1:755536927200:fleet/cesDemoProductionFleet",
+      compression: 'SNAPPY',
+      diagnosticsMode: 'SEND_ACTIVE_DTCS',
+      spoolingMode: 'TO_DISK',
+      target: vin100,
+      collectionScheme: new ifw.ConditionBasedCollectionScheme(
       //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
-      "$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` > 0", //so that we get all data for tests
-      1,
-      10000,
-      triggerMode.ALWAYS
-    ),
-    signals: [
-      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.hasActiveDTC'),
-      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfHealth'),
-      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxTemperature'),
-      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinTemperature'),
-      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxCellVoltage'),
-      new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinCellVoltage')
-    ],
-    dataDestinationConfigs: [ new ifw.TimeStreamDestinationConfig(
-      TimestreamRole.getOrCreate(this).role.roleArn,
-      table.attrArn
-    )],
-    autoApprove: true,
-  });
+        '$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` > 0', //so that we get all data for tests
+        1,
+        10000,
+        triggerMode.ALWAYS,
+      ),
+      signals: [
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.hasActiveDTC'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfHealth'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxTemperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinTemperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxCellVoltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinCellVoltage'),
+      ],
+      dataDestinationConfigs: [new ifw.TimeStreamDestinationConfig(
+        TimestreamRole.getOrCreate(this).role.roleArn,
+        table.attrArn,
+      )],
+      autoApprove: true,
+    });
 
-  new ifw.Fleet(this, 'Fleet', {
-    fleetId: 'fleet',
-    signalCatalog,
-    vehicles: [vin100],
-  });
+    new ifw.Fleet(this, 'Fleet', {
+      fleetId: 'fleet',
+      signalCatalog,
+      vehicles: [vin100],
+    });
 
-}
+  }
 
 }

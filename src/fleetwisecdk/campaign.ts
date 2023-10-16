@@ -61,8 +61,8 @@ export class ConditionBasedCollectionScheme extends CollectionScheme {
   constructor(
     expression: string,
     conditionLanguageVersion?: number,
-    minimumTriggerIntervalMs?: number, 
-    triggerMode?: triggerMode
+    minimumTriggerIntervalMs?: number,
+    triggerMode?: triggerMode,
   ) {
     super();
 
@@ -71,7 +71,7 @@ export class ConditionBasedCollectionScheme extends CollectionScheme {
         expression,
         ...conditionLanguageVersion && { conditionLanguageVersion },
         ...minimumTriggerIntervalMs && { minimumTriggerIntervalMs },
-        ...triggerMode && { triggerMode }
+        ...triggerMode && { triggerMode },
       },
     };
   }
@@ -104,11 +104,11 @@ export class TimeStreamDestinationConfig extends DestinationConfig {
 
     super();
     this.timestreamConfig = {
-        timestreamConfig:  {
-      ...executionRoleArn && { executionRoleArn },
-      ...timestreamTableArn && { timestreamTableArn }
+      timestreamConfig: {
+        ...executionRoleArn && { executionRoleArn },
+        ...timestreamTableArn && { timestreamTableArn },
       },
-    }
+    };
   }
 
   toObject(): object {
@@ -123,17 +123,17 @@ export class S3DestinationConfig extends DestinationConfig {
     dataFormat: dataFormat,
     prefix: string,
     storageCompressionFormat: storageCompressionFormat) {
-  
-      super();
+
+    super();
 
     this.s3Config = {
       s3Config: {
-      bucketArn,
-      ...dataFormat && { dataFormat },
-      ...prefix && { prefix },
-      ...storageCompressionFormat && {storageCompressionFormat}
+        bucketArn,
+        ...dataFormat && { dataFormat },
+        ...prefix && { prefix },
+        ...storageCompressionFormat && { storageCompressionFormat },
       },
-    }
+    };
   }
 
   toObject(): object {

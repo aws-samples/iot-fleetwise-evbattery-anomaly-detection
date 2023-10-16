@@ -77,8 +77,8 @@ export function createVehicleSimulatorStacks({
     });
     return [ecsClusterStack, ecsTaskStack];
   }
-  
-  
+
+
   // Below will create a stand-alone Vehicle Simulator with EC2 OS auto update disabled and S3 bucket creation enabled.
   createVehicleSimulatorStacks({
     scope: app,

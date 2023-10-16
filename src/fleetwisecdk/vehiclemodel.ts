@@ -128,7 +128,7 @@ export class VehicleModel extends Construct {
     (this.name as string) = props.name || '';
     (this.signalCatalog as SignalCatalog) = props.signalCatalog;
     (this.signalsb64 as string) = props.signalsb64 || '';
-    
+
     const handler = new Handler(this, 'Handler', {
       handler: 'vehiclemodelhandler.on_event',
     });

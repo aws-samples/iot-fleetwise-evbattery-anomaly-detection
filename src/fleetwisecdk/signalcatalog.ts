@@ -99,7 +99,7 @@ export class SignalCatalog extends Construct {
     const provider = Provider.getOrCreate(this, handler, isCompleteHandler);
 
     const serviceResource = new cdk.CustomResource(this, 'ServiceResource', {
-      serviceToken: provider.provider.serviceToken
+      serviceToken: provider.provider.serviceToken,
     });
 
     const serviceCatalogHandler = new Handler(this, 'ServiceCatalogHandler', {
@@ -112,7 +112,7 @@ export class SignalCatalog extends Construct {
         name: this.name,
         description: this.description,
         nodes: JSON.stringify(props.nodes.map(node => node.toObject())),
-        signalCatalogJson: cdk.Fn.base64(this.signalCatalogJson)
+        signalCatalogJson: cdk.Fn.base64(this.signalCatalogJson),
       },
     });
 
