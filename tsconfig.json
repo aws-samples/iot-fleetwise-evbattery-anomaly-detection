@@ -29,7 +29,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "bin/*.json"
+    "bin/*.json",
+    ".projenrc.js"
 , "src/ec2-install-chronicle.ts.old"  ],
   "exclude": [
     "cdk.out"
