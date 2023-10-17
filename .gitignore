@@ -49,3 +49,4 @@ junit.xml
 .cdk.staging/
 .parcel-cache/
 ./github/*
+./github/workflows/build.yml
