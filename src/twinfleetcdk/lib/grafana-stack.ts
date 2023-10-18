@@ -151,7 +151,7 @@ export class GrafanaStack extends Stack {
     grafana_timestream_role.attachInlinePolicy(grafana_timestream_policy);
 
     // export the role arn as an output of the stack
-    new cdk.CfnOutput(this, 'grafana-timestream-role-arn', {
+    new CfnOutput(this, 'grafana-timestream-role-arn', {
         value: grafana_timestream_role.roleArn, exportName: 'grafana-timestream-role-arn'
     });
 
