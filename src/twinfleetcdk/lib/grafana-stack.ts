@@ -119,6 +119,42 @@ export class GrafanaStack extends Stack {
       exportName: 'grafana-dashboard-role-arn',
     });
 
+    // create a policy to be used by the grafana timestream connector
+    const grafana_timestream_policy = new iam.Policy(this, 'GrafanaTimestreamInlinePolicy', {
+      statements: [new iam.PolicyStatement({
+        actions: [
+                "timestream:Select",
+                "timestream:DescribeTable",
+                "timestream:ListMeasures"
+        ],
+        resources: [`arn:aws:timestream:us-east-1:${this.account}:database/${props.databaseName}/table/${props.tableName}`],
+        effect: iam.Effect.ALLOW,
+
+      }), new iam.PolicyStatement({
+        actions: [
+                "timestream:DescribeEndpoints",
+                "timestream:SelectValues",
+                "timestream:CancelQuery"
+        ],
+        resources: [`*`],
+        effect: iam.Effect.ALLOW,
+
+      }),
+    ]});
+
+    // Create a role to be used by the Grafana timestream connector
+    const grafana_timestream_role = new iam.Role(this, 'GrafanaTimestreamRole', {
+      assumedBy: new iam.ArnPrincipal(instance_role.roleArn),
+      roleName: "evtwin-grafana-timestream-role",
+      description: 'Grafana Timestream access role...',
+    });
+    grafana_timestream_role.attachInlinePolicy(grafana_timestream_policy);
+
+    // export the role arn as an output of the stack
+    new cdk.CfnOutput(this, 'grafana-timestream-role-arn', {
+        value: grafana_timestream_role.roleArn, exportName: 'grafana-timestream-role-arn'
+    });
+
     // set up ec2 instance for self managed grafana
     let instance = new ec2.Instance(this, 'grafanainstance', {
       userData: ec2.UserData.forLinux(),
