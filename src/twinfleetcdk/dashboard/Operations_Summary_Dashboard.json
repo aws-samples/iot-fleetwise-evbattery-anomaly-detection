@@ -1,0 +1,788 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_AWS_IOT TWINMAKER",
+      "label": "AWS IoT TwinMaker",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-iot-twinmaker-datasource",
+      "pluginName": "AWS IoT TwinMaker"
+    },
+    {
+      "name": "DS_EXPRESSION",
+      "label": "Expression",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "__expr__"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "__expr__",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "geomap",
+      "name": "Geomap",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.1.5"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-iot-twinmaker-datasource",
+      "name": "AWS IoT TwinMaker",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "grafana-iot-twinmaker-sceneviewer-panel",
+      "name": "AWS IoT TwinMaker Scene Viewer",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 19,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "maxDataPoints": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "red"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "text": {
+                  "field": "measure_value::double 1",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat1",
+              "longitude": "lon1",
+              "mode": "coords"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": 37.8142014,
+          "lon": -122.447547,
+          "zoom": 9
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "measure": "Vehicle.Powertrain.Latitude",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Longitude",
+          "rawQuery": "select measure_value::double from FleetWiseDatabase.\"FleetWiseTable\" \nwhere measure_name = 'Vehicle.Powertrain.Longitude'\norder by time desc\nlimit 1\n",
+          "refId": "B",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "FleetView",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat1",
+            "binary": {
+              "left": "measure_value::double",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon1",
+            "binary": {
+              "left": "measure_value::double",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "concatenate",
+          "options": {
+            "frameNameLabel": "frame",
+            "frameNameMode": "field"
+          }
+        }
+      ],
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 0
+      },
+      "id": 4,
+      "maxDataPoints": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^D$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 60
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin100",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin101",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$A +$B + $C +$E + $F + $G + $H + $I + $J +$K ",
+          "hide": false,
+          "refId": "D",
+          "type": "math"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin102",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "A"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin103",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "E"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin104",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "F"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin105",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "G"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin106",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "H"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin107",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "I"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin108",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "J"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin109",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "K"
+        }
+      ],
+      "title": "Number of Unhealthy Vehicles",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 5
+      },
+      "id": 5,
+      "maxDataPoints": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^L$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 60
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin100",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "A"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin101",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin102",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin103",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "D"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin104",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "E"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin105",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "F"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin106",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "G"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin107",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "H"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin108",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "I"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin109",
+          "filter": [],
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "J"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "($A == 0)+ ($B == 0) + ($C == 0) + ($D == 0) + ($E == 0) + ($F == 0) + ($G == 0) + ($H == 0) + ($I == 0) + ($J == 0) ",
+          "hide": false,
+          "refId": "L",
+          "type": "math"
+        }
+      ],
+      "title": "Number of Healthy Vehicles",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 11,
+      "maxDataPoints": 5,
+      "options": {
+        "customSelCompVarName": "sel_prop",
+        "customSelEntityVarName": "sel_comp",
+        "datasource": "",
+        "sceneId": "evfleetview"
+      },
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin100",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "A"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin101",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Fleet View",
+      "type": "grafana-iot-twinmaker-sceneviewer-panel"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Op3",
+  "uid": "WxUMZBd4z3",
+  "version": 5,
+  "weekStart": ""
+}

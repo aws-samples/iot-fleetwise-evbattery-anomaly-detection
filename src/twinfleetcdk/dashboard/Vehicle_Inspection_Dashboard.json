@@ -1,0 +1,3082 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_AWS_IOT TWINMAKER",
+      "label": "AWS IoT TwinMaker",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-iot-twinmaker-datasource",
+      "pluginName": "AWS IoT TwinMaker"
+    },
+    {
+      "name": "DS_AMAZON_TIMESTREAM-1",
+      "label": "Amazon Timestream-1",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-timestream-datasource",
+      "pluginName": "Amazon Timestream"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.1.5"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-iot-twinmaker-datasource",
+      "name": "AWS IoT TwinMaker",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "grafana-iot-twinmaker-sceneviewer-panel",
+      "name": "AWS IoT TwinMaker Scene Viewer",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-timestream-datasource",
+      "name": "Amazon Timestream",
+      "version": "2.7.1"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 60,
+      "options": {
+        "customSelCompVarName": "sel_comp",
+        "customSelEntityVarName": "sel_entity",
+        "datasource": "",
+        "sceneId": "inspectionview"
+      },
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "A"
+        }
+      ],
+      "title": "Inspection View",
+      "type": "grafana-iot-twinmaker-sceneviewer-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-timestream-datasource",
+        "uid": "${DS_AMAZON_TIMESTREAM-1}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 213
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 61,
+      "maxDataPoints": 100,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-timestream-datasource",
+            "uid": "${DS_AMAZON_TIMESTREAM-1}"
+          },
+          "measure": "",
+          "rawQuery": "SELECT distinct time, vehicleName\n    FROM \"FleetWiseDatabase\".FleetWiseTable\n    WHERE time >= ago(5m)\n    AND (measure_value::double) >= 1\n    AND measure_name = 'Vehicle.Powertrain.Battery.hasActiveDTC'",
+          "refId": "A"
+        }
+      ],
+      "title": "Unhealthy Vehicles",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><font size=\"5\">Inspection Dashboard - ${sel_entity}</font></center>",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#030303",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 10
+      },
+      "id": 44,
+      "maxDataPoints": 10,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 40
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_TotalOperatingTime"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Total Operating Time",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 60
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 10
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 40
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_StateOfHealth"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "SoH",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 60
+              },
+              {
+                "color": "green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "%"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 9,
+        "y": 10
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 40
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_StateOfCharge_Current"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "SoC",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "velocitymph"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 10
+      },
+      "id": 46,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Speed"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Vehicle Speed",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 50,
+          "min": -50,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 38
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 15,
+        "y": 10
+      },
+      "id": 40,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_OutsideAirTemperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Outdoor Temperature",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "text",
+                  "index": 1,
+                  "text": "Fan Off"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Fan ON"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 18,
+        "y": 10
+      },
+      "id": 52,
+      "maxDataPoints": 10,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^Vehicle_Powertrain_Battery_FanRunning \\{componentName=\"EVDataComp\", entityId=\"vin100\", propertyName=\"Vehicle_Powertrain_Battery_FanRunning\"\\}$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_FanRunning"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Battery Fan Status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 50,
+          "min": -50,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 40
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 10
+      },
+      "id": 48,
+      "maxDataPoints": 100,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_MaxTemperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Max Battery Module Temperature",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "No DTC"
+                },
+                "1": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "DTC ACTIVE"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": ""
+              }
+            ]
+          },
+          "unit": "bool"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 13
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 40
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "hide": false,
+          "queryType": "GetAlarms",
+          "refId": "A"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "Active DTC?",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 40,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 28
+              },
+              {
+                "color": "green",
+                "value": 32
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 16
+      },
+      "id": 36,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "min"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Chassis_Axle_LeftFrontTirePressure"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "FL Tire Pressure",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 40,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 28
+              },
+              {
+                "color": "green",
+                "value": 32
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 15,
+        "y": 16
+      },
+      "id": 59,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "min"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Chassis_Axle_RightFrontTirePressure"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "FR Tire Pressure",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 40,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 28
+              },
+              {
+                "color": "green",
+                "value": 32
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 18,
+        "y": 16
+      },
+      "id": 57,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "min"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Chassis_Axle_LeftRearTireTemperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "BL Tire Pressure",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 40,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 28
+              },
+              {
+                "color": "green",
+                "value": 32
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 16
+      },
+      "id": 58,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "min"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "hide": false,
+          "properties": [
+            "Vehicle_Chassis_Axle_RightRearTirePressure"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B"
+        }
+      ],
+      "title": "BR Tire Pressure",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 8,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><font size='3'>Battery Modules Temperature & Voltage</font></center>",
+        "mode": "html"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 24
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_1_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp01'\n  AND sel_entity= '${sel_entity}'\n  AND time >= ago(15m)",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 1 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 2,
+        "y": 24
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_2_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp02'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 2 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 4,
+        "y": 24
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_3_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp03'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 3 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 6,
+        "y": 24
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_4_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp04'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 4 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 8,
+        "y": 24
+      },
+      "id": 14,
+      "maxDataPoints": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_5_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp05'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 5 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 10,
+        "y": 24
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_6_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp06'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 6 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 12,
+        "y": 24
+      },
+      "id": 16,
+      "maxDataPoints": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_7_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp07'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 7 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 14,
+        "y": 24
+      },
+      "id": 18,
+      "maxDataPoints": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_8_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp08'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 8 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 16,
+        "y": 24
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_9_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp09'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 9 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 18,
+        "y": 24
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_10_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp10'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 10 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 20,
+        "y": 24
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_11_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp11'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 11 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 24
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_12_Temperature"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellTemp12'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 12 Temp",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 27
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_1_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage01'\n  AND sel_entity= '${sel_entity}'\n  AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 1 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 2,
+        "y": 27
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_2_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage02'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 2 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 4,
+        "y": 27
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_3_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage03'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 3 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 6,
+        "y": 27
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_4_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage04'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 4 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 8,
+        "y": 27
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_5_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage05'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 5 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 10,
+        "y": 27
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_6_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage06'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 6 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 12,
+        "y": 27
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_7_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage07'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 7 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 14,
+        "y": 27
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_8_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage08'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 8  V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 16,
+        "y": 27
+      },
+      "id": 31,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_9_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage09'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 9 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 18,
+        "y": 27
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_10_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 10 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 20,
+        "y": 27
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_11_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage11'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 11 V",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 4.2
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 27
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_Module_12_Voltage"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage12'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Module 12 V",
+      "transparent": true,
+      "type": "stat"
+    }
+  ],
+  "refresh": "30s",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-iot-twinmaker-datasource",
+          "uid": "${DS_AWS_IOT TWINMAKER}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Inspection Vehicle",
+        "multi": false,
+        "name": "sel_entity",
+        "options": [],
+        "query": {
+          "queryType": "ListEntities"
+        },
+        "refresh": 1,
+        "regex": "^vin.*$",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "EVDataComp",
+          "value": "EVDataComp"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "sel_comp",
+        "options": [
+          {
+            "selected": true,
+            "text": "EVDataComp",
+            "value": "EVDataComp"
+          }
+        ],
+        "query": "EVDataComp",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Vehicle_Powertrain_Battery_hasActiveDTC",
+          "value": "Vehicle_Powertrain_Battery_hasActiveDTC"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "sel_prop",
+        "options": [
+          {
+            "selected": true,
+            "text": "HASActiveDTC",
+            "value": "HASActiveDTC"
+          }
+        ],
+        "query": "HASActiveDTC",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Vehicle Inspection 1",
+  "uid": "6exVWfO4z41221",
+  "version": 3,
+  "weekStart": ""
+}
