@@ -22,7 +22,7 @@ LOGGER.setLevel(logging.INFO)
 #   consists of the EntityReader and IoTTwinMakerDataRow implementations
 # ---------------------------------------------------------------------------
 
-class TimestreamReader(SingleEntityReader, MultiEntityReader):
+class TimestreamReader(SingleEntityReader):
     """
     The UDQ Connector implementation for our Timestream table
     It supports both single-entity queries and multi-entity queries and contains 2 utility functions to read from Timestream
@@ -50,13 +50,15 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         property_filter = request.property_filters if request.property_filters else None
         if property_filter:
             print(f"\nProperty Filter  = {property_filter}")
-            filter_property_name = property_filter[0]['propertyName']
+            #
+            # Workaround - replace '_' with '.' to map back to fleetwise names
+            #
+            filter_property_name = property_filter[0]['propertyName'].replace('_', '.')
             filter_property_operator = property_filter[0]['operator']
             filter_property_value = property_filter[0]['value']['doubleValue']
-            filter_clause = f"AND measure_name = '{filter_property_name}' {filter_property_operator} {filter_property_value}"
-            #filter_clause = f"AND (measure_name = {property_filter['propertyName']} AND measure_value::varchar {property_filter['operator']} '{property_filter['value']['doubleValue']}')" if property_filter else ""
+            filter_clause = f"AND measure_name = '{filter_property_name}' AND measure_value::double {filter_property_operator} {filter_property_value}"
 
-            print(f"\nFilter clause  = {filter_clause}")
+            #print(f"\nFilter clause  = {filter_clause}")
         else:
             filter_clause = ""
 
@@ -98,53 +100,12 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
         return self._convert_timestream_query_page_to_udq_response(page, request.entity_id, request.component_name)
 
 
-    # overrides MultiEntityReader.component_type_query abstractmethod
-    def component_type_query(self, request: IoTTwinMakerUDQComponentTypeRequest) -> IoTTwinMakerUdqResponse:
-        """
-        This is a componentTypeId query.
-        The componentTypeId is resolved into the (partial) externalIds for this component type so we are getting a vehicleName passed in.
-        We are selecting all entries matching the passed in vehicleName and additional filters
-        """
-        LOGGER.info("TimestreamReader component_type_query")
-
-        requestd = vars(request)
-
-        selected_properties = request.selected_properties
- 
-        vehicle_name = request.udq_context['properties']['vehicleName']['value']['stringValue']
-
-        property_filter = request.property_filters[0] if request.property_filters else None
-        filter_clause = f"AND measure_value::varchar {property_filter['operator']} '{property_filter['value']['stringValue']}'" if property_filter else ""
-
-        sample_sel_properties = [f"p{x}" for x in range(0, len(selected_properties))] # e.g. "p0", "p1", ...
-        sample_measure_name_clause = " OR ".join([f"measure_name = '{x}'" for x in sample_sel_properties])
-        measure_name_clause = " OR ".join([f"measure_name = '{x}'" for x in selected_properties])
-
-        if property_filter:
-            sample_query = f"""SELECT vehicleName, measure_name, time, measure_value::double FROM {self.database_name}.{self.table_name} WHERE time > from_iso8601_timestamp('{request.start_time}') AND vehicleName = {vehicle_name} AND {measure_name_clause} ORDER BY time ASC"""
-        else:
-            sample_query = f"""SELECT vehicleName, measure_name, time, measure_value::double FROM {self.database_name}.{self.table_name} WHERE time > from_iso8601_timestamp('{request.start_time}') AND vehicleName = {vehicle_name} AND {measure_name_clause} ORDER BY time ASC"""
-
-        query_string = f"SELECT vehicleName, measure_name, time, measure_value::boolean, measure_value::double" \
-                       f""" FROM {self.database_name}.{self.table_name}""" \
-                       f""" WHERE time > from_iso8601_timestamp('{request.start_time}')""" \
-                       f""" AND vehicleName = '{vehicle_name}'""" \
-                       f""" AND {measure_name_clause}""" \
-                       f""" ORDER BY time {'ASC' if request.order_by == OrderBy.ASCENDING else 'DESC'}""" 
-                       
-                       
-        #self.sqlDetector.detectInjection(sample_query, query_string)
-
-        page = self._run_timestream_query(query_string, request.next_token, request.max_rows)
-
-        return self._convert_timestream_query_page_to_udq_response(page, request.entity_id, request.component_name)
-
     def _run_timestream_query(self, query_string, next_token, max_rows) -> dict:
         """
         Utility function: handles executing the given query_string on AWS Timestream. Returns an AWS Timestream Query Page
         see https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/timestream-query.html#TimestreamQuery.Client.query
         """
-        #LOGGER.info("Query string is %s , next token is %s", query_string, next_token)
+        #LOGGER.info("Query string is %s", query_string)
         try:
             # Timestream SDK returns error if None is passed for NextToken and MaxRows
             if next_token and max_rows:
@@ -160,7 +121,7 @@ class TimestreamReader(SingleEntityReader, MultiEntityReader):
             else:
                 page = self.query_client.query(QueryString=query_string)
 
-            print(f"Result page = {page}")
+            #print(f"Result page = {page}")
             return page
 
         except Exception as err:
@@ -335,5 +296,6 @@ def data_reader_handler(event, context):
     result = TIMESTREAM_UDQ_READER.process_query(event)
     return result
     
+
 
 
