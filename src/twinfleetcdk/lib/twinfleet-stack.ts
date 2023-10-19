@@ -129,9 +129,14 @@ export class TwinfleetStack extends Stack {
     const evdatacomponent = new EVDataComponent(this, 'EVDataComp', WS_ID, props.databaseName, props.tableName);
     evdatacomponent.node.addDependency(workspace);
 
-    // derive the bucket uri
-    //const bucket_uri = twinfleet_bucket.bucketArn.replace(`arn:aws:s3:::`, `s3://`);
-    const bucket_uri = 's3://iot305grafanastackiot305-twinfleetbucket192773328-1xfl2dzoezjpo';
+    // derive the bucket url
+    const fleetjsonfile = '/scene/evfleet.json';
+    const content_url_fleet = twinfleet_bucket.s3UrlForObject(`${fleetjsonfile}`);
+    //new CfnOutput(this, 'contenturlfleet', { value: content_url_fleet, exportName: 'contenturlfleet' });
+    
+    const url_parts:string[] = content_url_fleet.split(fleetjsonfile); 
+    const bucket_url = url_parts[0];
+    //new CfnOutput(this, 'bucketurlfleet', { value: bucket_url, exportName: 'bucketurlfleet' });
 
     // create the scene model
 
@@ -143,46 +148,44 @@ export class TwinfleetStack extends Stack {
     const VEHICLE_BASE_NUMBER = 100;
 
     // Create the Fleet View scene
-    let scene = new SceneModel('FLEETVIEW', VEHICLES_IN_FLEET, VEHICLE_BASE_NUMBER, bucket_uri);
+    let scene = new SceneModel('FLEETVIEW', VEHICLES_IN_FLEET, VEHICLE_BASE_NUMBER, bucket_url);
     const scene_json = JSON.stringify(scene.scene_model);
 
     // Create the Inspection View scene with 1 vehicle
-    let scene_iview = new SceneModel('INSPECTIONVIEW', 1, VEHICLE_BASE_NUMBER, bucket_uri);
+    let scene_iview = new SceneModel('INSPECTIONVIEW', 1, VEHICLE_BASE_NUMBER, bucket_url);
     const scene_iview_json = JSON.stringify(scene_iview.scene_model);
 
     // upload the json for both scenes to the S3 Bucket
     const deployment = new s3deploy.BucketDeployment(this,
 	    'DeployFleetView', {
 	        sources: [
-          s3deploy.Source.asset('./src/twinfleetcdk/resources'),
-		    s3deploy.Source.data(sceneKeyFleet, scene_json),
-          s3deploy.Source.data(sceneKeyInspection, scene_iview_json),
-        ],
+                  s3deploy.Source.asset('./src/twinfleetcdk/resources'),
+		            s3deploy.Source.data(sceneKeyFleet, scene_json),
+                  s3deploy.Source.data(sceneKeyInspection, scene_iview_json),
+                ],
 	        destinationBucket: twinfleet_bucket,
 	    });
 
 
-    // create the scene in the TwinMaker Workspace.  TODO remove hardcode Bucket.fromBucketName(this, id, S3_BUCKET_NAME) +
-    //const content_uri = twinfleet_bucket.s3UrlForObject(sceneKey) //
-    //const content_uri = `s3://twinfleetstack-twinfleetbucket192773328237useast1-1qd2d02oadqj1/scene/evfleet.json`
-    const content_uri_fleet = `${bucket_uri}/scene/evfleet.json`;
+    // create the scene in the TwinMaker Workspace.  
 
     twinfleet_bucket.grantReadWrite(twinmaker_role);
 
     const fleet_scene = new twinmaker.CfnScene(this, 'FleetScene', {
       sceneId: SCENE_ID_FLEET,
       workspaceId: WS_ID,
-      contentLocation: content_uri_fleet, //twinfleet_bucket.s3UrlForObject(sceneKeyFleet),  // TODO look into location
+      contentLocation: content_url_fleet, 
     });
 
     fleet_scene.node.addDependency(deployment);
 
-    const content_uri_iview = `${bucket_uri}/scene/inspectionview.json`;
+    const inspectionjsonfile = 'scene/inspectionview.json';
+    const content_url_iview = twinfleet_bucket.s3UrlForObject(`${inspectionjsonfile}`);
 
     const inspection_scene = new twinmaker.CfnScene(this, 'InspectionScene', {
       sceneId: SCENE_ID_INSPECTION,
       workspaceId: WS_ID,
-      contentLocation: content_uri_iview, //twinfleet_bucket.s3UrlForObject(sceneKeyInspection),  // TODO look into location
+      contentLocation: content_url_iview, 
     });
 
     inspection_scene.node.addDependency(deployment);
