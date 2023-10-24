@@ -7,22 +7,10 @@
       "type": "datasource",
       "pluginId": "grafana-iot-twinmaker-datasource",
       "pluginName": "AWS IoT TwinMaker"
-    },
-    {
-      "name": "DS_EXPRESSION",
-      "label": "Expression",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "__expr__"
     }
   ],
   "__elements": {},
   "__requires": [
-    {
-      "type": "datasource",
-      "id": "__expr__",
-      "version": "1.0.0"
-    },
     {
       "type": "panel",
       "id": "geomap",
@@ -125,6 +113,7 @@
         "basemap": {
           "config": {},
           "name": "Layer 0",
+          "opacity": 1,
           "type": "osm-standard"
         },
         "controls": {
@@ -138,12 +127,12 @@
         "layers": [
           {
             "config": {
-              "showLegend": true,
+              "showLegend": false,
               "style": {
                 "color": {
-                  "fixed": "red"
+                  "fixed": "blue"
                 },
-                "opacity": 0.4,
+                "opacity": 0.9,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -156,11 +145,11 @@
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/marker/circle.svg",
+                  "fixed": "img/icons/marker/star.svg",
                   "mode": "fixed"
                 },
                 "text": {
-                  "field": "measure_value::double 1",
+                  "field": "entityName",
                   "fixed": "",
                   "mode": "field"
                 },
@@ -174,11 +163,380 @@
               }
             },
             "location": {
-              "latitude": "lat1",
-              "longitude": "lon1",
+              "latitude": "lat100",
+              "longitude": "lon100",
               "mode": "coords"
             },
             "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat101",
+              "longitude": "lon101",
+              "mode": "coords"
+            },
+            "name": "Layer 2",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat102",
+              "longitude": "lon102",
+              "mode": "coords"
+            },
+            "name": "Layer 3",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat103",
+              "longitude": "lon103",
+              "mode": "coords"
+            },
+            "name": "Layer 4",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat104",
+              "longitude": "lon104",
+              "mode": "coords"
+            },
+            "name": "Layer 5",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat105",
+              "longitude": "lon105",
+              "mode": "coords"
+            },
+            "name": "Layer 6",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat106",
+              "longitude": "lon106",
+              "mode": "coords"
+            },
+            "name": "Layer 7",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat107",
+              "longitude": "lon107",
+              "mode": "coords"
+            },
+            "name": "Layer 8",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat108",
+              "longitude": "lon108",
+              "mode": "coords"
+            },
+            "name": "Layer 9",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat109",
+              "longitude": "lon109",
+              "mode": "coords"
+            },
+            "name": "Layer 10",
             "tooltip": true,
             "type": "markers"
           }
@@ -189,45 +547,248 @@
         "view": {
           "allLayers": true,
           "id": "coords",
-          "lat": 37.8142014,
-          "lon": -122.447547,
+          "lat": 37.80308,
+          "lon": -122.44838,
           "zoom": 9
         }
       },
       "pluginVersion": "10.1.5",
       "targets": [
         {
+          "componentName": "EVDataComp",
           "database": "\"FleetWiseDatabase\"",
           "datasource": {
             "type": "grafana-iot-twinmaker-datasource",
             "uid": "${DS_AWS_IOT TWINMAKER}"
           },
+          "entityId": "vin100",
           "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
           "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
           "refId": "A",
           "table": "\"FleetWiseTable\""
         },
         {
+          "componentName": "EVDataComp",
           "database": "\"FleetWiseDatabase\"",
           "datasource": {
             "type": "grafana-iot-twinmaker-datasource",
             "uid": "${DS_AWS_IOT TWINMAKER}"
           },
+          "entityId": "vin102",
           "hide": false,
-          "measure": "Vehicle.Powertrain.Longitude",
-          "rawQuery": "select measure_value::double from FleetWiseDatabase.\"FleetWiseTable\" \nwhere measure_name = 'Vehicle.Powertrain.Longitude'\norder by time desc\nlimit 1\n",
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "C",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin101",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
           "refId": "B",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin103",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "D",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin104",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "E",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin105",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "F",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin106",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "G",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin107",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "H",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin108",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "I",
+          "table": "\"FleetWiseTable\""
+        },
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin109",
+          "hide": false,
+          "measure": "Vehicle.Powertrain.Latitude",
+          "properties": [
+            "Vehicle_CurrentLocation_Latitude",
+            "Vehicle_CurrentLocation_Longitude",
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "Select measure_value::double FROM $__database.$__table\nwhere measure_name = 'Vehicle.Powertrain.Latitude'\norder by time desc\nlimit 1",
+          "refId": "J",
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "FleetView",
+      "title": "MapView",
       "transformations": [
         {
           "id": "calculateField",
           "options": {
-            "alias": "lat1",
+            "alias": "lat100",
             "binary": {
-              "left": "measure_value::double",
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin100\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon100",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin100\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
               "operator": "/",
               "reducer": "sum",
               "right": "10000"
@@ -241,9 +802,9 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "lon1",
+            "alias": "lat101",
             "binary": {
-              "left": "measure_value::double",
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin101\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
               "operator": "/",
               "reducer": "sum",
               "right": "10000"
@@ -255,10 +816,275 @@
           }
         },
         {
-          "id": "concatenate",
+          "id": "calculateField",
           "options": {
-            "frameNameLabel": "frame",
-            "frameNameMode": "field"
+            "alias": "lon101",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin101\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat102",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin102\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon102",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin102\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat103",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin103\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon103",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin103\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat104",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin104\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon104",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin104\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat105",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin105\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon105",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin105\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat106",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin106\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon106",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin106\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat107",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin107\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon107",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin107\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat108",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin108\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon108",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin108\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lat109",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Latitude {componentName=\"EVDataComp\", entityId=\"vin109\", propertyName=\"Vehicle_CurrentLocation_Latitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "lon109",
+            "binary": {
+              "left": "Vehicle_CurrentLocation_Longitude {componentName=\"EVDataComp\", entityId=\"vin109\", propertyName=\"Vehicle_CurrentLocation_Longitude\"}",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "10000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
           }
         }
       ],
@@ -307,9 +1133,9 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "sum"
           ],
-          "fields": "/^D$/",
+          "fields": "/^Last$/",
           "values": false
         },
         "text": {
@@ -328,6 +1154,7 @@
           "entityId": "vin100",
           "filter": [],
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -344,22 +1171,13 @@
           "entityId": "vin101",
           "filter": [],
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
           "propertyDisplayNames": {},
           "queryType": "EntityHistory",
           "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$A +$B + $C +$E + $F + $G + $H + $I + $J +$K ",
-          "hide": false,
-          "refId": "D",
-          "type": "math"
         },
         {
           "componentName": "EVDataComp",
@@ -369,6 +1187,7 @@
           },
           "entityId": "vin102",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -384,6 +1203,7 @@
           },
           "entityId": "vin103",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -399,6 +1219,7 @@
           },
           "entityId": "vin104",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -414,6 +1235,7 @@
           },
           "entityId": "vin105",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -429,6 +1251,7 @@
           },
           "entityId": "vin106",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -444,6 +1267,7 @@
           },
           "entityId": "vin107",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -459,6 +1283,7 @@
           },
           "entityId": "vin108",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -474,6 +1299,7 @@
           },
           "entityId": "vin109",
           "hide": false,
+          "order": "DESCENDING",
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
@@ -483,235 +1309,35 @@
         }
       ],
       "title": "Number of Unhealthy Vehicles",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-iot-twinmaker-datasource",
-        "uid": "${DS_AWS_IOT TWINMAKER}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "seriesToRows",
+            "reducers": [
+              "last"
+            ]
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
               {
-                "color": "red",
-                "value": null
+                "destinationType": "enum",
+                "targetField": "Last"
               },
               {
-                "color": "green",
-                "value": 1
+                "destinationType": "number",
+                "targetField": "Last"
               }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 5,
-        "x": 19,
-        "y": 5
-      },
-      "id": 5,
-      "maxDataPoints": 10,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^L$/",
-          "values": false
-        },
-        "text": {
-          "valueSize": 60
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "10.1.5",
-      "targets": [
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin100",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "A"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin101",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "B"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin102",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "C"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin103",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "D"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin104",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "E"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin105",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "F"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin106",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "G"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin107",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "H"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin108",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "I"
-        },
-        {
-          "componentName": "EVDataComp",
-          "datasource": {
-            "type": "grafana-iot-twinmaker-datasource",
-            "uid": "${DS_AWS_IOT TWINMAKER}"
-          },
-          "entityId": "vin109",
-          "filter": [],
-          "hide": false,
-          "properties": [
-            "Vehicle_Powertrain_Battery_hasActiveDTC"
-          ],
-          "propertyDisplayNames": {},
-          "queryType": "EntityHistory",
-          "refId": "J"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "($A == 0)+ ($B == 0) + ($C == 0) + ($D == 0) + ($E == 0) + ($F == 0) + ($G == 0) + ($H == 0) + ($I == 0) + ($J == 0) ",
-          "hide": false,
-          "refId": "L",
-          "type": "math"
+            ],
+            "fields": {}
+          }
         }
       ],
-      "title": "Number of Healthy Vehicles",
       "type": "stat"
     },
     {
@@ -776,13 +1402,13 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Op3",
-  "uid": "WxUMZBd4z3",
-  "version": 5,
+  "title": "Operations Summary 24",
+  "uid": "WxUMZBd4z31",
+  "version": 4,
   "weekStart": ""
 }
