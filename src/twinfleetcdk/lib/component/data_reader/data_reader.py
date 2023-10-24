@@ -51,11 +51,16 @@ class TimestreamReader(SingleEntityReader):
         if property_filter:
             print(f"\nProperty Filter  = {property_filter}")
             #
-            # Workaround - replace '_' with '.' to map back to fleetwise names
+            # Workaround for twinmaker restriction - in name, replace '_' with '.' to map back to fleetwise names
             #
             filter_property_name = property_filter[0]['propertyName'].replace('_', '.')
             filter_property_operator = property_filter[0]['operator']
-            filter_property_value = property_filter[0]['value']['doubleValue']
+            if 'doubleValue' in property_filter[0]['value']:
+                filter_property_value = property_filter[0]['value']['doubleValue']
+            elif 'booleanValue' in property_filter[0]['value']:
+                filter_property_value = property_filter[0]['value']['booleanValue']
+            else:
+                print(f"\nUnhandled filter value type")
             filter_clause = f"AND measure_name = '{filter_property_name}' AND measure_value::double {filter_property_operator} {filter_property_value}"
 
             #print(f"\nFilter clause  = {filter_clause}")
