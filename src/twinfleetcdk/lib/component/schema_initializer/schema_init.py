@@ -50,12 +50,14 @@ def schema_init_handler(event, context):
         query_string = f"SELECT  distinct vehicleName, measure_name, measure_value::double, measure_value::boolean, time" \
                        f" FROM {DATABASE_NAME}.{TABLE_NAME} " \
                        f" WHERE vehicleName = '{vehicleName}' " \
-                       f" ORDER by time DESC" 
+                       f" ORDER by time DESC" \
+                       f" LIMIT 100"
 
         LOGGER.info('vehicleName: %s', vehicleName)
         
 
         query_result = QUERY_CLIENT.query(QueryString=query_string)
+        #print(f"Query result={query_result}")
 
         column_info = query_result['ColumnInfo']
 
@@ -89,6 +91,8 @@ def schema_init_handler(event, context):
         default_schema = create_default_schema(vehicleName)
         return default_schema
 
+    print(f"Properties = {properties}")
+    print(f"Properties attrname= {properties[attr_name]} {current_property}")
     return {
         'properties': properties
     }
