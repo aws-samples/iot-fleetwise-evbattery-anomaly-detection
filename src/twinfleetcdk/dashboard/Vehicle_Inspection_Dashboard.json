@@ -1221,7 +1221,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<center><font size='3'>Battery Modules Temperature & Voltage</font></center>",
+        "content": "<center><font size='5'>Battery Module Temperature</font></center>",
         "mode": "html"
       },
       "pluginVersion": "10.2.0",
@@ -1310,7 +1310,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 1 Temp",
+      "title": "Module 1",
       "transparent": true,
       "type": "stat"
     },
@@ -1384,7 +1384,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 2 Temp",
+      "title": "Module 2",
       "transparent": true,
       "type": "stat"
     },
@@ -1458,7 +1458,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 3 Temp",
+      "title": "Module 3",
       "transparent": true,
       "type": "stat"
     },
@@ -1532,7 +1532,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 4 Temp",
+      "title": "Module 4",
       "transparent": true,
       "type": "stat"
     },
@@ -1607,7 +1607,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 5 Temp",
+      "title": "Module 5",
       "transparent": true,
       "type": "stat"
     },
@@ -1681,7 +1681,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 6 Temp",
+      "title": "Module 6",
       "transparent": true,
       "type": "stat"
     },
@@ -1756,7 +1756,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 7 Temp",
+      "title": "Module 7",
       "transparent": true,
       "type": "stat"
     },
@@ -1831,7 +1831,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 8 Temp",
+      "title": "Module 8",
       "transparent": true,
       "type": "stat"
     },
@@ -1905,7 +1905,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 9 Temp",
+      "title": "Module 9",
       "transparent": true,
       "type": "stat"
     },
@@ -1979,7 +1979,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 10 Temp",
+      "title": "Module 10",
       "transparent": true,
       "type": "stat"
     },
@@ -2053,7 +2053,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 11 Temp",
+      "title": "Module 11",
       "transparent": true,
       "type": "stat"
     },
@@ -2127,9 +2127,46 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 12 Temp",
+      "title": "Module 12",
       "transparent": true,
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 62,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<center><font size='5'>Battery Module Voltage</font></center>",
+        "mode": "html"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "transparent": true,
+      "type": "text"
     },
     {
       "datasource": {
@@ -2164,7 +2201,7 @@
         "h": 3,
         "w": 2,
         "x": 0,
-        "y": 27
+        "y": 29
       },
       "id": 22,
       "options": {
@@ -2202,7 +2239,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 1 V",
+      "title": "Module 1",
       "transparent": true,
       "type": "stat"
     },
@@ -2239,7 +2276,7 @@
         "h": 3,
         "w": 2,
         "x": 2,
-        "y": 27
+        "y": 29
       },
       "id": 23,
       "options": {
@@ -2277,7 +2314,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 2 V",
+      "title": "Module 2",
       "transparent": true,
       "type": "stat"
     },
@@ -2314,7 +2351,7 @@
         "h": 3,
         "w": 2,
         "x": 4,
-        "y": 27
+        "y": 29
       },
       "id": 24,
       "options": {
@@ -2352,7 +2389,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 3 V",
+      "title": "Module 3",
       "transparent": true,
       "type": "stat"
     },
@@ -2389,7 +2426,7 @@
         "h": 3,
         "w": 2,
         "x": 6,
-        "y": 27
+        "y": 29
       },
       "id": 25,
       "options": {
@@ -2427,7 +2464,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 4 V",
+      "title": "Module 4",
       "transparent": true,
       "type": "stat"
     },
@@ -2464,7 +2501,7 @@
         "h": 3,
         "w": 2,
         "x": 8,
-        "y": 27
+        "y": 29
       },
       "id": 26,
       "options": {
@@ -2502,7 +2539,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 5 V",
+      "title": "Module 5",
       "transparent": true,
       "type": "stat"
     },
@@ -2539,7 +2576,7 @@
         "h": 3,
         "w": 2,
         "x": 10,
-        "y": 27
+        "y": 29
       },
       "id": 27,
       "options": {
@@ -2577,7 +2614,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 6 V",
+      "title": "Module 6",
       "transparent": true,
       "type": "stat"
     },
@@ -2614,7 +2651,7 @@
         "h": 3,
         "w": 2,
         "x": 12,
-        "y": 27
+        "y": 29
       },
       "id": 28,
       "options": {
@@ -2652,7 +2689,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 7 V",
+      "title": "Module 7",
       "transparent": true,
       "type": "stat"
     },
@@ -2689,7 +2726,7 @@
         "h": 3,
         "w": 2,
         "x": 14,
-        "y": 27
+        "y": 29
       },
       "id": 30,
       "options": {
@@ -2727,7 +2764,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 8  V",
+      "title": "Module 8 ",
       "transparent": true,
       "type": "stat"
     },
@@ -2764,7 +2801,7 @@
         "h": 3,
         "w": 2,
         "x": 16,
-        "y": 27
+        "y": 29
       },
       "id": 31,
       "options": {
@@ -2803,7 +2840,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 9 V",
+      "title": "Module 9",
       "transparent": true,
       "type": "stat"
     },
@@ -2841,7 +2878,7 @@
         "h": 3,
         "w": 2,
         "x": 18,
-        "y": 27
+        "y": 29
       },
       "id": 32,
       "options": {
@@ -2879,7 +2916,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 10 V",
+      "title": "Module 10",
       "transparent": true,
       "type": "stat"
     },
@@ -2916,7 +2953,7 @@
         "h": 3,
         "w": 2,
         "x": 20,
-        "y": 27
+        "y": 29
       },
       "id": 33,
       "options": {
@@ -2954,7 +2991,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 11 V",
+      "title": "Module 11",
       "transparent": true,
       "type": "stat"
     },
@@ -2991,7 +3028,7 @@
         "h": 3,
         "w": 2,
         "x": 22,
-        "y": 27
+        "y": 29
       },
       "id": 34,
       "options": {
@@ -3029,7 +3066,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 12 V",
+      "title": "Module 12",
       "transparent": true,
       "type": "stat"
     }
@@ -3114,6 +3151,6 @@
   "timezone": "",
   "title": "Vehicle Inspection",
   "uid": "6exVWfO4z41221",
-  "version": 13,
+  "version": 15,
   "weekStart": ""
 }
