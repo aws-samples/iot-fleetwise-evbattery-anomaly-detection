@@ -211,7 +211,13 @@ class TimestreamDataRow(IoTTwinMakerDataRow):
         elif 'measure_value::bigint' in self._row_as_dict and self._row_as_dict['measure_value::bigint'] is not None:
             return float(self._row_as_dict['measure_value::bigint'])
         elif 'measure_value::boolean' in self._row_as_dict and self._row_as_dict['measure_value::boolean'] is not None:
-            return self._row_as_dict['measure_value::boolean']
+            boolval = self._row_as_dict['measure_value::boolean']
+
+            # convert the boolean to float to work around a twinmaker model shader 'limitation'
+            if (boolval == 'true'):
+                return float(1)
+            else:
+                return float(0)
         else:
             print("\nUnhandled type")
             raise ValueError(f"Unhandled type in timestream row: {self._row_as_dict}")

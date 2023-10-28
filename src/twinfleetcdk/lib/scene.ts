@@ -24,7 +24,7 @@ export class SceneModel {
         template: {
           sel_entity: '${sel_entity}',
           sel_comp: 'EVDataComp',
-          sel_prop: 'HASActiveDTC',
+          sel_prop: 'Vehicle_Powertrain_Battery_hasActiveDTC',
         },
       },
     },
@@ -34,21 +34,21 @@ export class SceneModel {
     rules: {
       DTCShaderRule: {
         statements: [{
-          expression: 'HASActiveDTC == 0.0',
+          expression: 'Vehicle_Powertrain_Battery_hasActiveDTC == 0',
           target: 'iottwinmaker.common.color:#90939a',
         }, {
-          expression: 'HASActiveDTC == 1.0',
+          expression: 'Vehicle_Powertrain_Battery_hasActiveDTC == 1',
           target: 'iottwinmaker.common.color:#d13212',
         }],
       },
       TagIconRule: {
         statements: [
           {
-            expression: 'HASActiveDTC > 0',
+            expression: 'Vehicle_Powertrain_Battery_hasActiveDTC == 1',
             target: 'iottwinmaker.common.icon:Error',
           },
           {
-            expression: 'HASActiveDTC == 0',
+            expression: 'Vehicle_Powertrain_Battery_hasActiveDTC == 0',
             target: 'iottwinmaker.common.icon:Info',
           },
         ],
@@ -154,7 +154,7 @@ export class SceneModel {
       car_entity.components.push(carmodelref);
 
       const cname = 'EVDataComp';
-      const propname = 'HASActiveDTC';
+      const propname = 'Vehicle_Powertrain_Battery_hasActiveDTC';
       const epath = `FleetEV/${entity_ID}`;
 
       // add model shader
