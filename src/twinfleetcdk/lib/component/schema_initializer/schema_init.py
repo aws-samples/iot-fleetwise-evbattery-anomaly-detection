@@ -91,8 +91,6 @@ def schema_init_handler(event, context):
         default_schema = create_default_schema(vehicleName)
         return default_schema
 
-    print(f"Properties = {properties}")
-    print(f"Properties attrname= {properties[attr_name]} {current_property}")
     return {
         'properties': properties
     }
