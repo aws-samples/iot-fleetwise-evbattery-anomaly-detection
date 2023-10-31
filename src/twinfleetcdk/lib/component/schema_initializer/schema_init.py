@@ -60,37 +60,43 @@ def schema_init_handler(event, context):
         #print(f"Query result={query_result}")
 
         column_info = query_result['ColumnInfo']
+        num_rows = len(query_result['Rows'])
 
-        for row in query_result['Rows']:
-            values = __parse_row(column_info, row)
+        if num_rows > 0:
+            for row in query_result['Rows']:
+                values = __parse_row(column_info, row)
                 
-            attr_name = values["measure_name"]
-            current_property = {
-                'definition': {}
-            }
-            
-            if values['measure_value::double'] != None:
-                current_property['definition']['dataType'] = { 'type': 'DOUBLE' }
-            elif values['measure_value::boolean'] != None:
-                current_property['definition']['dataType'] = { 'type': 'BOOLEAN' }
-            else:
-                LOGGER.error("Wrong measure_value type ")
+                attr_name = values["measure_name"]
+                current_property = {
+                    'definition': {}
+                }
+                
+                if values['measure_value::double'] != None:
+                    current_property['definition']['dataType'] = { 'type': 'DOUBLE' }
+                elif values['measure_value::boolean'] != None:
+                    current_property['definition']['dataType'] = { 'type': 'BOOLEAN' }
+                else:
+                    LOGGER.error("Wrong measure_value type ")
  
-            current_property['definition']['isTimeSeries'] = True
+                current_property['definition']['isTimeSeries'] = True
             
-            # Some characters are not allowed to be present in property name
-            attr_name = replace_illegal_character(attr_name)
-            properties[attr_name] = current_property
+                # Some characters are not allowed to be present in property name
+                attr_name = replace_illegal_character(attr_name)
+                properties[attr_name] = current_property
             
-            # Add other properties that have static metadata (if applicable)
-
+                # Add other properties that have static metadata (if applicable)
+        else:
+            # no rows - use default schema
+            print(f"No rows -- using default schema")
+            default_schema = create_default_schema(vehicleName)
+            return default_schema
            
     except Exception as e:
-        LOGGER.error("Query exception: %s -- using default schema", e)
-        #raise e
+        print(f"Query exception: {e} -- using default schema")
         default_schema = create_default_schema(vehicleName)
         return default_schema
 
+    # normal case
     return {
         'properties': properties
     }
