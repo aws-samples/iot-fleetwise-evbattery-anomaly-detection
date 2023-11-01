@@ -4802,7 +4802,7 @@
           "id": "coords",
           "lat": 37.80308,
           "lon": -122.44838,
-          "zoom": 7
+          "zoom": 6
         }
       },
       "pluginVersion": "10.2.0",
@@ -13695,15 +13695,12 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 19,
         "x": 0,
         "y": 18
       },
-      "id": 11,
-      "maxDataPoints": 5,
+      "id": 13,
       "options": {
-        "customSelCompVarName": "sel_prop",
-        "customSelEntityVarName": "sel_comp",
         "datasource": "",
         "sceneId": "evfleetview"
       },
@@ -13729,13 +13726,1384 @@
             "uid": "${DS_AWS_IOT TWINMAKER}"
           },
           "entityId": "vin101",
-          "hide": false,
           "properties": [
             "Vehicle_Powertrain_Battery_hasActiveDTC"
           ],
           "propertyDisplayNames": {},
           "queryType": "EntityHistory",
           "refId": "B"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin102",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin103",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "D"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin104",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "E"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin105",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "F"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin106",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "G"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin107",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "h"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin108",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "I"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin109",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "J"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin110",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "K"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin111",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "L"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin112",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "M"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin113",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "N"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin114",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "O"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin115",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "P"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin116",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "Q"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin117",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "R"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin118",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "S"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin119",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "T"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin120",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "U"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin121",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "V"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin122",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "W"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin123",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "X"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin124",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "Y"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin125",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "Z"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin126",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AA"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin127",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AB"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin128",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AC"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin129",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AD"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin130",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AE"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin131",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AF"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin132",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AG"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin133",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AH"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin134",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AI"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin135",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AJ"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin136",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AK"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin137",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AK1"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin138",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AL"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin139",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AM"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin140",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AN"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin141",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AO"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin142",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AP"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin143",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AQ"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin144",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AR"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin145",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AS"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin146",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AT"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin147",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AU"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin148",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AW"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin149",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AX"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin150",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AY"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin151",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "AZ"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin152",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B0"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin153",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B1"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin154",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B2"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin155",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B3"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin156",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B4"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin157",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B5"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin158",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B6"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin159",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B7"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin160",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B8"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin161",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "B9"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin162",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BA"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin163",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BB"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin164",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BC"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin165",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BD"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin166",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BE"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin167",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BF"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin168",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BG"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin169",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BH"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin170",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BI"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin171",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BJ"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin172",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BK"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin173",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BL"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin174",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BM"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin175",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BN"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin176",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BO"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin177",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BP"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin178",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BQ"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin179",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BR"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin180",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BS"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin181",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BT"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin182",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BU"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin183",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BV"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin184",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BW"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin185",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BX"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin186",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BY"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin187",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "BZ"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin188",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C0"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin189",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C1"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin190",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C2"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin191",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C3"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin192",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C4"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin193",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C5"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin194",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C6"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin195",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C7"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin196",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C8"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin197",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "C9"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin198",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "CA"
+        },
+        {
+          "componentName": "EVDataComp",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "vin199",
+          "properties": [
+            "Vehicle_Powertrain_Battery_hasActiveDTC"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "refId": "CB"
         }
       ],
       "title": "Fleet View",
@@ -13754,8 +15122,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Operations Summary 100e",
-  "uid": "WxUMZBd4z3e",
-  "version": 3,
+  "title": "Operations Summary",
+  "uid": "WxUMZBd4z3f",
+  "version": 4,
   "weekStart": ""
 }
