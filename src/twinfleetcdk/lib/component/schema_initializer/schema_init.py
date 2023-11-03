@@ -153,9 +153,13 @@ def replace_illegal_character(attr_name):
 def create_default_schema(vehName):
     properties = {}
     properties["Vehicle_Chassis_Axle_LeftFrontTirePressure"] = create_default_schema_entry("Vehicle_Chassis_Axle_LeftFrontTirePressure", 0, True, "DOUBLE", True)
+    properties["Vehicle_Chassis_Axle_LeftFrontTireTemperature"] = create_default_schema_entry("Vehicle_Chassis_Axle_LeftFrontTireTemperature", 0, True, "DOUBLE", True)
+    properties["Vehicle_Chassis_Axle_LeftRearTirePressure"] = create_default_schema_entry("Vehicle_Chassis_Axle_LeftRearTirePressure", 0, True, "DOUBLE", True)
     properties["Vehicle_Chassis_Axle_LeftRearTireTemperature"] = create_default_schema_entry("Vehicle_Chassis_Axle_LeftRearTireTemperature", 0, True, "DOUBLE", True)
     properties["Vehicle_Chassis_Axle_RightFrontTirePressure"] = create_default_schema_entry("Vehicle_Chassis_Axle_RightFrontTirePressure", 0, True, "DOUBLE", True)
+    properties["Vehicle_Chassis_Axle_RightFrontTireTemperature"] = create_default_schema_entry("Vehicle_Chassis_Axle_RightFrontTireTemperature", 0, True, "DOUBLE", True)
     properties["Vehicle_Chassis_Axle_RightRearTirePressure"] = create_default_schema_entry("Vehicle_Chassis_Axle_RightRearTirePressure", 0, True, "DOUBLE", True)
+    properties["Vehicle_Chassis_Axle_RightRearTireTemperature"] = create_default_schema_entry("Vehicle_Chassis_Axle_RightRearTireTemperature", 0, True, "DOUBLE", True)
     properties["Vehicle_CurrentLocation_Latitude"] = create_default_schema_entry("Vehicle_CurrentLocation_Latitude", 0, True, "DOUBLE", True)
     properties["Vehicle_CurrentLocation_Longitude"] = create_default_schema_entry("Vehicle_CurrentLocation_Longitude", 0, True, "DOUBLE", True)
     properties["Vehicle_InCabinTemperature"] = create_default_schema_entry("Vehicle_InCabinTemperature", 0, True, "DOUBLE", True)
@@ -171,6 +175,8 @@ def create_default_schema(vehName):
     properties["Vehicle_Powertrain_Battery_BatteryDCVoltage"] = create_default_schema_entry("Vehicle_Powertrain_Battery_BatteryDCVoltage", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_Battery_Charging_IsCharging"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Charging_IsCharging", 0, True, "BOOLEAN", True)
     properties["Vehicle_Powertrain_Battery_FanRunning"] = create_default_schema_entry("Vehicle_Powertrain_Battery_FanRunning", 0, True, "BOOLEAN", True)
+
+
     properties["Vehicle_Powertrain_Battery_Module_1_Temperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_1_Temperature", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_Battery_Module_2_Temperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_2_Temperature", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_Battery_Module_3_Temperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_3_Temperature", 0, True, "DOUBLE", True)
@@ -211,6 +217,11 @@ def create_default_schema(vehName):
     properties["Vehicle_Powertrain_RapidChargePort"] = create_default_schema_entry("Vehicle_Powertrain_RapidChargePort", 0, True, "DOUBLE", True)
     properties["Vehicle_Speed"] = create_default_schema_entry("Vehicle_Speed", 0, True, "DOUBLE", True)
     properties["Vehicle_TotalOperatingTime"] = create_default_schema_entry("Vehicle_TotalOperatingTime", 0, True, "DOUBLE", True)
+
+    properties["Vehicle_Powertrain_Battery_FanStatus"] = create_default_schema_entry("Vehicle_Powertrain_Battery_FanStatus", 0, True, "BOOLEAN", True)
+    properties["Vehicle_Powertrain_Battery_StateOfChargeBMS"] = create_default_schema_entry("Vehicle_Powertrain_Battery_StateOfChargeBMS", 0, True, "DOUBLE", True)
+    properties["Vehicle_Powertrain_BatteryMinTemperature"] = create_default_schema_entry("Vehicle_Powertrain_BatteryMinTemperature", 0, True, "DOUBLE", True)
+    properties["Vehicle_Powertrain_BatteryMaxTemperature"] = create_default_schema_entry("Vehicle_Powertrain_BatteryMaxTemperature", 0, True, "DOUBLE", True)
 
     return {
         'properties': properties
