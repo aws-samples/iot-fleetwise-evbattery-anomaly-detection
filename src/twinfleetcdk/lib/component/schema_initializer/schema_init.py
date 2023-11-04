@@ -168,7 +168,6 @@ def create_default_schema(vehName):
     properties["Vehicle_Powertrain_Battery_Module_MaxTemperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_MaxTemperature", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_BatteryVoltageAuxillary"] = create_default_schema_entry("Vehicle_Powertrain_BatteryVoltageAuxillary", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_BatteryFanFeedback"] = create_default_schema_entry("Vehicle_Powertrain_BatteryFanFeedback", 0, True, "DOUBLE", True)
-    properties["Vehicle_Powertrain_BatteryFanStatus"] = create_default_schema_entry("Vehicle_Powertrain_BatteryFanStatus", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_Battery_FanRunning"] = create_default_schema_entry("Vehicle_Powertrain_Battery_FanRunning", 0, True, "BOOLEAN", True)
     properties["Vehicle_Powertrain_NormalChargePort"] = create_default_schema_entry("Vehicle_Powertrain_NormalChargePort", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_RapidChargePort"] = create_default_schema_entry("Vehicle_Powertrain_RapidChargePort", 0, True, "DOUBLE", True)
@@ -223,8 +222,8 @@ def create_default_schema(vehName):
     properties["Vehicle_Powertrain_Battery_Module_MaxCellVoltage"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_MaxCellVoltage", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_Battery_StateOfCharge_Current"] = create_default_schema_entry("Vehicle_Powertrain_Battery_StateOfCharge_Current", 0, True, "DOUBLE", True)
 
-    properties["Vehicle_Powertrain_BatteryMinTemperature"] = create_default_schema_entry("Vehicle_Powertrain_BatteryMinTemperature", 0, True, "DOUBLE", True)
-    properties["Vehicle_Powertrain_BatteryMaxTemperature"] = create_default_schema_entry("Vehicle_Powertrain_BatteryMaxTemperature", 0, True, "DOUBLE", True)
+    properties["Vehicle_Powertrain_Battery_Module_MinTemperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_MinTemperature", 0, True, "DOUBLE", True)
+    properties["Vehicle_Powertrain_Battery_Module_MaxTemperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_MaxTemperature", 0, True, "DOUBLE", True)
 
     return {
         'properties': properties
