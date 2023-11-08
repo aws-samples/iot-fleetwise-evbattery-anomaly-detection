@@ -239,20 +239,9 @@ export class FleetWiseStack extends cdk.Stack {
         
         #Since we don't have decoded signal data, we are going to replay the log of the captured data, with the exact data captured
         sudo cp -f $ROOTDIR/service/simulationreplay.vin100.service /etc/systemd/system/simulationreplay.vin100.service
-        #sudo -u ubuntu rm /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.tar.gz
-        #sudo -u ubuntu $ROOTDIR/service/start_replay_simulation.sh
         sudo systemctl daemon-reload
         sudo systemctl enable simulationreplay.vin100.service
         sudo systemctl start simulationreplay.vin100.service
-        
-        #The following section will replace the above, once we have proper signal data as source
-        #sudo cp -f $ROOTDIR/service/evcansimulation.vin100.service /etc/systemd/system/evcansimulation.service
-        #sudo systemctl enable evcansimulation.service
-        #sudo systemctl start evcansimulation.service
-        #sudo $ROOTDIR/service/start_simulation.sh vin100
-        #sudo systemctl daemon-reload
-        #sudo systemctl enable evcansimulation.service
-        #sudo systemctl start evcansimulation.service
         `;
 
     instance.addUserData(userData);
@@ -269,18 +258,107 @@ export class FleetWiseStack extends cdk.Stack {
       target: vin100,
       collectionScheme: new ifw.ConditionBasedCollectionScheme(
       //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
-        '$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` > 0', //so that we get all data for tests
+        '$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` >= 0', //so that we get all data for tests
         1,
         10000,
         triggerMode.ALWAYS,
       ),
       signals: [
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.LeftFrontTirePressure'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.LeftFrontTireTemperature'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.LeftRearTirePressure'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.LeftRearTireTemperature'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.RightFrontTirePressure'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.RightFrontTireTemperature'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.RightRearTirePressure'),
+        new ifw.CampaignSignal('Vehicle.Chassis.Axle.RightRearTireTemperature'),
+        new ifw.CampaignSignal('Vehicle.CurrentLocation.Latitude'),
+        new ifw.CampaignSignal('Vehicle.CurrentLocation.Longitude'),
+        new ifw.CampaignSignal('Vehicle.InCabinTemperature'),
+        new ifw.CampaignSignal('Vehicle.OutsideAirTemperature'),
+        new ifw.CampaignSignal('Vehicle.Speed'),
+        new ifw.CampaignSignal('Vehicle.TotalOperatingTime'),
         new ifw.CampaignSignal('Vehicle.Powertrain.Battery.hasActiveDTC'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.FanRunning'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.BatteryAvailableChargePower'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.BatteryAvailableDischargePower'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.BatteryCurrent'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.BatteryDCVoltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Charging.IsCharging'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfCharge.Current'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfCharge.Displayed'),
         new ifw.CampaignSignal('Vehicle.Powertrain.Battery.StateOfHealth'),
-        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxTemperature'),
-        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinTemperature'),
         new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxCellVoltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxCellVoltageCellNumber'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MaxTemperature'),
         new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinCellVoltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinCellVoltageCellNumber'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.MinTemperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.1.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.1.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.10.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.10.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.11.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.11.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.12.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.12.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.13.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.13.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.14.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.14.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.15.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.15.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.16.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.16.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.17.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.17.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.18.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.18.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.19.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.19.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.2.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.2.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.20.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.20.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.21.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.21.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.22.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.22.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.23.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.23.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.24.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.24.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.25.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.25.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.26.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.26.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.27.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.27.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.28.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.28.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.29.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.29.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.3.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.3.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.30.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.30.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.31.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.31.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.32.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.32.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.4.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.4.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.5.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.5.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.6.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.6.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.7.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.7.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.8.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.8.Voltage'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.9.Temperature'),
+        new ifw.CampaignSignal('Vehicle.Powertrain.Battery.Module.9.Voltage'),
+
       ],
       dataDestinationConfigs: [new ifw.TimeStreamDestinationConfig(
         TimestreamRole.getOrCreate(this).role.roleArn,

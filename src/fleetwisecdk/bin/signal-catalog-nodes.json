@@ -1013,5 +1013,63 @@
             "min": 0.0,
             "unit": "%"
         }
+    },
+    {
+        "sensor": {
+            "dataType": "INT32",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.MinDeterioration",
+            "unit": "%"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "INT32",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.MinDeteriorationCellNo"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "DOUBLE",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.HeaterTemperature1",
+            "unit": "degC"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "DOUBLE",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.VoltageAuxillary",
+            "unit": "V"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "DOUBLE",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.FanFeedback",
+            "unit": "Hz"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "BOOLEAN",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.NormalChargePort"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "BOOLEAN",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.RapidChargePort"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "BOOLEAN",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSMainRelay"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "BOOLEAN",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSIgnition"
+        }
     }
 ]
