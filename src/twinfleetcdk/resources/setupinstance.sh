@@ -23,3 +23,8 @@ sudo systemctl daemon-reload
 sudo systemctl start grafana-server
 sudo systemctl enable grafana-server.service
 
+sudo systemctl stop rpcbind
+sudo systemctl stop rpcbind.socket
+sudo systemctl disable rpcbind
+sudo systemctl disable rpcbind.socket
+
