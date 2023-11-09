@@ -6,7 +6,6 @@ Parameters:
     Description: CPU architecture of EC2 instances
     AllowedValues:
       - 'amd64'
-      - 'arm64'
   BaseImage:
     Type: String
     Default: al2-kernel-5
