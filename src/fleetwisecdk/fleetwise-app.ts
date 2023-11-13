@@ -66,8 +66,8 @@ export class FleetWiseStack extends cdk.Stack {
       signalsb64: decoder_nodes,
     });
 
-    const vin100 = new ifw.Vehicle(this, 'vin100', {
-      vehicleName: 'vin100',
+    const KNADE163966083100 = new ifw.Vehicle(this, 'KNADE163966083100', {
+      vehicleName: 'KNADE163966083100',
       vehicleModel: model_a,
       createIotThing: true,
     });
@@ -215,13 +215,13 @@ export class FleetWiseStack extends cdk.Stack {
         sudo mkdir /etc/aws-iot-fleetwise
         sudo mkdir /var/aws-iot-fleetwise
 
-        sudo echo -n "${vin100.certificatePem}" > /etc/aws-iot-fleetwise/certificate.pem
-        sudo echo -n "${vin100.privateKey}" > /etc/aws-iot-fleetwise/private-key.key
+        sudo echo -n "${KNADE163966083100.certificatePem}" > /etc/aws-iot-fleetwise/certificate.pem
+        sudo echo -n "${KNADE163966083100.privateKey}" > /etc/aws-iot-fleetwise/private-key.key
         sudo ./tools/configure-fwe.sh \
           --input-config-file "configuration/static-config.json" \
           --output-config-file "/etc/aws-iot-fleetwise/config-0.json" \
-          --vehicle-name vin100 \
-          --endpoint-url "${vin100.endpointAddress}" \
+          --vehicle-name KNADE163966083100 \
+          --endpoint-url "${KNADE163966083100.endpointAddress}" \
           --topic-prefix '$aws/iotfleetwise/' \
           --can-bus0 "vcan0"
 
@@ -238,16 +238,16 @@ export class FleetWiseStack extends cdk.Stack {
         ROOTDIR=/home/ubuntu/aws-iot-fleetwise-evbatterymonitoring/simulatedvehicle/canreplay
         
         #Since we don't have decoded signal data, we are going to replay the log of the captured data, with the exact data captured
-        sudo cp -f $ROOTDIR/service/simulationreplay.vin100.service /etc/systemd/system/simulationreplay.vin100.service
+        sudo cp -f $ROOTDIR/service/simulationreplay.KNADE163966083100.service /etc/systemd/system/simulationreplay.KNADE163966083100.service
         sudo systemctl daemon-reload
-        sudo systemctl enable simulationreplay.vin100.service
-        sudo systemctl start simulationreplay.vin100.service
+        sudo systemctl enable simulationreplay.KNADE163966083100.service
+        sudo systemctl start simulationreplay.KNADE163966083100.service
         
         #The following section will replace the above, once we have proper signal data as source
-        #sudo cp -f $ROOTDIR/service/evcansimulation.vin100.service /etc/systemd/system/evcansimulation.service
+        #sudo cp -f $ROOTDIR/service/evcansimulation.KNADE163966083100.service /etc/systemd/system/evcansimulation.service
         #sudo systemctl enable evcansimulation.service
         #sudo systemctl start evcansimulation.service
-        #sudo $ROOTDIR/service/start_simulation.sh vin100
+        #sudo $ROOTDIR/service/start_simulation.sh KNADE163966083100
         #sudo systemctl daemon-reload
         #sudo systemctl enable evcansimulation.service
         #sudo systemctl start evcansimulation.service
@@ -264,7 +264,7 @@ export class FleetWiseStack extends cdk.Stack {
       compression: 'SNAPPY',
       diagnosticsMode: 'SEND_ACTIVE_DTCS',
       spoolingMode: 'TO_DISK',
-      target: vin100,
+      target: KNADE163966083100,
       collectionScheme: new ifw.ConditionBasedCollectionScheme(
       //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
         '$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` >= 0', //so that we get all data for tests
@@ -312,7 +312,7 @@ export class FleetWiseStack extends cdk.Stack {
     new ifw.Fleet(this, 'Fleet', {
       fleetId: 'fleet',
       signalCatalog,
-      vehicles: [vin100],
+      vehicles: [KNADE163966083100],
     });
 
   }

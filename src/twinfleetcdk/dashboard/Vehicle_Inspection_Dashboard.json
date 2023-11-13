@@ -3726,7 +3726,7 @@
           "queryType": "ListEntities"
         },
         "refresh": 1,
-        "regex": "^vin.*$",
+        "regex": "^KNADE163966083.*$",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"

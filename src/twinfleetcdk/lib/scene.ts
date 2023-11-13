@@ -68,7 +68,7 @@ export class SceneModel {
     }
     // add vehicles
     for (let index = vehicle_base_number; index < max_vehicles + vehicle_base_number; index++) {
-      let vehicle_name = `vin${index}`;
+      let vehicle_name = `KNADE16396608363${index}`;
 
       if (view_type == 'FLEETVIEW') {
         next_node = this.add_to_scene(next_node, vehicle_name, 'CAR', vehicle_name, index,
@@ -180,7 +180,7 @@ export class SceneModel {
                 icon: "iottwinmaker.common.icon:Info",
                 valueDataBinding: {
                   dataBindingContext: {
-                    entityId: "vin100",
+                    entityId: "KNADE163966083100",
                     componentName: "EVDataComp",
                     propertyName: "Vehicle.Powertrain.BMSMainRelay"
                   },
