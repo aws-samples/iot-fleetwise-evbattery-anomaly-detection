@@ -109,7 +109,7 @@ export class FleetWiseStack extends cdk.Stack {
     const keyName = this.node.tryGetContext('key_name');
     const instance = new ec2.Instance(this, 'VehicleSim', {
       vpc: vpc,
-      instanceType: new ec2.InstanceType('m6g.xlarge'),
+      instanceType: new ec2.InstanceType('m5a.xlarge'),
       machineImage,
       securityGroup,
       keyName,
