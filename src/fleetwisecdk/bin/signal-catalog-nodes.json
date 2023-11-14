@@ -367,20 +367,20 @@
     },
     {
         "sensor": {
-            "dataType": "INT32",
+            "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.CurrentLocation.Latitude",
-            "max": 536870911.0,
-            "min": -536870912.0,
-            "unit": "ms arc"
+            "max": 90.0,
+            "min": -90.0,
+            "unit": "degrees"
         }
     },
     {
         "sensor": {
-            "dataType": "INT32",
+            "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.CurrentLocation.Longitude",
-            "max": 1073741823.0,
-            "min": -1073741824.0,
-            "unit": "ms arc"
+            "max": 180.0,
+            "min": -180.0,
+            "unit": "degrees"
         }
     },
     {

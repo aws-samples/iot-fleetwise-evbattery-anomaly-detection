@@ -1,5 +1,10 @@
 {
-  "IOT305-fleetwise-core-stack": {
-    "VehicleSimsshcommand": "ssh -i undefined.pem ubuntu@44.211.231.136"
+  "IOT305grafanastackIOT305twinfleetstackC5B60E13": {
+    "twinfleetbucketarn": "arn:aws:s3:::iot305grafanastackiot305-twinfleetbucket195026230-11hp17z0tu1my"
+  },
+  "IOT305-grafana-stack": {
+    "grafanadashboardrolearn": "arn:aws:iam::195026230833:role/evtwin-grafana-dashboard-role",
+    "grafanainstancepublicip": "3.239.213.182",
+    "grafanatimestreamrolearn": "arn:aws:iam::195026230833:role/evtwin-grafana-timestream-role"
   }
 }
