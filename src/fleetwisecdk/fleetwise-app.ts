@@ -121,7 +121,7 @@ export class FleetWiseStack extends cdk.Stack {
     });
 
     const sourceUrl = 'https://github.com/aws/aws-iot-fleetwise-edge/releases/download/v1.0.7/aws-iot-fleetwise-edge-amd64.tar.gz';
-    const sourceSIMUrl = 'https://github.com/kkourmousis/RIV23EVEC2TAR/raw/main/aws-iot-fleetwise-evbatterymonitoring.tar.gz';
+    const sourceSIMUrl = 'https://ws-assets-prod-iad-r-iad-ed304a55c2ca1aee.s3.us-east-1.amazonaws.com/79296185-6a04-4e79-a77c-f15afd51e877/aws-iot-fleetwise-evbatterymonitoring.zip';
     const userData = `\
         #!/bin/bash
         set -xeuo pipefail
@@ -233,8 +233,8 @@ export class FleetWiseStack extends cdk.Stack {
         
         #Fetching vehicle data and scripts
         cd /home/ubuntu
-        sudo -u ubuntu wget ${sourceSIMUrl} -O /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.tar.gz
-        sudo -u ubuntu tar -zxf /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.tar.gz 2>/dev/null
+        sudo -u ubuntu wget ${sourceSIMUrl} -O /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.zip
+        sudo -u ubuntu unzip /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.zip 2>/dev/null
         ROOTDIR=/home/ubuntu/aws-iot-fleetwise-evbatterymonitoring/simulatedvehicle/canreplay
         
         #Since we don't have decoded signal data, we are going to replay the log of the captured data, with the exact data captured
@@ -242,15 +242,7 @@ export class FleetWiseStack extends cdk.Stack {
         sudo systemctl daemon-reload
         sudo systemctl enable simulationreplay.KNADE163966083100.service
         sudo systemctl start simulationreplay.KNADE163966083100.service
-        
-        #The following section will replace the above, once we have proper signal data as source
-        #sudo cp -f $ROOTDIR/service/evcansimulation.KNADE163966083100.service /etc/systemd/system/evcansimulation.service
-        #sudo systemctl enable evcansimulation.service
-        #sudo systemctl start evcansimulation.service
-        #sudo $ROOTDIR/service/start_simulation.sh KNADE163966083100
-        #sudo systemctl daemon-reload
-        #sudo systemctl enable evcansimulation.service
-        #sudo systemctl start evcansimulation.service
+      
         `;
 
     instance.addUserData(userData);
