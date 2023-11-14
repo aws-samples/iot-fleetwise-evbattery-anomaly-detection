@@ -1,5 +1,5 @@
 {
   "IOT305-fleetwise-core-stack": {
-    "VehicleSimsshcommand": "ssh -i undefined.pem ubuntu@44.199.201.123"
+    "VehicleSimsshcommand": "ssh -i undefined.pem ubuntu@44.211.231.136"
   }
 }

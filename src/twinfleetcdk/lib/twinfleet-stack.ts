@@ -199,7 +199,7 @@ export class TwinfleetStack extends Stack {
     // create entities for the vehicles
 
     for (let i = VEHICLE_BASE_NUMBER; i < VEHICLES_IN_FLEET + VEHICLE_BASE_NUMBER ; i++) {
-      let vehicle_name = `vin${i}`;
+      let vehicle_name = `KNADE163966083${i}`;
       let car_entity = this.create_entity(vehicle_name, 'CAR', workspace.workspaceId);
       if ((car_entity != null) && fleet_entity != null) {
         car_entity.node.addDependency(fleet_entity);

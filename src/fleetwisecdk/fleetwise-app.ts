@@ -234,7 +234,7 @@ export class FleetWiseStack extends cdk.Stack {
         #Fetching vehicle data and scripts
         cd /home/ubuntu
         sudo -u ubuntu wget ${sourceSIMUrl} -O /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.zip
-        sudo -u ubuntu unzip /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.zip 2>/dev/null
+        sudo -u ubuntu unzip /home/ubuntu/aws-iot-fleetwise-evbatterymonitoring.zip -d aws-iot-fleetwise-evbatterymonitoring
         ROOTDIR=/home/ubuntu/aws-iot-fleetwise-evbatterymonitoring/simulatedvehicle/canreplay
         
         #Since we don't have decoded signal data, we are going to replay the log of the captured data, with the exact data captured
