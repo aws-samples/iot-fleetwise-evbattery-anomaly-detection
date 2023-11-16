@@ -272,7 +272,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.OutsideAirTemperature",
-            "max": 50.0,
+            "max": 100.0,
             "min": -50.0,
             "unit": "deg C"
         }
@@ -385,18 +385,6 @@
     },
     {
         "sensor": {
-            "dataType": "BOOLEAN",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.hasActiveDTC"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "BOOLEAN",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.FanRunning"
-        }
-    },
-    {
-        "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.BatteryAvailableChargePower",
             "max": 270.0,
@@ -431,11 +419,23 @@
     },
     {
         "sensor": {
+            "dataType": "BOOLEAN",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.FanRunning"
+        }
+    },
+    {
+        "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.StateOfHealth",
             "max": 100.0,
             "min": 0.0,
             "unit": "%"
+        }
+    },
+    {
+        "sensor": {
+            "dataType": "BOOLEAN",
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.hasActiveDTC"
         }
     },
     {
@@ -495,7 +495,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.1.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -511,7 +511,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.10.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -527,7 +527,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.11.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -543,7 +543,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.12.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -559,7 +559,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.13.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -575,7 +575,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.14.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -591,7 +591,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.15.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -607,7 +607,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.16.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -623,7 +623,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.17.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -639,7 +639,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.18.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -655,7 +655,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.19.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -671,7 +671,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.2.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -687,7 +687,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.20.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -703,7 +703,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.21.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -719,7 +719,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.22.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -735,7 +735,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.23.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -751,7 +751,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.24.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -767,7 +767,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.25.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -783,7 +783,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.26.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -799,7 +799,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.27.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -815,7 +815,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.28.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -831,7 +831,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.29.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -847,7 +847,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.3.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -863,7 +863,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.30.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -879,7 +879,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.31.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -895,7 +895,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.32.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -911,7 +911,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.4.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -927,7 +927,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.5.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -943,7 +943,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.6.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -959,7 +959,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.7.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -975,7 +975,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.8.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -991,7 +991,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.Module.9.Voltage",
-            "max": 0.0,
+            "max": 5.0,
             "min": 0.0,
             "unit": "V"
         }
@@ -1016,60 +1016,8 @@
     },
     {
         "sensor": {
-            "dataType": "INT32",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.MinDeterioration",
-            "unit": "%"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "INT32",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.MinDeteriorationCellNo"
-        }
-    },
-    {
-        "sensor": {
             "dataType": "DOUBLE",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.HeaterTemperature1",
-            "unit": "degC"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "DOUBLE",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.VoltageAuxillary",
-            "unit": "V"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "DOUBLE",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.FanFeedback",
-            "unit": "Hz"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "BOOLEAN",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.NormalChargePort"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "BOOLEAN",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.RapidChargePort"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "BOOLEAN",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSMainRelay"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "BOOLEAN",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSIgnition"
+            "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSFirmwareVersion"
         }
     }
 ]

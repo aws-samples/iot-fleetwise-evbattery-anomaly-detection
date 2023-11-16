@@ -1411,136 +1411,16 @@
     },
     {
         "canSignal": {
-            "factor": 0.1,
-            "isBigEndian": false,
+            "factor": 0.01,
+            "isBigEndian": true,
             "isSigned": false,
-            "length": 16,
-            "messageId": 256,
-            "name": "MinDeterioration",
+            "length": 64,
+            "messageId": 772,
+            "name": "BMSFirmwareVersion",
             "offset": 0.0,
-            "startBit": 23
+            "startBit": 0
         },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.MinDeterioration",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 8,
-            "messageId": 256,
-            "name": "MinDeteriorationCellNo",
-            "offset": 0.0,
-            "startBit": 39
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.MinDeteriorationCellNo",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": true,
-            "length": 8,
-            "messageId": 256,
-            "name": "BatteryHeaterTemperature1",
-            "offset": 0.0,
-            "startBit": 15
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.HeaterTemperature1",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 0.1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 8,
-            "messageId": 769,
-            "name": "BatteryVoltageAuxillary",
-            "offset": 0.0,
-            "startBit": 23
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.VoltageAuxillary",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 8,
-            "messageId": 769,
-            "name": "BatteryFanFeedback",
-            "offset": 0.0,
-            "startBit": 39
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.FanFeedback",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 1,
-            "messageId": 769,
-            "name": "NormalChargePort",
-            "offset": 0.0,
-            "startBit": 53
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.NormalChargePort",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 1,
-            "messageId": 769,
-            "name": "RapidChargePort",
-            "offset": 0.0,
-            "startBit": 54
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.RapidChargePort",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 1,
-            "messageId": 770,
-            "name": "BMSMainRelay",
-            "offset": 0.0,
-            "startBit": 48
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSMainRelay",
-        "interfaceId": "1",
-        "type": "CAN_SIGNAL"
-    },
-    {
-        "canSignal": {
-            "factor": 1,
-            "isBigEndian": false,
-            "isSigned": false,
-            "length": 1,
-            "messageId": 770,
-            "name": "BMSIgnition",
-            "offset": 0.0,
-            "startBit": 50
-        },
-        "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSIgnition",
+        "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSFirmwareVersion",
         "interfaceId": "1",
         "type": "CAN_SIGNAL"
     }
