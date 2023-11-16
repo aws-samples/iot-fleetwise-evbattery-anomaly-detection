@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { CfnParameter, Stack, Duration } from 'aws-cdk-lib';
+import { CfnParameter, Stack, Duration,PhysicalName } from 'aws-cdk-lib';
 import { CfnAutoScalingGroup, CfnLifecycleHook } from 'aws-cdk-lib/aws-autoscaling';
 import {
   GenericLinuxImage,
@@ -29,6 +29,7 @@ import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
 import { Construct } from 'constructs';
 import { CreateEc2ImageUpdater } from './ec2-image-updater';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 export interface VehicleSimulatorStackProps {
   ecsClusterStackId: string;
@@ -54,13 +55,24 @@ export interface VehicleSimulatorEcsClusterStackProps {
   readonly ecsClusterMinimumInstances: number;
   readonly enableEc2AutoUpdate?: boolean;
   readonly baseImage: string;
+  readonly createS3Bucket?: boolean; // If specify, a s3 bucket under the same account will be created
 }
 
 export class VehicleSimulatorEcsClusterStack extends Stack {
+  public readonly s3BucketName?: string;
   constructor(scope: Construct, id: string, props: VehicleSimulatorEcsClusterStackProps) {
     super(scope, id, {
       stackName: props.stackName,
     });
+
+    // Below if statement returns true if props.createS3Bucket is NOT undefined or false
+    if (props.createS3Bucket) {
+      const s3Bucket = new Bucket(this, 'simulation-bucket', {
+        bucketName: PhysicalName.GENERATE_IF_NEEDED,
+      });
+      // export bucket name
+      this.s3BucketName = s3Bucket.bucketName;
+    }
 
     // EC2 ASG Logical ID will be imported into User Data for signaling cloudformation resource
     const ec2AsgLogicalID = 'ec2asg';
@@ -479,4 +491,6 @@ export class VehicleSimulatorEcsClusterStack extends Stack {
     EventContinueClusterDrain.node.addDependency(asg);
     EventContinueClusterDrain.node.addDependency(TerminationLifeCycleHook);
   }
+
+  
 }

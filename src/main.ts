@@ -42,6 +42,7 @@ new VehicleSimulatorEcsClusterStack(app, ecsClusterShortName, {
   enableEc2AutoUpdate: false,
   cpu: cpu,
   baseImage: baseImage,
+  createS3Bucket: true
 },
 );
 
@@ -51,7 +52,6 @@ new VehicleSimulatorEcsTaskStack(app, ecsTaskShortName, {
   taskName: taskDefinition,
   ecrArn: `arn:aws:ecr:${process.env.CDK_DEFAULT_REGION}:763496144766:repository/vehicle-simulator-${cpu}`,
   ecrTag: ecrTag, // v1.0.7 dirty including changes to slow down catch-up see https://gitlab.aws.dev/aws-iot-automotive/IoTAutobahnVehicleAgent/-/merge_requests/719
-  createS3Bucket: true,
 },
 );
 

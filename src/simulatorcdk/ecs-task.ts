@@ -1,5 +1,5 @@
 
-import { App, PhysicalName, Stack } from 'aws-cdk-lib';
+import { App, Stack } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import {
   TaskDefinition,
@@ -15,7 +15,6 @@ import {
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 export interface VehicleSimulatorEcsTaskStackProps {
   readonly stackName: string;
@@ -23,11 +22,9 @@ export interface VehicleSimulatorEcsTaskStackProps {
   readonly taskName: string;
   readonly ecrArn: string;
   readonly ecrTag: string;
-  readonly createS3Bucket?: boolean; // If specify, a s3 bucket under the same account will be created
 }
 
 export class VehicleSimulatorEcsTaskStack extends Stack {
-  public readonly s3BucketName?: string;
   constructor(
     scope: App,
     id: string,
@@ -86,13 +83,6 @@ export class VehicleSimulatorEcsTaskStack extends Stack {
         streamPrefix: 'ecs',
       }),
     });
-    // Below if statement returns true if props.createS3Bucket is NOT undefined or false
-    if (props.createS3Bucket) {
-      const s3Bucket = new Bucket(this, 'simulation-bucket', {
-        bucketName: PhysicalName.GENERATE_IF_NEEDED,
-      });
-      // export bucket name
-      this.s3BucketName = s3Bucket.bucketName;
-    }
+    
   }
 }

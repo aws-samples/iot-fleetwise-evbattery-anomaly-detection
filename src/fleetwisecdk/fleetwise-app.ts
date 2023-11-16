@@ -258,7 +258,6 @@ export class FleetWiseStack extends cdk.Stack {
       spoolingMode: 'TO_DISK',
       target: KNADE163966083100,
       collectionScheme: new ifw.ConditionBasedCollectionScheme(
-      //"$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` < 75",
         '$variable.`Vehicle.Powertrain.Battery.hasActiveDTC` == true || $variable.`Vehicle.Powertrain.Battery.StateOfHealth` >= 0', //so that we get all data for tests
         1,
         10000,
