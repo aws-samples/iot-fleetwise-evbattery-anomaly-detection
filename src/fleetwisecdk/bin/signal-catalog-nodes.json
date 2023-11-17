@@ -396,7 +396,7 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.BatteryAvailableDischargePower",
-            "max": 270.0,
+            "max": 280.0,
             "min": 0.0,
             "unit": "kW"
         }
@@ -1018,15 +1018,6 @@
         "sensor": {
             "dataType": "DOUBLE",
             "fullyQualifiedName": "Vehicle.Powertrain.Battery.BMSFirmwareVersion"
-        }
-    },
-    {
-        "sensor": {
-            "dataType": "DOUBLE",
-            "fullyQualifiedName": "Vehicle.Powertrain.Battery.BatteryAvailableDischargePower",
-            "max": 280.0,
-            "min": 0.0,
-            "unit": "kW"
         }
     }
 ]
