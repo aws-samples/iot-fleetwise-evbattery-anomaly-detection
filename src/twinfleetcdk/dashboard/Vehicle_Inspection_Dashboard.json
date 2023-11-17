@@ -3701,6 +3701,79 @@
       "title": "Battery Module Min Temperature",
       "transparent": true,
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-iot-twinmaker-datasource",
+        "uid": "${DS_AWS_IOT TWINMAKER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#686a6e",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 15,
+        "y": 37
+      },
+      "id": 72,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 32
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "componentName": "EVDataComp",
+          "database": "\"FleetWiseDatabase\"",
+          "datasource": {
+            "type": "grafana-iot-twinmaker-datasource",
+            "uid": "${DS_AWS_IOT TWINMAKER}"
+          },
+          "entityId": "${sel_entity}",
+          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "properties": [
+            "Vehicle_Powertrain_Battery_BMSFirmwareVersion"
+          ],
+          "propertyDisplayNames": {},
+          "queryType": "EntityHistory",
+          "rawQuery": "SELECT measure_value::double, time FROM $__database.$__table\nWHERE campaignName = 'fww_continuous'\n  AND measure_name = 'Vehicle_Powertrain_Battery_CellVoltage02'\n  AND sel_entity= '${sel_entity}'\n    AND time >= ago(15m)\nLIMIT 100",
+          "refId": "A",
+          "table": "\"FleetWiseTable\""
+        }
+      ],
+      "title": "Firmware Version",
+      "transparent": true,
+      "type": "stat"
     }
   ],
   "refresh": "",
@@ -3783,6 +3856,6 @@
   "timezone": "",
   "title": "Vehicle Inspection",
   "uid": "6exVWfO4z41221",
-  "version": 11,
+  "version": 2,
   "weekStart": ""
 }

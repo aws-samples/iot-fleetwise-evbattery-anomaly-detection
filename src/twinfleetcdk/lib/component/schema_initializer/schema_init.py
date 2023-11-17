@@ -224,7 +224,7 @@ def create_default_schema(vehName):
 
     properties["Vehicle_Powertrain_Battery_Module_MinTemperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_MinTemperature", 0, True, "DOUBLE", True)
     properties["Vehicle_Powertrain_Battery_Module_MaxTemperature"] = create_default_schema_entry("Vehicle_Powertrain_Battery_Module_MaxTemperature", 0, True, "DOUBLE", True)
-    properties["FirmwareVersion"] = create_default_schema_entry("FirmwareVersion", 0, True, "DOUBLE", True)
+    properties["Vehicle_Powertrain_Battery_BMSFirmwareVersion"] = create_default_schema_entry("Vehicle_Powertrain_Battery_BMSFirmwareVersion", 0, True, "DOUBLE", True)
 
     return {
         'properties': properties
