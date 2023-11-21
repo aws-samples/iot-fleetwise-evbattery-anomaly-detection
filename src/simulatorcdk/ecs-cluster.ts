@@ -225,7 +225,7 @@ export class VehicleSimulatorEcsClusterStack extends Stack {
       `fwe-simulator-${props.baseImage}-${props.cpu}`,
       {
         userData: setupCommands,
-        instanceType: InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE),
+        instanceType: InstanceType.of(InstanceClass.M6A, InstanceSize.XLARGE),
         machineImage: ami,
         role: ec2Role,
         securityGroup: ec2Sg,
