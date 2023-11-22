@@ -3,7 +3,6 @@
 # This user data script is run as root
 
 # Install Ubuntu packages
-add-apt-repository -y ppa:canonical-kernel-team/ppa
 apt update
 
 # TODO apt update seems to fail sometimes - find out root cause and fix, for now.. run it twice
@@ -15,13 +14,11 @@ apt install -y \
     dkms \
     can-utils \
     htop \
-    linux-modules-extra-aws=5.15.0.1049.54~20.04.37 \
+    linux-modules-extra-aws \
     unzip \
     amazon-ecr-credential-helper \
     net-tools
 
-echo uname -r
-apt upgrade -y
 echo uname -r
 
 # Install aws-cfn-bootstrap to send signal to cfn
@@ -97,6 +94,8 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io
 
 echo "Allow user ubuntu to run docker without root permission"
 sudo usermod -aG docker ubuntu
+
+echo uname -r
 
 echo "========="
 echo "Finished!"

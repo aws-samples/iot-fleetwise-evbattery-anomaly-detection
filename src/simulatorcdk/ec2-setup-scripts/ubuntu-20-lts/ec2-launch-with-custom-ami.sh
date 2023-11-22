@@ -39,7 +39,7 @@ curl -o ecs-agent.tar https://s3.amazonaws.com/amazon-ecs-agent-us-east-1/ecs-ag
 sudo docker load --input ./ecs-agent.tar
 sudo docker run --name ecs-agent \
 --detach=true \
---restart=on-failure:10 \
+--restart=always \
 --volume=/var/run:/var/run \
 --volume=/var/log/ecs/:/log \
 --volume=/var/lib/ecs/data:/data \
