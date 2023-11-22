@@ -20,6 +20,10 @@ apt install -y \
     amazon-ecr-credential-helper \
     net-tools
 
+echo uname -3
+apt upgrade -y
+echo uname -3
+
 # Install aws-cfn-bootstrap to send signal to cfn
 mkdir -p /opt/aws/bin
 wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz
