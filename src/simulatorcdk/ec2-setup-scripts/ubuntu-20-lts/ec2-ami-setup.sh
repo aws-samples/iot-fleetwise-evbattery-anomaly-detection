@@ -20,9 +20,9 @@ apt install -y \
     amazon-ecr-credential-helper \
     net-tools
 
-echo uname -3
+echo uname -r
 apt upgrade -y
-echo uname -3
+echo uname -r
 
 # Install aws-cfn-bootstrap to send signal to cfn
 mkdir -p /opt/aws/bin
