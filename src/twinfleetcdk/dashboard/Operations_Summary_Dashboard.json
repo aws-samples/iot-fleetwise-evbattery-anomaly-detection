@@ -191,9 +191,9 @@
         "view": {
           "allLayers": true,
           "id": "coords",
-          "lat": 37.80308,
-          "lon": -122.44838,
-          "zoom": 6
+          "lat": 37.32008,
+          "lon": -121.90975,
+          "zoom": 11
         }
       },
       "pluginVersion": "10.2.1",
@@ -231,8 +231,12 @@
                 "value": null
               },
               {
-                "color": "red",
+                "color": "#EAB839",
                 "value": 1
+              },
+              {
+                "color": "red",
+                "value": 2
               }
             ]
           },
@@ -255,10 +259,10 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "allValues"
           ],
-          "fields": "/^Last$/",
-          "values": false
+          "fields": "/^_col0$/",
+          "values": true
         },
         "text": {
           "valueSize": 60
@@ -274,40 +278,12 @@
               "uid": "${DS_AMAZON_TIMESTREAM}"
             },
             "measure": "",
-            "rawQuery": "select count(*) from FleetWiseDatabase.FleetWiseTable\nwhere measure_name = 'Vehicle.Powertrain.Battery.hasActiveDTC' and measure_value::boolean = true",
+            "rawQuery": "select count(distinct vehicleName) from FleetWiseDatabase.FleetWiseTable\nwhere measure_name = 'Vehicle.Powertrain.Battery.hasActiveDTC' and measure_value::boolean = true",
             "refId": "A"
           }
       ],
       "title": "Number of Unhealthy Vehicles",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": true,
-            "mode": "seriesToRows",
-            "reducers": [
-              "last"
-            ]
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "enum",
-                "targetField": "Last"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "Last"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -349,9 +325,9 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "count"
+            "allValues"
           ],
-          "fields": "/^Last$/",
+          "fields": "/^_col0$/",
           "values": false
         },
         "text": {
@@ -373,35 +349,7 @@
         }
       ],
       "title": "Total Vehicles",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": true,
-            "mode": "seriesToRows",
-            "reducers": [
-              "last"
-            ]
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "enum",
-                "targetField": "Last"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "Last"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {

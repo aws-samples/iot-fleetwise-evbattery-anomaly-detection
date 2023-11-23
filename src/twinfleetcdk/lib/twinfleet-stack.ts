@@ -144,7 +144,7 @@ export class TwinfleetStack extends Stack {
     //          This is a deployment time issue.
     //          This is expected to be resolved in a couple of months.  Have not seen this issue with
     //          python, only with typescript.
-    const VEHICLES_IN_FLEET: number = 20;
+    const VEHICLES_IN_FLEET: number = 21;
     const VEHICLE_BASE_NUMBER = 100;
 
     // Create the Fleet View scene

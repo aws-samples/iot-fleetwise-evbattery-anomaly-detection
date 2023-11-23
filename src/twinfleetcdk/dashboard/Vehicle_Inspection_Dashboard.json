@@ -2305,7 +2305,7 @@
           "entityId": "${sel_entity}",
           "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
           "properties": [
-            "Vehicle_Powertrain_Battery_Module_1_Voltage"
+            "Vehicle_Powertrain_Battery_Module_2_Voltage"
           ],
           "propertyDisplayNames": {},
           "queryType": "EntityHistory",
@@ -2314,7 +2314,7 @@
           "table": "\"FleetWiseTable\""
         }
       ],
-      "title": "Module 1",
+      "title": "Module 2",
       "transparent": true,
       "type": "stat"
     },
@@ -3760,7 +3760,7 @@
             "uid": "${DS_AWS_IOT TWINMAKER}"
           },
           "entityId": "${sel_entity}",
-          "measure": "Vehicle_Chassis_Axle_LeftFrontTirePressure",
+          "measure": "Vehicle_Powertrain_Battery_BMSFirmwareVersion",
           "properties": [
             "Vehicle_Powertrain_Battery_BMSFirmwareVersion"
           ],
