@@ -1,11 +1,12 @@
-/*
+
 import * as cdk from 'aws-cdk-lib';
 import { VehicleSimulatorEcsClusterStack } from '../simulatorcdk/ecs-cluster';
 import { VehicleSimulatorEcsTaskStack } from '../simulatorcdk/ecs-task';
 
 //const devAccountId = 'undefined'; // replace with personal account ID for local testing
 //const devRegion = 'us-east-1'; // replace with the actual region. We currently only support us-west-2, us-east-1 and eu-central-1
-const disambiguator = 'IOT305'; // replace with username for local testing
+const app = new cdk.App();
+const disambiguator = ''; // replace with username for local testing
 const cpu = 'arm64'; // replace with the actual cpu architecture of Edge application. We currently only support arm64 or amd64
 const clusterName = `vehicle-simulator-${cpu}`;
 const capacityProviderName = `ubuntu-${cpu}-capacity-provider`;
@@ -35,7 +36,6 @@ export interface VehicleSimulatorStackProps {
 
   // This function will create ECS Cluster Stack and ECS Task Stack for Vehicle Simulator.
 export function createVehicleSimulatorStacks({
-    env,
     ecsClusterStackId,
     ecsClusterStackName,
     ecsTaskStackId,
@@ -47,7 +47,6 @@ export function createVehicleSimulatorStacks({
     ecsClusterMinimumInstances,
     enableEc2AutoUpdate,
     ecsTaskDefinition,
-    createS3Bucket,
   }: VehicleSimulatorStackProps): [
     VehicleSimulatorEcsClusterStack,
     VehicleSimulatorEcsTaskStack
@@ -71,13 +70,11 @@ export function createVehicleSimulatorStacks({
       cpu: ec2Cpu,
       stackName: ecsTaskStackName,
       taskName: ecsTaskDefinition,
-      ecrArn: `arn:aws:ecr:${env.region}:763496144766:repository/vehicle-simulator-${ec2Cpu}`,
-      ecrTag: 'launcher.mainline-fwe.d1b3c780', // v1.0.7 dirty including changes to slow down catch-up see https://gitlab.aws.dev/aws-iot-automotive/IoTAutobahnVehicleAgent/-/merge_requests/719
-      createS3Bucket: createS3Bucket,
+      ecrArn: `arn:aws:ecr-public::123456789012:repository/aws-iot-fleetwise-edge`,
+      ecrTag: 'latest'
     });
     return [ecsClusterStack, ecsTaskStack];
   }
-
 
   // Below will create a stand-alone Vehicle Simulator with EC2 OS auto update disabled and S3 bucket creation enabled.
   createVehicleSimulatorStacks({
@@ -97,4 +94,4 @@ export function createVehicleSimulatorStacks({
     createS3Bucket: true,
   });
 
-  */
+  

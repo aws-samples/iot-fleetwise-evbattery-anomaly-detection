@@ -250,7 +250,7 @@ export class FleetWiseStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'Vehicle Sim ssh command', { value: `ssh -i ${keyName}.pem ubuntu@${instance.instancePublicIp}` });
 
     new ifw.Campaign(this, 'Campaign', {
-      name: 'iot305-ProdUnhealthyVehicleDetectorCampaign',
+      name: 'ProdUnhealthyVehicleDetectorCampaign',
       description: 'An event-based campaign that collects data when an unhealthy vehicle is detected from production fleet',
       //targetArn: "arn:aws:iotfleetwise:eu-central-1:755536927200:fleet/cesDemoProductionFleet",
       compression: 'SNAPPY',

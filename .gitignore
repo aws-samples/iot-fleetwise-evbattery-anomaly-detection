@@ -51,3 +51,8 @@ junit.xml
 .github/*
 ./github/workflows/build.yml
 .github/workflows/build.yml
+.github
+.projen
+.vscode
+/out/
+package-lock.json

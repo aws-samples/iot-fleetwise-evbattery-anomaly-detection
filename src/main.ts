@@ -5,15 +5,15 @@ import { VehicleSimulatorEcsTaskStack } from './simulatorcdk/ecs-task';
 import { GrafanaStack } from './twinfleetcdk/lib/grafana-stack';
 
 const app = new cdk.App();
-const shortName = 'IOT305';
-const coreStackName = 'IOT305-fleetwise-core-stack';
+const shortName = '';
+const coreStackName = 'fleetwise-core-stack';
 
-const twinFleetShortName = 'IOT305-twinfleet-stack';
-const grafanaShortName = 'IOT305-grafana-stack';
+const twinFleetShortName = 'twinfleet-stack';
+const grafanaShortName = 'grafana-stack';
 const databaseName = 'FleetWiseDatabase';
 const tableName = 'FleetWiseTable';
-const sessionName = 'IOT305 - Detecting EV battery anomalies across a fleet using AWS IoT';
-const disambiguator = 'IOT305'; // replace with username for local testing
+const sessionName = 'Detecting EV battery anomalies across a fleet using AWS IoT';
+const disambiguator = 'iot'; // replace with username for local testing
 const ecsClusterShortName = `${disambiguator}-vehicle-simulator-ecs-cluster-stack`;
 const ecsTaskShortName = `${disambiguator}-vehicle-simulator-ecs-task-stack`;
 const cpu = 'amd64'; // replace with the actual cpu architecture of Edge application. We currently only support arm64 or amd64
@@ -23,7 +23,8 @@ const capacityProviderName = `ubuntu-${cpu}-capacity-provider`;
 const minimumEc2Instances = 3; // Adjust the minimum number of EC2 instance according to your application
 const taskDefinition = `fwe-${cpu}-with-cw`;
 const baseImage = 'ubuntu-20-lts';
-const ecrTag = 'launcher.mainline-fwe.d1b3c780';
+const ecrTag = 'latest';
+const ecrArn = `arn:aws:ecr-public::123456789012:repository/aws-iot-fleetwise-edge`;
 
 new FleetWiseStack(app, coreStackName, {
   scope: app,
@@ -50,13 +51,11 @@ new VehicleSimulatorEcsTaskStack(app, ecsTaskShortName, {
   cpu: cpu,
   stackName: ecsTaskStackName,
   taskName: taskDefinition,
-  ecrArn: `arn:aws:ecr:${process.env.CDK_DEFAULT_REGION}:763496144766:repository/vehicle-simulator-${cpu}`,
-  ecrTag: ecrTag, // v1.0.7 dirty including changes to slow down catch-up see https://gitlab.aws.dev/aws-iot-automotive/IoTAutobahnVehicleAgent/-/merge_requests/719
+  ecrArn: ecrArn,
+  ecrTag: ecrTag
 },
 );
 
-// TODO - the Twinfleet stack must be instantiated only after at least 1 set of data values has been populated in
-// Timestream.
 new GrafanaStack(app, grafanaShortName,
   {
     env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
