@@ -43,7 +43,7 @@ Below architecture diagram shows the high-level architecture that is built when 
 
 ![assets](/assets/archdiagram.png)
 
-# Install
+# Setup
 
 ```sh
 git clone https://github.com/aws-samples/iot-fleetwise-evbattery-anomaly-detection.git
@@ -53,10 +53,10 @@ npm install
 
 ## Getting started with FleetWise core stack
 
-All four stacks can be deployed using the following command, or we can deploy a single stack at a time
+All five stacks can be deployed using the following command, or we can deploy a single stack at a time
 
 ```sh
-cdk deploy -c key_name=myKey fleetwise-core-stack iot-vehicle-simulator-ecs-cluster-stack iot-vehicle-simulator-ecs-task-stack twinfleet-stack grafana-stack/twinfleet-stack --require-approval never
+cdk deploy -c key_name={MY KEY} fleetwise-core-stack iot-vehicle-simulator-ecs-cluster-stack iot-vehicle-simulator-ecs-task-stack twinfleet-stack grafana-stack/twinfleet-stack --require-approval never
 ```
 
 or
@@ -67,13 +67,13 @@ cdk deploy --all --require-approval never -c key_name={MY KEY}
 
 Replace {MY KEY} with a KeyPair that is already created in your AWS account that you can use to SSH to the simulation instance.
 
-Deploy just the FleetWise core stack. This will setup FleetWise in your AWS Account, with a signal catalog, vehicle model, decoder manifest and a campaign.
+OR deploy just the FleetWise core stack. This will setup FleetWise in your AWS Account, with a signal catalog, vehicle model, decoder manifest and a campaign.
 
 ```sh
 cdk deploy -c key_name={MY KEY} fleetwise-core-stack --require-approval never
 ```
 
-Where `myKey` is an existing keypair name present in your account to use to SSH into simulation instance.
+Where `{MY KEY}` is an existing keypair present in your account to use to SSH into simulation instance.
 
 Once the deployment is finshed, data will start to show up in your Timestream table and you can view the Grafana dashboards.
 
